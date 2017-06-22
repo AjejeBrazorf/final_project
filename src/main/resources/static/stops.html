@@ -1,0 +1,70 @@
+<div class="row" style="height: 100%">
+    <div class="col-sm-6 col-md-6 listContainer">
+    
+		<div class="row" style="padding: 0px; margin: 0;" ng-hide="!percorsi.length || showSpinner" >
+              <div class="col-sm-3 col-md-3 col-xs-3" > <a href="/#/stops"><i class="arrow" ng-class="(!percorsi.length || showSpinner) ? 'down' : 'left'" ></i> </a></div>
+              <div class="col-sm-6 col-md-6 col-xs-6" style="text-align: center"> <h3>Line {{lineToShow}}</h3> </div>
+              <div class="col-sm-3 col-md-3 col-xs-3" > </div>
+        </div>
+
+	         <form class="w3-container" ng-hide="showSpinner">
+				<input class="w3-input searchBox" type="text"  ng-model="searchText" placeholder="Search your line!" ng-hide="!lines.length">
+				<input class="w3-input searchBox" type="text"  ng-model="searchText" placeholder="Search your stop!" ng-hide="lines.length">
+			</form>
+        <div class="row"  style="height: 55px;border-left: solid 15px white;" ng-hide="percorsi.length || showSpinner">
+			<div class="col-sm-2 col-md-2 col-xs-2" style=" height: 100%;border-right: solid 2px white;text-align: right;    height: 100%;border-right: solid 7px white;text-align: right;margin-left: -6px;">
+                    <h5 style=" margin-top: 20px;"  >Line</h5>
+            </div>
+            <div class="col-sm-10 col-md-10 col-xs-10" style=" height: 100%; text-align: left;"> <h5 style=" margin-top: 20px;">Description</h5></div>
+        </div>
+        <ul style=" padding: 0px;padding-top: 20px;" class="row" ng-if="lines.length ">
+            <li style="padding: 0px; margin: 0;  list-style-type: none; "  ng-repeat="line in lines|filter:searchText">
+                <div class="row" style="padding: 0px; margin: 0;">
+                    <a  class="stoplist" href="#/stops?lineToShow={{line.name}}" ng-click="showSpinner=true">
+                        <div class="col-sm-2 col-md-2 col-xs-2 nofocus" style="text-align: right;"> {{line.name}}</div>
+                        <div class="col-sm-10 col-md-10 col-xs-10 nofocus" style="text-align: left;border-left: solid white 7px;"> {{line.description}} </div>
+                    </a>
+                </div>
+            </li>
+        </ul>
+        <div ng-cloak ng-hide="!percorsi.length || showSpinner" >
+            <md-content style="background-color: #37373e;">
+                <md-tabs md-dynamic-height md-border-bottom style="color:white;">
+                    <md-tab label="{{p[0].name}} - {{p[p.length-1].name}}" ng-repeat="p in percorsi track by $index" ng-click="showPath(p)">
+                        <md-content class="md-padding" style="background-color: #37373e;">
+                            <div class="row"  style="height: 55px;background: #37373e;border-left: solid 15px #37373e;border-right: solid 15px  #37373e;" >
+                            	<div class="col-sm-3 col-md-3 col-xs-3" style=" height: 100%;border-right: solid 9px white;text-align: right;padding-left: 0px;border-left: 0; margin-left: 0px;">
+                                    <h5 style=" margin-top: 20px; color:white;">Stop</h5>
+                                </div>
+                                <div class="col-sm-9 col-md-9 col-xs-9" style=" height: 100%; text-align: left;">
+                                	<h5 style=" margin-top: 20px; color:white">Description</h5>
+                                </div>
+                            </div>
+                            <ul style="padding: 0px; padding-top:20px; background-color: #37373e ;" class="row" ng-hide="!percorsi.length">
+                                <li  style="padding: 0px; margin: 0;  list-style-type: none; "  ng-repeat="stop in p |filter:searchText track by $index" >
+                                    <div class="row stoplist" style="padding: 0px; margin: 0;" >
+                      					<div class="col-sm-3 col-md-3 col-xs-3 nofocus" style="text-align: right; border-right: solid 2px white; color:white " ng-click="showPopUp(stop.id)"> {{stop.id}}</div>
+                                        <div class="col-sm-9 col-md-9 col-xs-9 nofocus" style="text-align: left;border-left: solid white 7px; color:white" ng-click="showPopUp(stop.id)"> {{stop.name}} </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </md-content>
+                    </md-tab>
+                </md-tabs>
+            </md-content>
+        </div>
+        <div ng-show="showSpinner">
+        	<svg class="spinner" width="65px" height="65px" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg" style="position: absolute;left: 50%; top: 50%">
+			   <circle class="path" fill="none" stroke-width="6" stroke-linecap="round" cx="33" cy="33" r="30"></circle>
+			</svg>
+        </div>
+    </div>
+
+
+
+    <div class="col-sm-6 col-md-6" style=" height: 100%;">
+        <leaflet id="stopsMap" style="height: 100%" defaults="defaults" markers="markers" paths="paths" lf-center="torino"></leaflet>
+    </div>
+</div>
+
+

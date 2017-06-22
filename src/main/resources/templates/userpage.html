@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+	integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+	crossorigin="anonymous" />
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+<link rel="stylesheet" href="css/set1.css"></link>
+<link rel="stylesheet" href="css/input.css"></link>
+<link rel="stylesheet" href="css/style.css"></link>
+<title>UserPage</title>
+</head>
+<body>
+	<div th:replace="fragments/navbar :: navbar"></div>
+	<div class="row imgcontainer"
+		style="border-bottom: 1px solid #9d9d9d !important; padding-bottom: 70px;">
+		<div class="col-md-2">
+
+			<div class="profile-header-img chat-img">
+				<img id="img"
+					th:src="@{http://placehold.it/50/55C1E7/(fff,text='ME')}"
+					alt="User Avatar" class="img-circle imgprofile" >
+					 <input id="inp" type='file' style="display: none;"></input></img>
+				<!-- badge -->
+				<div class="rank-label-container">
+					<span class="label label-default rank-label">User</span>
+				</div>
+			</div>
+
+		</div>
+		<form method="post">
+			<div class="col-md-7" style="padding-top: 80px">
+				<section class="content bgcolor-5">
+
+					<span class="input input--minoru"> <input
+						class="input__field input__field--yoko" type="text" name="oldpsw" />
+						<label class="input__label input__label--yoko" for="input-16">
+							<span class="input__label-content input__label-content--yoko">Old
+								Passowrd</span>
+					</label>
+					</span> <span class="input input--minoru"> <input
+						class="input__field input__field--yoko" type="text" name="newpsw" />
+						<label class="input__label input__label--yoko" for="input-17">
+							<span class="input__label-content input__label-content--yoko">New
+								Password</span>
+					</label>
+					</span>
+
+
+				</section>
+			</div>
+			<div class="col-md-3" style="padding-top: 85px;">
+				<span class="input input--minoru">
+					<button type="submit" style="height: 46px; margin-top: 2px;"
+						class="btn-success">Change Password</button>
+				</span>
+			</div>
+		</form>
+	</div>
+
+	<div class="row formContainer">
+		<form th:action="@{/addInfo}" method="post">
+			<div class="row" style="margin-top: 40px;">
+				<div class="col-md-2">
+					<h4>Gender</h4>
+				</div>
+				<div class="col-md-2">
+					<select class="searchBox" name="gender">
+						<option class="searchBox" value="m">Male</option>
+						<option class="searchBox" value="f">Female</option>
+					</select>
+				</div>
+				<div class="col-md-1">
+					<h4>Age</h4>
+				</div>
+				<div class="col-md-2 ">
+					<span class="input input--minoru"> <input
+						class="input__field input__field--yoko" type="text"
+						name="birthday" /> <label class="input__label input__label--yoko"
+						for="input-16"> <span
+							class="input__label-content input__label-content--yoko"></span>
+					</label>
+					</span>
+				</div>
+				<div class="col-md-2">
+					<h4>Instruction</h4>
+				</div>
+				<div class="col-md-2">
+					<select class="searchBox" name="instruction">
+						<option class="searchBox" value="media">media</option>
+						<option class="searchBox" value="superiore">superiore</option>
+						<option class="searchBox" value="università">università</option>
+					</select>
+				</div>
+			</div>
+			<div class="row"
+				style="margin-top: 13px; border-bottom: solid 1px; margin-bottom: 20px; padding-bottom: 30px;">
+				<div class="col-md-2">
+					<h4>Occupation</h4>
+				</div>
+				<div class="col-md-2">
+					<select name="job" class="searchBox">
+						<option class="searchBox" value="studente">studente</option>
+						<option class="searchBox" value="lavoratore">lavoratore</option>
+						<option class="searchBox" value="pensionato">pensionato</option>
+					</select>
+				</div>
+			</div>
+
+			<div class="row" style="margin-top: 40px;">
+				<div class="col-md-2">
+					<h4>Car</h4>
+				</div>
+				<div class="col-md-2">
+					<select name="hascar" class="searchBox">
+						<option class="searchBox" value="true">Yes</option>
+						<option class="searchBox" value="false">No</option>
+					</select>
+				</div>
+				<div class="col-md-1">
+					<h4>Fuel</h4>
+				</div>
+				<div class="col-md-2">
+					<select name="fuel" class="searchBox">
+						<option class="searchBox" value="diesel">diesel</option>
+						<option class="searchBox" value="benzina">benzina</option>
+						<option class="searchBox" value="gpl">gpl</option>
+						<option class="searchBox" value="metano">metano</option>
+						<option class="searchBox" value="elettrica">elettrica</option>
+					</select>
+				</div>
+				<div class="col-md-2">
+					<h4>Registration</h4>
+				</div>
+				<div class="col-md-2">
+					<span class="input input--minoru"> <input
+						class="input__field input__field--yoko" type="number"
+						name="carRegistration" /> <label
+						class="input__label input__label--yoko" for="input-16"> <span
+							class="input__label-content input__label-content--yoko"></span>
+					</label>
+					</span>
+				</div>
+			</div>
+			<div class="row" style="margin-top: 10px">
+				<div class="col-md-2">
+					<h4>Car Sharing</h4>
+				</div>
+				<div class="col-md-2">
+					<select name="usecarsharing" class="searchBox">
+						<option class="searchBox" value="true">Yes</option>
+						<option class="searchBox" value="false">No</option>
+					</select>
+				</div>
+				<div class="col-md-1">
+					<h4>Vendor</h4>
+				</div>
+				<div class="col-md-2">
+					<select name="CSVendor" class="searchBox">
+						<option class="searchBox" value="enjoy">enjoy</option>
+						<option class="searchBox" value="cartogo">cartogo</option>
+					</select>
+				</div>
+			</div>
+			<div class="row" style="margin-top: 10px">
+				<div class="col-md-2">
+					<h4>Bike Sharing</h4>
+				</div>
+				<div class="col-md-2">
+					<select class="searchBox" name="usebikesharing">
+						<option class="searchBox" value="true">Yes</option>
+						<option class="searchBox" value="false">No</option>
+					</select>
+				</div>
+				<div class="col-md-1">
+					<h4>Bike</h4>
+				</div>
+				<div class="col-md-2">
+					<select class="searchBox" name="typeOfBike">
+						<option value="true">Yes</option>
+						<option value="false">No</option>
+					</select>
+				</div>
+				<div class="col-md-2">
+					<h4>transport</h4>
+				</div>
+				<div class="col-md-1">
+					<select class="searchBox" name="usemezzipubblici">
+						<option class="searchBox" value="true">Yes</option>
+						<option class="searchBox" value="false">No</option>
+					</select>
+				</div>
+			</div>
+			<div class="row" style="margin-top: 10px">
+				<div class="col-md-2">
+					<h4>Ticket type</h4>
+				</div>
+				<div class="col-md-2">
+					<select class="searchBox" name="TypeOfTicket">
+						<option class="searchBox" value="singolo">singolo</option>
+						<option class="searchBox" value="giornaliero">giornaliero</option>
+						<option class="searchBox" value="mensile">mensile</option>
+						<option class="searchBox" value="annuale">annuale</option>
+					</select>
+				</div>
+
+			</div>
+			<div class="row imgcontainer "
+				style="padding: 0; padding-right: 15px;">
+				<div class=" col-md-2 "></div>
+				<div class=" col-md-7 "></div>
+				<div class=" col-md-3 ">
+					<span class="input input--minoru">
+						<button type="submit" class="btn-success">Save</button>
+					</span>
+				</div>
+
+			</div>
+		</form>
+
+	</div>
+
+
+
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+	<script src="../js/classie.js"></script>
+	<script src="../js/fotoCtrl.js"></script>
+	<script
+		src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+	<script
+		src='https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-animate.min.js'></script>
+	<script
+		src='https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-route.min.js'></script>
+	<script
+		src='https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-aria.min.js'></script>
+	<script
+		src='https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-messages.min.js'></script>
+	<script
+		src='https://cdn.gitcdn.xyz/cdn/angular/bower-material/v1.0.0-rc4/angular-material.js'></script>
+	<script
+		src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCgFeLe0VVD6kjgGdwWJxDOrEt2MocUhF0"
+		async="async" defer="defer"></script>
+	<script
+		src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+	<script
+		src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+		integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+		crossorigin="anonymous"></script>
+	<script>
+	
+</script>
+</body>
+</html>

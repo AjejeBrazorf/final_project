@@ -1,0 +1,309 @@
+/*
+ * Style tweaks
+ * --------------------------------------------------
+ */
+ 
+ /**
+ * Profile image component
+ */
+.profile-header-container{
+    margin: 0 auto;
+    text-align: center;
+}
+
+.profile-header-img {
+    padding: 54px;
+}
+
+.profile-header-img > img.img-circle {
+    width: 120px;
+    height: 120px;
+    border: 2px solid #51D2B7;
+}
+
+.profile-header {
+    margin-top: 43px;
+}
+
+/**
+ * Ranking component
+ */
+.rank-label-container {
+    margin-top: -19px;
+    /* z-index: 1000; */
+    text-align: center;
+}
+
+.label.label-default.rank-label {
+    background-color: rgb(81, 210, 183);
+    padding: 5px 10px 5px 10px;
+    border-radius: 27px;
+}
+ 
+ 
+ 
+ 
+ 
+html,
+body {
+  overflow-x: hidden; /* Prevent scroll on narrow devices */
+   height: 100%;
+  
+}
+body {
+  padding-top: 70px;
+}
+footer {
+  padding: 30px 0;
+}
+
+.container{
+  width: 100%;
+  padding: 0;
+  margin: 0;
+}
+body> .container{
+  margin-top: -35px;
+}
+
+#mapid {
+  position: fixed;
+  top: 50px;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  z-index: 0;
+}
+
+.jumbotron{
+  padding: 0 !important;
+  margin: 0;
+}
+
+.imgLogo {
+  height: inherit;
+  border-radius: 100%;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  width: 45px;
+}
+
+.navbar-brand{
+  padding-top: 0;
+}
+
+.list-group{
+  position: fixed;
+  width: 30%;
+  overflow-y: scroll;
+  bottom: 50px;
+  margin-top: -40px;
+  top: 100px;
+}
+
+.calcresetbut{
+ width: 50%;
+ margin: 5px;
+ 
+}
+
+.pull-right.visible-xs{
+  z-index: 1;
+  position: inherit;
+  display: flex !important;
+  right: 10px;
+  margin-top: 11px;
+
+}
+
+.pull-left.visible-xs.directionButton {
+  float: left !important;
+  margin-top: -72px;
+}
+
+.pull-left.visible-xs{
+  z-index: 1;
+  position: inherit;
+  display: flex !important;
+  left: 10px;
+  margin-top: 11px;
+
+}
+
+
+
+.row-offcanvas {
+  position: relative;
+  -webkit-transition: all .25s ease-out;
+  -o-transition: all .25s ease-out;
+  transition: all .25s ease-out;
+}
+
+.row-offcanvas-right {
+  right: 0;
+}
+
+.row-offcanvas-left {
+  left: 0;
+}
+
+.row-offcanvas-right
+.sidebar-offcanvas {
+  right: 0%;
+  /* 6 columns */
+}
+
+.row-offcanvas-left
+.sidebar-offcanvas {
+  left: -120%; /* 6 columns */
+}
+
+.row-offcanvas-right.active {
+  right: 20%; /* 6 columns */
+}
+
+.row-offcanvas-left.active {
+  left: 50%; /* 6 columns */
+}
+
+
+
+.row-offcanvasDir {
+  position: relative;
+  -webkit-transition: all .25s ease-out;
+  -o-transition: all .25s ease-out;
+  transition: all .25s ease-out;
+}
+
+.row-offcanvasDir-right {
+  right: 0;
+}
+
+.row-offcanvasDir-left {
+  left: 0;
+}
+
+.row-offcanvasDir-right
+.sidebarDir-offcanvasDir {
+  left: 0%;
+  /* 6 columns */
+}
+
+.row-offcanvasDir-left
+.sidebarDir-offcanvasDir {
+   left: -30%;
+  /* 6 columns */
+}
+
+.row-offcanvasDir-right.active {
+  right: 20%; /* 6 columns */
+}
+
+.row-offcanvasDir-left.active {
+  left: 30%;
+  margin-right: 20px;
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.sidebar-offcanvas {
+  position: absolute;
+  top: 0;
+  width: 0;
+}
+
+.nav.navbar-nav{
+  max-height: 50px;
+}
+
+.nav.navbar-nav>*{
+  max-height: inherit;
+}
+.nav.navbar-nav>*>*{
+  max-height: inherit;
+  	transition: all 0.15s linear;
+	-webkit-transition: all 0.15s linear;
+}
+
+
+
+
+
+/*
+ * Off Canvas
+ * --------------------------------------------------
+ */
+@media screen and (max-width: 767px) {
+  .row-offcanvas {
+    position: relative;
+    -webkit-transition: all .25s ease-out;
+         -o-transition: all .25s ease-out;
+            transition: all .25s ease-out;
+  }
+
+  .row-offcanvas-right {
+    right: 0;
+  }
+
+  .row-offcanvas-left {
+    left: 0;
+  }
+
+  .row-offcanvas-right
+  .sidebar-offcanvas {
+    right: -50%; /* 6 columns */
+  }
+
+  .row-offcanvas-left
+  .sidebar-offcanvas {
+    left: -50%; /* 6 columns */
+  }
+
+  .row-offcanvas-right.active {
+    right: 50%; /* 6 columns */
+  }
+
+  .row-offcanvas-left.active {
+    left: 50%; /* 6 columns */
+  }
+
+  .sidebar-offcanvas {
+    position: absolute;
+    top: 0;
+    width: 50%; /* 6 columns */
+  }
+
+  .container{
+    width: 100%;
+    padding: 0;
+    margin-top: -40px;
+  }
+
+  .pull-right.visible-xs{
+    z-index: 1;
+    position: inherit;
+    display: flex !important;
+    right: 15px;
+    margin-top: 11px;
+
+  }
+
+  .pull-right.visible-xs.directionButton {
+    float: left !important;
+    left: 10px;
+  }
+
+}

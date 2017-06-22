@@ -1,0 +1,93 @@
+<div class="row" style="height: 100%">
+	<div class="col-sm-6 col-md-6 listContainer" ng-show="authenticated">
+		<div class="row" style="margin-left: 0px; margin-right: 0px;">
+			<div class="col-sm-3 col-md-3 radiocontainer">
+				<label> <input type="radio" ng-model="signal.type"
+					value="inProgress"> in progress
+				</label>
+			</div>
+			<div class="col-sm-3 col-md-3 radiocontainer">
+				<label> <input type="radio" ng-model="signal.type"
+					value="speedCamera" name="speedCamera">speed camera
+				</label>
+			</div>
+			<div class="col-sm-3 col-md-3 radiocontainer">
+				<label> <input type="radio" ng-model="signal.type"
+					value="carJam"> car jam
+				</label>
+			</div>
+			<div class="col-sm-3 col-md-3 radiocontainer">
+				<label> <input type="radio" ng-model="signal.type"
+					value="carCrash"> car crash
+				</label>
+			</div>
+		</div>
+		<div col="row">
+			<div layout="column" ng-cloak class="col-md-11 col-sm-11"
+				style="width: 100%; padding-top: 50px; padding-left: 0px; padding-right: 0px;">
+				<md-content class="md-padding" style="color: rgba(0, 0, 0, 0.75);">
+				<form ng-submit="$event.preventDefault()">
+					<md-autocomplete md-no-cache="noCache"
+						md-selected-item="selectedItem"
+						md-search-text-change="searchTextChange(address)"
+						md-search-text="address"
+						md-selected-item-change="selectedItemChange(item)"
+						md-items="item in querySearch(address)" md-item-text="item"
+						md-min-length="0" placeholder="Address"> <md-item-template>
+					<span md-highlight-text="from" md-highlight-flags="^i">{{item}}</span>
+					</md-item-template> <md-not-found> No Address found </md-not-found> </md-autocomplete>
+					<div style="text-align: center; color: #a94442;">
+						{{errorAddress}}</div>
+				</form>
+				</md-content>
+			</div>
+			<!--<input ng-model="from" placeholder="Partenza"/>-->
+		</div>
+		<div class="row" style="margin-left: 0px; margin-right: 0px; position: fixed; bottom: 35px; width: 50%;">
+			<div class="col-md-11 col-sm-11" style="width: 100%;">
+				<button ng-click="addSignals()" type="submit" class="btn-success"
+					style="background: #fbbc05;">Add </button>
+			</div>
+		</div>
+	</div>
+
+	<div
+		ng-class=" authenticated ? 'col-sm-6 col-md-6' : 'col-sm-12 col-md-12' "
+		style="height: 100%;">
+		<div class="row " ng-class=" authenticated ? 'checkboxContainer' : 'checkboxContainerFull' ">
+			<div class="col-sm-3 col-md-3 checkboxstyle">
+				<label>in progress: <input type="checkbox"
+					ng-click="filterSignals('inProgress')"
+					ng-model="signalToShow.inProgress"></label>
+			</div>
+			<div class="col-sm-3 col-md-3 checkboxstyle">
+				<label>speed camera: <input type="checkbox"
+					ng-click="filterSignals('speedCamera')"
+					ng-model="signalToShow.speedCamera">
+				</label>
+			</div>
+			<div class="col-sm-3 col-md-3 checkboxstyle">
+				<label>car jam: <input type="checkbox"
+					ng-click="filterSignals('carJam')" ng-model="signalToShow.carJam">
+				</label>
+			</div>
+			<div class="col-sm-3 col-md-3 checkboxstyle">
+				<label>car crash: <input type="checkbox"
+					ng-click="filterSignals('carCrash')"
+					ng-model="signalToShow.carCrash">
+				</label>
+			</div>
+		</div>
+		<leaflet style="height: 100%" defaults="defaults" event-broadcast="events"
+			markers="signalMarkers" paths="paths" lf-center="centerLocation" id="myMap"></leaflet>
+	</div>
+	<h ng-hide="true" id="topic" ng-model="topic"></h>
+</div>
+
+  	<script src="../js/chatScript.js"></script>
+
+
+
+
+
+

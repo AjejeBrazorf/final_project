@@ -1,0 +1,45 @@
+<main style="height: 100%;">
+	<section class="content">
+				<div class="grid grid--effect-vega">
+					<a href="/transporttopic" class="grid__item grid__item--c1">
+						<div class="stack" style="background:#4285f4">
+							<div class="stack__figure">
+								<i class=" fa fa-5x fa-subway" aria-hidden="true" style="color:black;"></i>
+							</div>
+						</div>
+						<div class="grid__item-caption">
+							<h3 class="grid__item-title">Public transport</h3>
+						</div>
+					</a>
+					<a href="/cartopic" class="grid__item grid__item--c2">
+						<div class="stack" style="background:#ea4335">					
+							<div class="stack__figure">
+								<i class=" fa fa-5x fa-car" aria-hidden="true" style="color:black;"></i>
+							</div>
+						</div>
+						<div class="grid__item-caption">
+							<h3 class="grid__item-title">Car</h3>
+						</div>
+					</a>
+					<a href="/biketopic" class="grid__item grid__item--c3">
+						<div class="stack" style="background:#fbbc05">
+							<div class="stack__figure">
+								<i class=" fa fa-5x fa-bicycle" aria-hidden="true" style="color:black;"></i>
+							</div>
+						</div>
+						<div class="grid__item-caption">
+							<h3 class="grid__item-title">Bike</h3>
+						</div>
+					</a>
+				</div>
+			</section>
+		</main>
+		<script src="js/anime.min.js"></script>
+		<script src="js/main.js"></script>
+		<script>
+		(function() {
+			[].slice.call(document.querySelectorAll('.grid--effect-vega > .grid__item')).forEach(function(stackEl) {
+				new VegaFx(stackEl);
+			});
+		})();
+		</script>

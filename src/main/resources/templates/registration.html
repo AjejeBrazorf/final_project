@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+    <head>
+     <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous" />
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous" />
+    <!-- Custom styles for this template -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <link href="../css/offcanvas.css" rel="stylesheet" type="text/css" media="all"/>
+    <link rel="stylesheet" href="css/style.css"></link>
+    <title>Login</title>
+    </head>
+    <body style="background-color: #37373e">
+        <div th:replace="fragments/navbar :: navbar"></div>
+		<div class="container">
+
+        <div class="row row-offcanvas row-offcanvas-right">
+
+            <div class="col-xs-12 col-sm-12">
+                <div class="jumbotron" style="text-align: center; margin-top: 25%;background-color: #37373e">
+                    <h2 style="color:white; padding-bottom:30px">
+                    Registration
+					</h2>
+					<div th:if="${error}">
+			            Invalid username and/or password.
+			        </div>
+			        <div th:if="${param.logout}">
+			            You have been logged out.
+			        </div>
+                    <form  th:action="@{/addUser}"  method="post" style="background-color: #37373e" >
+                        <div class="row">
+                            <p class="col-sm-4 col-xs-2"></p>
+                            <p class="col-sm-4 col-xs-8">
+                                <input type="text" style="
+                                width: 100%;
+                                max-width: inherit !important;
+                                text-align: center;"
+                                 placeholder="email" name="email" />
+                            </p>
+                            <p class="col-sm-4 col-xs-2">
+                            </p>
+                        </div>
+                            <div class="row">
+                            <p class="col-sm-4 col-xs-2"></p>
+                            <p class="col-sm-4 col-xs-8">
+                                <input type="text" style="
+                                width: 100%;
+                                max-width: inherit !important;
+                                text-align: center;"
+                                placeholder="nickname" name="nickname" />
+                            </p>
+                            <p class="col-sm-4 col-xs-2">
+                            </p>
+                        </div>
+                        <div class="row">
+                            <p class="col-sm-4 col-xs-2"></p>
+                            <p class="col-sm-4 col-xs-8">
+                                <input type="password" style="
+                                width: 100%;
+                                max-width: inherit !important;
+                                text-align: center;"
+                                placeholder="password" name="password" />
+                            </p>
+                            <p class="col-sm-4 col-xs-2">
+                            </p>
+                        </div>
+                    
+                        <div class="row">
+                            <p class="col-sm-4 col-xs-2"></p>
+                            <p class="col-sm-4 col-xs-8">
+                                <input type="submit" value="Create Account" style="
+                                width: 100%;
+                                max-width: inherit !important;
+                                text-align: center;
+                                " class="btn-success" />
+                            </p>
+                            <p class="col-sm-4 col-xs-2">
+                            </p>
+                        </div> 
+                    </form>
+                </div>
+                <!--jumbotron-->
+            </div>
+            <!--  col-12 -->
+        </div>
+        <!--/row-->
+    </div>
+    <!--/.container-->
+
+     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    </body>
+</html>
