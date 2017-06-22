@@ -15,7 +15,7 @@
 	integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp"
 	crossorigin="anonymous" />
 <!-- Custom styles for this template -->
-
+ 
     <link rel="stylesheet" href="../node_modules/leaflet/dist/leaflet.css"></link>
     <link rel="stylesheet" href="../css/leaflet.awesome-markers.css"></link>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
@@ -31,21 +31,27 @@
 <body ng-controller="SignalsCtrl">
 	<div th:replace="fragments/navbar :: navbar">
  	</div>
-
+ 
 	<div class="container" style="height: 100%; margin-top: -25px;">
 		<div id="chatview" class="p1" style="display: block;">
 			<div id="profile" class="animate" >
 				<span id="topic">traffic</span>
 			</div>
 			<div id="chat-messages" class="animate">
-				<div class="chatHints" ng-init="hints['show']=false"  ng-class="{ 'close' : hints.show==false}">
+			</div>
+				<div class="chatHintsSignals" ng-init="signalshints['show']=false"  ng-class="{ 'close' : signalshints.show==false}">
 					<ul>
-						<li class="hint" ng-repeat="(key, hint) in hints" ng-hide="key=='show'" ng-click="onHintClick(hint)">{{hint}}</li>
+						<li class="hint" ng-repeat="(key, hint) in signalshints" ng-hide="key=='show'" ng-click="onHintClick(hint,'signaltype')">{{hint}}</li>
 					</ul>
 				</div>
-			</div>
+				<div class="chatHintsAddress" ng-init="addresshints['show']=false"  ng-class="{ 'close' : addresshints.show==false}">
+					<ul>
+						<li class="hint" ng-repeat="(key, address) in addresshints" ng-hide="key=='show'" ng-click="onHintClick(address,'address')">{{address}}</li>
+					</ul>
+				</div>
+			
 		</div>
-
+ 
 		<div id="sendmessage" >
 			<form >
 				<input type="text" value="Send message..."
@@ -54,7 +60,7 @@
 				
 			</form>
 		</div>
-
+ 
 	</div>
 	
 	<!-- Javascript code -->
@@ -73,6 +79,8 @@
 <script src="../js/angular-route.js"></script>
 <script src='https://s3-us-west-2.amazonaws.com/s.cdpn.io/t-114/assets-cache.js'></script>
 <script src="../js/app.js"></script>
+<script src="../js/controllers/navController.js"></script>
+<script src="../js/controllers/signalsController.js"></script>
 <script src="../js/anime.min.js"></script>
 <script src="../js/main.js"></script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCgFeLe0VVD6kjgGdwWJxDOrEt2MocUhF0"
@@ -89,17 +97,17 @@
 	<script
 		src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 	<script src="../js/chatScript.js"></script>
-<script src="../js/controllers/navController.js"></script>
-<script src="../js/controllers/signalsController.js"></script>
-
-
+ 
+ 
 </body>
 <script th:inline="javascript">
 /*<![CDATA[*/
-
+ 
     var messages = [[${messages}]];
     readMessagesFromServer(messages);
-
+ 
 /*]]>*/
 </script>
 </html>
+ 
+ 

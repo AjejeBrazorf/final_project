@@ -383,25 +383,50 @@ div.message.right .corner{
             transition: all 100ms ease-out;
 }
 #chatview, #sendmessage {overflow:hidden;}
-.chatHints {
+.chatHintsSignals{
     position: absolute;
     width: 33%;
     max-height: 33%;
     overflow-y: auto;
     background: rgba(0, 0, 0, 0.8);
     bottom: 60px;
-    left: 33%;
+    left: 17%;
     z-index: 10;
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
     padding:10px;
     transition: 0.2s all cubic-bezier(0.4, 0, 0.57, 0.95);
 }
-.chatHints.close {
+
+.chatHintsAddress {
+    position: absolute;
+    width: 33%;
+    max-height: 33%;
+    overflow-y: auto;
+    background: rgba(0, 0, 0, 0.8);
+    bottom: 60px;
+    left: 49%;
+    z-index: 10;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    padding:10px;
+    transition: 0.2s all cubic-bezier(0.4, 0, 0.57, 0.95);
+}
+
+
+
+.chatHintsSignals.close {
 	heigth:0;
 	padding:0;
 	background: rgba(0, 0, 0, 0);
-}	
+}
+
+.chatHintsAddress.close {
+	heigth:0;
+	padding:0;
+	background: rgba(0, 0, 0, 0);
+}		
+
 .hint {
     list-style: none;
     color: white;

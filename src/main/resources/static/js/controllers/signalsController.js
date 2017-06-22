@@ -1,6 +1,6 @@
 app.controller('SignalsCtrl', ['$scope', 'DataProvider','$routeParams','$timeout','$q','leafletData', "leafletMarkerEvents", "leafletLogger",'$filter','$compile','$rootScope', '$routeParams',
 	function ($scope, DataProvider,$routeParams, $timeout, $q, leafletData, leafletMarkerEvents, leafletLogger,$filter, $compile,$rootScope,$routeParams) {
-
+ 
 	console.log("Signals");
 	angular.extend($scope, {
 		centerLocation: {
@@ -35,12 +35,12 @@ app.controller('SignalsCtrl', ['$scope', 'DataProvider','$routeParams','$timeout
 			}
 		}
 	});
-
-
-
-
-
-
+ 
+ 
+ 
+ 
+ 
+ 
 	$scope.signal={};
 	$scope.signal.type="inProgress";
 	$scope.signal.currentIcon=$scope.inProgressIcon;
@@ -54,23 +54,23 @@ app.controller('SignalsCtrl', ['$scope', 'DataProvider','$routeParams','$timeout
 	$scope.signalMarkers={};
 	if($rootScope.dbMarkers!=null)
 		$scope.signalMarkers=$rootScope.dbMarkers;
-
-
+ 
+ 
 	$scope.signalToShow = {
 			inProgress : true,
 			speedCamera: true,
 			carJam: true,
 			carCrash: true
 	};
-
-
+ 
+ 
 	//markers EventListener
 	$scope.events = {
 			signalMarkers: {
 				enable: leafletMarkerEvents.getAvailableEvents(),
 			}
 	};
-
+ 
 	$scope.eventDetected = "No events yet...";
 	var markerEvents = leafletMarkerEvents.getAvailableEvents();
 	for (var k in markerEvents){
@@ -82,38 +82,38 @@ app.controller('SignalsCtrl', ['$scope', 'DataProvider','$routeParams','$timeout
 				//$scope.signalMarkers[args.model.id].rating=3;
 				console.log(args);
 				$scope.signalMarkers[args.model.id].rate=$scope.signalMarkers[args.model.id].rate
-
+ 
 				console.log($scope.signalMarkers[args.model.id]);       
 				console.log($scope.signalMarkers[args.model.id].rate);
-
+ 
 				var markerDiv = (angular.element(document.getElementById('Marker'+args.model.id)));
 				//               markerDiv.append(s);
 				$compile(markerDiv)($scope);
-
+ 
 			}
 		});
 	}
-
+ 
 	//START code for md-autocomplete
-
+ 
 	var self = this;
-
+ 
 	$scope.simulateQuery = false;
 	$scope.noCache    = false;
-
+ 
 	// list of `state` value/display objects
 	$scope.hints=[];
 	//$scope.hints        	= loadAll();
 	$scope.querySearch   = querySearch;
 	$scope.selectedItemChange = selectedItemChange;
 	$scope.searchTextChange = searchTextChange;
-
-
+ 
+ 
 	// ******************************
 	// Internal methods
 	// ******************************
-
-
+ 
+ 
 	$scope.signalsType = {
 			"inProgress" : "inProgress",
 			"speedCamera": "speedCamera",
@@ -124,19 +124,50 @@ app.controller('SignalsCtrl', ['$scope', 'DataProvider','$routeParams','$timeout
 			"ingorgo": "carJam",
 			"incidente": "carCrash",
 	};
+ 
+	
+	
+	function setSelectionRange(input, selectionStart, selectionEnd) {
+		 console.log("dentro selection range");
+		  if (input.setSelectionRange) {
+		    input.focus();
+		    input.setSelectionRange(selectionStart, selectionEnd);
+		  } else if (input.createTextRange) {
+		    var range = input.createTextRange();
+		    range.collapse(true);
+		    range.moveEnd('character', selectionEnd);
+		    range.moveStart('character', selectionStart);
+		    range.select();
+		  }
+		}
 
+		function setCaretToPos(input, pos) {
+		  setSelectionRange(input, pos, pos);
+		  console.log("dentro set caret");
+		}
+	
+	
 	$scope.addSignalsFromChat = function(keyCode) {
 		//se ho schiacciato invio vado avanti
-		$scope.inputMess;
+		$scope.chatSignalTypeTemp="";
 		var textIfSent="";
 		if ($scope.inputMess.length==0 || $scope.inputMess=="Send message...") return;
 		if(keyCode == 222){ 
 			$scope.inputMess+="#";
-			setCaretToPos(document.getElementById("btn-input"), $scope.inputMess.length-1);
+			console.log("chiamo setcaret");
+			var pos=$scope.inputMess.length-1;
+			//setCaretToPos(document.getElementById("btn-input"), $scope.inputMess.length-2);
+			document.getElementById("btn-input").selectionStart = pos;
+			document.getElementById("btn-input").selectionEnd = pos;
+			console.log("pos" + pos);
+			console.log(document.getElementById("btn-input").selectionStart);
+			console.log(document.getElementById("btn-input").selectionEnd);
 		}
+ 
+		$scope.chatSignalType=null;
 
-		$scope.address=$scope.chatSignalType=null;
 
+		
 		var n = $scope.inputMess.split("#");
 		var index=$scope.inputMess.search("#");
 		var i=1;
@@ -146,37 +177,45 @@ app.controller('SignalsCtrl', ['$scope', 'DataProvider','$routeParams','$timeout
 			n[i]=n[i].toLowerCase();
 			//setto $scope.signalType
 			if($scope.signalsType[n[i]]!=null){
+				//ho trovato il tipo
 				$scope.chatSignalType=$scope.signalsType[n[i]];
 			}else{
-				$scope.address=n[i];
+				//ho trovato address
+					$scope.address=n[i];
+					$scope.chatSignalTypeTemp=n[i];
+				
 			}
 			textIfSent+=n[i-1]+"<b>"+n[i]+"</b>";
 			i+=2;
 		}
-
+ 
 		console.log($scope.address+" - "+$scope.chatSignalType);
+		DataProvider.getPositionFromString($scope.address, onPositionHintsAddress, onErrorPositionAddress);
 		//invio
 		if(keyCode != 13){
-			$scope.hints={};
-			if($scope.chatSignalType==null&&$scope.address!=null && $scope.address.length>0){
+			$scope.signalshints={};
+			if($scope.chatSignalType==null&&$scope.chatSignalTypeTemp!=null ){
+				$scope.signalshints["show"]=false;
 				angular.forEach($scope.signalsType, function(value, key) {
 					var k=key.toLowerCase();
-					var indexOfType=k.indexOf($scope.address);
+					var indexOfType=k.indexOf($scope.chatSignalTypeTemp);
 					if(indexOfType!=-1){
-						console.log("ho trovato "+$scope.address+" in "+k);
-						$scope.hints[key]=k;
-						$scope.hints["show"]=true;
-					}
+						console.log("ho trovato "+$scope.chatSignalTypeTemp+" in "+k);
+						$scope.signalshints[key]=k;
+						$scope.signalshints["show"]=true;
+					}		
 				});
-
+ 
 			}else{
-				$scope.hints["show"]=false;
+				$scope.signalshints["show"]=false;
+				$scope.addresshints["show"]=false;	
 			}
 			return;
 		} 
-
+ 
 		$scope.markerAddress=$scope.address;
 		$scope.signal.type=$scope.chatSignalType;	
+		
 		
 		if($scope.address!=null && $scope.chatSignalType!=null){
 			//invia api a google e aggiungi eventualmente il marker
@@ -184,7 +223,11 @@ app.controller('SignalsCtrl', ['$scope', 'DataProvider','$routeParams','$timeout
 			$scope.inputMess=textIfSent;
 			$scope.message= $scope.inputMess;
 			DataProvider.getPositionFromString($scope.address, $scope.onPositionReadyForChat, onError)
-			
+			$scope.signalshints={};
+			$scope.addresshints={};	
+			$scope.signalshints["show"]=false;
+			$scope.addresshints["show"]=false;	
+		
 		}else{
 			sendMessage($scope.inputMess);
 		}
@@ -194,7 +237,7 @@ app.controller('SignalsCtrl', ['$scope', 'DataProvider','$routeParams','$timeout
 		$scope.chatSignalType="";
 		$scope.inputMess="";
 	}
-
+ 
 	//add signal to map
 	
 	$scope.addSignals = function() {
@@ -205,8 +248,10 @@ app.controller('SignalsCtrl', ['$scope', 'DataProvider','$routeParams','$timeout
 		//$scope.markerAddress=$scope.address;
 		$scope.address = "";
 	}
-
-	$scope.onHintClick = function(hint){
+ 
+	$scope.onHintClick = function(hint,hinttype){
+		console.log(hinttype);
+		
 		var n = $scope.inputMess.split("#");
 		var index=$scope.inputMess.search("#");
 		var i=1;
@@ -215,18 +260,30 @@ app.controller('SignalsCtrl', ['$scope', 'DataProvider','$routeParams','$timeout
 			console.log(n[i]);
 			console.log(i+"-"+n.length);
 			n[i]=n[i].toLowerCase();
-			if(n[i]==$scope.address){
-				n[i]=hint;
+			if(hinttype=="address"){
+				if(n[i]==$scope.address){
+					n[i]=hint;
+					}
 			}
+			else{
+				if(n[i]==$scope.chatSignalTypeTemp){
+					n[i]=hint;
+				}
+			}			
+			
 			finalText+=n[i-1]+"#"+n[i]+"#";
 			i+=2;
 		}
+		$scope.addresshints={};	
+		$scope.signalshints={};
+		$scope.addresshints["show"]=false;	
+		$scope.signalshints["show"]=false;
 		$scope.inputMess=finalText;
 		console.log($scope.inputMess);
 		console.log(hint);
 	}
-
-
+ 
+ 
 	$scope.filterSignals=function(signaltype){
 		console.log("filtro segnali" );
 		switch(signaltype){
@@ -243,31 +300,31 @@ app.controller('SignalsCtrl', ['$scope', 'DataProvider','$routeParams','$timeout
 			if($scope.signalToShow.carCrash==false) $scope.removeMarkerOnMap( $scope.carCrashList );
 			else $scope.addMarkerOnMap( $scope.carCrashList);break
 		}
-
+ 
 	}
-
-
+ 
+ 
 	//only ON MAP not from db
 	$scope.removeMarkerOnMap=function (markers){
 		angular.forEach(markers, function(value, key) {
 			delete $scope.signalMarkers[key];  
 		});
 	}
-
-
+ 
+ 
 	//only ON MAP not from db
 	$scope.addMarkerOnMap=function (marker){
 		angular.forEach(marker, function(value, key) {
 			$scope.signalMarkers[key]=value;
 		});
 	}
-
-
+ 
+ 
 	$scope.onPositionReadyForChat=function(positions) {
 		console.log(positions);
 		$scope.centerLocation.lat=positions[0].geometry.location.lat();
 		$scope.centerLocation.lng=positions[0].geometry.location.lng();
-
+ 
 		//create signal on server
 		var segnalation = {};
 		segnalation.lat = $scope.centerLocation.lat;
@@ -283,12 +340,12 @@ app.controller('SignalsCtrl', ['$scope', 'DataProvider','$routeParams','$timeout
 		});
 		
 	};
-
+ 
 	$scope.onPositionReady=function(positions) {
 		console.log(positions);
 		$scope.centerLocation.lat=positions[0].geometry.location.lat();
 		$scope.centerLocation.lng=positions[0].geometry.location.lng();
-
+ 
 		//create signal on server
 		var segnalation = {};
 		segnalation.lat = $scope.centerLocation.lat;
@@ -302,7 +359,7 @@ app.controller('SignalsCtrl', ['$scope', 'DataProvider','$routeParams','$timeout
 		});
 		
 	};
-
+ 
 	$scope.onSignalsFromServer=function(marker) {
 		console.log( marker);
 		console.log($scope.icons[marker.tipo]);
@@ -320,11 +377,11 @@ app.controller('SignalsCtrl', ['$scope', 'DataProvider','$routeParams','$timeout
 		'</md-content>'+
 		'<div><h2 class="time">{{signalMarkers['+ marker.id+'].nickname}}</h2></div>'+
 		'</div>';
-
+ 
 		$scope.ppContainer='<div id="Marker'+ marker.id+'">'+s+'</div>';
-
+ 
 		console.log("idMarker="+ marker.id);
-
+ 
 		switch($scope.signal.type){
 		case "inProgress": 
 			$scope.inProgressList[ marker.id]=marker;
@@ -337,14 +394,14 @@ app.controller('SignalsCtrl', ['$scope', 'DataProvider','$routeParams','$timeout
 			$scope.speedCameraList[ marker.id]=marker;
 			if($scope.signalToShow.speedCamera==true){
 				$scope.signalMarkers[ marker.id]=marker;
-
+ 
 			}
 			break;
 		case "carJam": 
 			$scope.carJamList[ marker.id]=marker;
 			if($scope.signalToShow.carJam==true){
 				$scope.signalMarkers[ marker.id]=marker;
-
+ 
 			}
 			break;
 		case "carCrash":
@@ -356,12 +413,12 @@ app.controller('SignalsCtrl', ['$scope', 'DataProvider','$routeParams','$timeout
 		}	
 		console.log($scope.signalMarkers[ marker.id]);
 		$scope.signalMarkers[ marker.id].message=$scope.ppContainer;
-
+ 
 		//updateMap
 		leafletData.getMap("myMap").then(function(map) {});
 	};
-	 
-
+	 
+ 
 	//request to server for filling marker arrays
 	DataProvider.getSignals().then(function(signals){
 		console.log(signals);
@@ -381,12 +438,12 @@ app.controller('SignalsCtrl', ['$scope', 'DataProvider','$routeParams','$timeout
 		}
 		
 	});
-	 
-	 
+	 
+	 
 	function onError(status) {
 	}
-
-
+ 
+ 
 	/**
 	 * Search for stops... use $timeout to simulate
 	 * remote dataservice call.
@@ -402,48 +459,48 @@ app.controller('SignalsCtrl', ['$scope', 'DataProvider','$routeParams','$timeout
 			return results;
 		}
 	}
-
-
+ 
+ 
 	function searchTextChange(text) {
 		$scope.hints = [];
 		if(text.length>0)
 			DataProvider.getPositionFromString($scope.address, onPositionAddress, onErrorPositionAddress);
 	}
-
+ 
 	function selectedItemChange(item) {
 	}
-
-
+ 
+ 
 	/**
 	 * Create filter function for a query string
 	 */
 	function createFilterFor(query) {
 		var lowercaseQuery = angular.lowercase(query);
-
+ 
 		return function filterFn(state) {
 			return (state.indexOf(lowercaseQuery) === 0);
 		};
-
+ 
 	}
-
+ 
 	function createFilterExistance(query) {
 		var lowercaseQuery = angular.lowercase(query);
-
+ 
 		return function filterFn(state) {
 			return (state === lowercaseQuery);
 		};
-
+ 
 	}
 	//END code for md-autocomplete
-
+ 
 	$scope.address = "";
-
-
-
+ 
+ 
+ 
 	//--------geolocation google
 	$scope.map;
 	$scope.infoWindow;
-
+ 
 	function onCurrentPosition(position) {
 		if($routeParams.lat!=null && $routeParams.lng!=null ) return;
 		var pos = {
@@ -462,9 +519,9 @@ app.controller('SignalsCtrl', ['$scope', 'DataProvider','$routeParams','$timeout
 		//updateMap
 		leafletData.getMap("myMap").then(function(map) {});
 	}
-
+ 
 	var localPosition=DataProvider.getCurrentPosition(onCurrentPosition);
-
+ 
 	function onPositionAddress(positions) {
 		console.log(positions);
 		var lat=positions[0].geometry.location.lat();
@@ -477,12 +534,25 @@ app.controller('SignalsCtrl', ['$scope', 'DataProvider','$routeParams','$timeout
 			console.log(value.formatted_address);
 			$scope.hints.push(value.formatted_address);
 		});
-
+ 
 	}
+	
+	
+	function onPositionHintsAddress(positions) {
+		$scope.addresshints={};
+		$scope.addresshints["show"]=false;
 
+		angular.forEach(positions, function(value, key) {
+			console.log(value.formatted_address);
+			$scope.addresshints[value.formatted_address]=value.formatted_address;
+			$scope.addresshints["show"]=true;
+		});
+	}
+ 
 	function onErrorPositionAddress(status) {
-
+ 
 	}
-
+ 
 }
 ]);
+ 

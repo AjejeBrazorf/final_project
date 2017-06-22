@@ -60,7 +60,8 @@ function showMessage(response) {
 		image= response.image;
 	}
 	$("#scrollDown").remove();
-	    $("#chat-messages").append("" +
+	
+	$("#chat-messages").append("" +
 	    "<div class='message "+classUser+"'>"+
 			"<img src='"+ image +"'"+
 				"alt='User Avatar' class='img-circle' />"+
@@ -79,7 +80,9 @@ function showMessage(response) {
 }
 
 $( document ).ready(function() {
-	 connect($("#topic").text()); 
+	var topic="";
+	if(window.location.pathname=="/cartopic") topic="traffic";
+	 connect(topic); 
 });
 
 $(function () {
