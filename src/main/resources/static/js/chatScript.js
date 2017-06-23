@@ -1,8 +1,7 @@
 var stompClient = null;
 
-
-function connect(topic) {
-	 console.log('try to connect: ');
+function connectToTopic(topic) {
+	console.log('try to connect: ');
     var socket = new SockJS('/chat');
     stompClient = Stomp.over(socket);
     stompClient.connect({}, function (frame) {
@@ -79,11 +78,7 @@ function showMessage(response) {
 
 }
 
-$( document ).ready(function() {
-	var topic="";
-	if(window.location.pathname=="/cartopic") topic="traffic";
-	 connect(topic); 
-});
+
 
 $(function () {
 /*	$("form").on('submit', function (e) {
