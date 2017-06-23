@@ -1,6 +1,7 @@
 package com.javasampleapproach.security.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -24,6 +25,8 @@ public class User implements Serializable{
 	
 	private String nickname;
 	@Id
+	@OneToMany(fetch=FetchType.LAZY, mappedBy="username")
+	private List<RateUser> voti = new ArrayList<RateUser>();
 	private String email;
 	
 	private Gender gender;
