@@ -31,11 +31,19 @@
 <body ng-controller="SignalsCtrl">
 	<div th:replace="fragments/navbar :: navbar">
  	</div>
+ 	
  
 	<div class="container" style="height: 100%; margin-top: -25px;">
 		<div id="chatview" class="p1" style="display: block;">
 			<div id="profile" class="animate" >
 				<span id="topic">traffic</span>
+				<div ng-controller="AuthCtrl" ng-init="setAuthenticated(true)"
+		sec:authorize="isAuthenticated()">
+		<input id="imgsrc" th:value="${image}" ng-init="setuserImage()"
+			ng-model="userImage" hidden="true" />
+	</div>
+	<div ng-controller="AuthCtrl" ng-init="setAuthenticated(false)"
+		sec:authorize="!isAuthenticated()"></div>
 			</div>
 			<div id="chat-messages" class="animate">
 			</div>

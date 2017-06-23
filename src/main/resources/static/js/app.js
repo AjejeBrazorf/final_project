@@ -30,17 +30,26 @@ app.config(function ($routeProvider, $locationProvider,$httpProvider) {
 
 app.controller('AuthCtrl', ['$scope', '$rootScope',
 	function ($scope, $rootScope) {
-	$scope.setAuthenticated=function(auth, image){
+	
+	$scope.setAuthenticated=function(auth){
 		$rootScope.authenticated = auth;
+		$rootScope.userImagesrc={};
 		console.log(auth);
 		console.log($rootScope.authenticated);
-		
 		if(auth){
-			$rootScope.image = image;
-			console.log("aoutenticato e setto immagine");
+			$rootScope.userImagesrc=$('#imgsrc').val();
+			console.log("root aoutenticato e setto immagine"+$rootScope.userImagesrc);	
+		}else{
+			console.log("non setto imm");
 		}
 	}
 
+	
+	
+	$scope.setuserImage=function(){
+		$rootScope.userImagesrc=$('#imgsrc').val();
+		console.log($rootScope.userImagesrc);	
+	}
 	
 }]);
 

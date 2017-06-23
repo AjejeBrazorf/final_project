@@ -24,6 +24,7 @@ public class WebController {
 		}
 		return "index";
 	}
+	
 
 	@RequestMapping(value={"/welcome"})
 	public String welcome(){

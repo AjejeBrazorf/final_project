@@ -51,7 +51,6 @@ public class UsersQuery{
 	
 	public String getImage(String email){
 		String s = uR.findImageByemail(email);
-		
 		return s;
 	}
 	

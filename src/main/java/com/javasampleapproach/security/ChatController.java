@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.socket.messaging.SessionDisconnectEvent;
 
 import com.javasampleapproach.security.model.Message;
+import com.javasampleapproach.security.model.User;
 import com.javasampleapproach.security.query.UsersQuery;
 
 import chat.ReceivedMessage;
@@ -75,8 +76,10 @@ public class ChatController implements ApplicationListener<ApplicationEvent>{
 	public String uploadMessagesBike(Model model, Principal name) {
 		List<Message> m = pgq.getMessagebyTopic("bike");
 		Collections.reverse(m);
+		User user = pgq.getUserbyUsername(name.getName());
 		model.addAttribute("messages", m);
-		model.addAttribute("nickname", pgq.getUsernameByMail(name.getName()));
+		model.addAttribute("user",user);
+		model.addAttribute("image", pgq.getImage(name.getName()));
 		return "biketopic";
 		
 	}
@@ -85,8 +88,10 @@ public class ChatController implements ApplicationListener<ApplicationEvent>{
 	public String uploadMessagesTransport(Model model, Principal name) {
 		List<Message> m = pgq.getMessagebyTopic("bus");
 		Collections.reverse(m);
+		User user = pgq.getUserbyUsername(name.getName());
 		model.addAttribute("messages", m);
-		model.addAttribute("nickname", pgq.getUsernameByMail(name.getName()));
+		model.addAttribute("user",user);
+		model.addAttribute("image", pgq.getImage(name.getName()));
 		return "transporttopic";
 		
 	}
@@ -95,10 +100,15 @@ public class ChatController implements ApplicationListener<ApplicationEvent>{
 	public String uploadMessagesCar(Model model, Principal name) {
 		List<Message> m = pgq.getMessagebyTopic("traffic");
 		Collections.reverse(m);
+		User user = pgq.getUserbyUsername(name.getName());
 		model.addAttribute("messages", m);
+		model.addAttribute("user",user);
+		model.addAttribute("image", pgq.getImage(name.getName()));
 		model.addAttribute("nickname", pgq.getUsernameByMail(name.getName()));
 		return "cartopic";
 	}
+	
+	
 
 
 }

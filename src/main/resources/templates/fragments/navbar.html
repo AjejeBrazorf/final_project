@@ -52,9 +52,8 @@
 				</a>
 			</li>
 			 <li  sec:authorize="isAuthenticated()" >
-	           <a href="/userpage">
-				 <i ng-if="!authenticated" class="fa fa-2x fa-user-circle" aria-hidden="true"></i>
-				<img ng-if="authenticated" id="img" ng-scr="{{image}}" />
+	           <a href="/userpage" style="padding: 2px;">
+				<img ng-if="authenticated" style="height: 50px;" id="img" ng-src="{{userImagesrc}}" />
 				</a>
 			</li>
 			<li sec:authorize="isAuthenticated()" >        
