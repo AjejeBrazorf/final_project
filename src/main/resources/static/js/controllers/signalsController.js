@@ -335,7 +335,8 @@ app.controller('SignalsCtrl', ['$scope', 'DataProvider','$routeParams','$timeout
 		return DataProvider.addSignalToServer(segnalation).then( function(signal){
 			console.log("segnale aggiunto:"+signal);
 			$scope.onSignalsFromServer(signal.data);	
-			$scope.message='<a href="../#/signals?lat='+signal.data.lat+'&lng='+signal.data.lng+' ">'+$scope.message+"</a>";
+			var s="../../images/map.jpg";
+			$scope.message='<a class="amap" href="../#/signals?lat='+signal.data.lat+'&lng='+signal.data.lng+'"><img src="'+s+'" class="mapimg"  />'+$scope.message+"</a>";
 			sendMessage($scope.message);
 		});
 		

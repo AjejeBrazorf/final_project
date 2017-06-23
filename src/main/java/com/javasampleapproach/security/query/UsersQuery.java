@@ -49,6 +49,12 @@ public class UsersQuery{
 		return s;
 	}
 	
+	public String getImage(String email){
+		String s = uR.findImageByemail(email);
+		
+		return s;
+	}
+	
 	//lista di ultimi 10 messaggi dato un topic
 	public List<Message> getMessagebyTopic(String s){
 		return mR.findByTopic(s);
@@ -105,6 +111,11 @@ public class UsersQuery{
 	//Update User
 	public void updateUser(String mail, Gender g, int eta, Istruzione titolo, Occupazione occ, Boolean hasCar, int annoImmatr, TipoCarburante carb, Boolean carSharing, FornitoreCarSharing fornitoreCarSharing, Boolean useBike, Boolean useBikeSharing, Boolean useMezzi, TipoViaggio tipo, String foto){
 		uR.updateUser(mail, g.ordinal(), eta, titolo.ordinal(), occ.ordinal(), hasCar, annoImmatr, carb.ordinal(), carSharing, fornitoreCarSharing.ordinal(), useBike, useBikeSharing, useMezzi, tipo.ordinal(), foto);
+	}
+	
+	//Update Image User
+	public void updateImageUser(String foto, String mail){
+		uR.updateImageUser(foto, mail);
 	}
 	
 	//Lista di utenti da limit e offset

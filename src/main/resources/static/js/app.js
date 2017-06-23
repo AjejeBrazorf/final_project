@@ -30,16 +30,18 @@ app.config(function ($routeProvider, $locationProvider,$httpProvider) {
 
 app.controller('AuthCtrl', ['$scope', '$rootScope',
 	function ($scope, $rootScope) {
-
-
-
-
-	$scope.setAuthenticated=function(auth){
+	$scope.setAuthenticated=function(auth, image){
 		$rootScope.authenticated = auth;
 		console.log(auth);
 		console.log($rootScope.authenticated);
+		
+		if(auth){
+			$rootScope.image = image;
+			console.log("aoutenticato e setto immagine");
+		}
 	}
 
+	
 }]);
 
 app.factory('DataProvider', 
@@ -188,6 +190,23 @@ app.factory('DataProvider',
 			});
 
 		}
+		
+		DataProvider.changeImageUser= function(foto) {
+			var values= {'image': foto};
+			var promise = $http({
+						    url: "../image",
+						    method: "PUT",
+						    params: values
+						    });
+			promise.then( function(item) {
+				console.log("Foto salvata");
+			} , 
+			function error() { 
+				console.log("Errore in salvataggio foto");
+			}
+			);
+			return promise;
+		};
 
 		return DataProvider;
 	}

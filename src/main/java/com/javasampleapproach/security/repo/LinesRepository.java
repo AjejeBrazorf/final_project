@@ -14,8 +14,8 @@ public interface LinesRepository extends JpaRepository<BusLine, String>{
 	@Query(value = "SELECT * FROM BusLine", nativeQuery = true)
 	List<BusLine> getLines();
 	
-	@Query(value = "SELECT b.id, b.name, b.lat, b.long, bs.sequenceNumber "
-				+ "FROM BusLineStop bs, BusStop b"
+	@Query(value = "SELECT b.id, b.name, b.lat, b.lng, bs.sequenceNumber"
+				+ " FROM BusLineStop bs, BusStop b"
 				+ " WHERE bs.lineId = ?1 AND b.id = bs.stopId", nativeQuery = true)
 	List<Object[]> getStops(String line);
 
@@ -23,7 +23,7 @@ public interface LinesRepository extends JpaRepository<BusLine, String>{
 			+ " FROM BusLine"
 			+ " WHERE line IN (SELECT lineId"
 			+ "					FROM BusLineStop"
-			+ "					WHERE stopId = ?1", nativeQuery = true)
+			+ "					WHERE stopId = ?1)", nativeQuery = true)
 	List<String> getLinesForStop(String stopId);
 	
 	@Query(value = "SELECT id, ST_Distance(ST_GeographyFromText('SRID=4326;POINT('||b.lng||' '|| b.lat||')'), ST_GeographyFromText('SRID=4326;POINT('||?1||' '|| ?2 ||')'))"

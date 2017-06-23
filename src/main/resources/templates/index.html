@@ -30,7 +30,7 @@
 
 <body ng-app="App">
 
-<div ng-controller="AuthCtrl" ng-init="setAuthenticated(true)" sec:authorize="isAuthenticated()"></div>
+<div ng-controller="AuthCtrl" ng-init="setAuthenticated(true, ${image})" sec:authorize="isAuthenticated()"></div>
 <div ng-controller="AuthCtrl" ng-init="setAuthenticated(false)" sec:authorize="!isAuthenticated()"></div>
 
 <div th:replace="fragments/navbar :: navbar"></div>

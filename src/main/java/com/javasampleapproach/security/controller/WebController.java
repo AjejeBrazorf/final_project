@@ -14,12 +14,14 @@ import com.javasampleapproach.security.query.UsersQuery;
 public class WebController {
    
 	@Autowired
-	private  UsersQuery pgq;
+	private  UsersQuery uq;
 	
 	@RequestMapping(value={"/"})
 	public String home(Model model, Principal name){
-		if(name!= null)
-			model.addAttribute("nickname", pgq.getUsernameByMail(name.getName()));
+		if(name!= null){
+			model.addAttribute("image", uq.getImage(name.getName()));
+			model.addAttribute("nickname", uq.getUsernameByMail(name.getName()));
+		}
 		return "index";
 	}
 

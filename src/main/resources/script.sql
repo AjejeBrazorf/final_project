@@ -81,7 +81,7 @@ CREATE TABLE IF NOT EXISTS dettaglioUser(
     useBikeSharing boolean,
     useMezziPubblici boolean,
     tipoViaggio int,
-    foto varchar(255)
+    foto varchar(65535)
 );
 
 CREATE TABLE IF NOT EXISTS segnalazioni (
