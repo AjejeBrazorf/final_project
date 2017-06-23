@@ -22,6 +22,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.javasampleapproach.security.model.Segnalazione;
 import com.javasampleapproach.security.model.TipoSegnalazione;
+import com.javasampleapproach.security.query.RateUserQuery;
 import com.javasampleapproach.security.query.SegnalationQuery;
 import com.javasampleapproach.security.query.UsersQuery;
 
@@ -34,6 +35,9 @@ public class SegnalationRestController {
 	private SegnalationQuery service;
 	@Autowired
 	private UsersQuery userService;
+	@Autowired
+	private RateUserQuery rateService;
+	
 	
 	@RequestMapping(value="/segnalations", method=RequestMethod.GET, produces="application/json")
 	public HttpEntity<List<Segnalazione>> getSegnalations(
@@ -62,10 +66,19 @@ public class SegnalationRestController {
 	@RequestMapping(value="/segnalations/{id}", method=RequestMethod.PUT, produces="application/json")
 	public HttpEntity<?> rateSegnalation(
 			@PathVariable String id,
+			Principal name,
 			@RequestParam(value = "action", required = true)String action,
-			@RequestParam(value = "rate", required = false, defaultValue = "null")Double rate){
-		if(action.equals("rate"))
-			service.updateRate(rate, id);
+			@RequestParam(value = "rate", required = false, defaultValue = "null")Integer rate){
+		if(action.equals("rate")){
+			Integer oldRate;
+			if((oldRate = rateService.isPresentUserRate(name.getName(), id))!= null)
+				service.updateRate(1, rate-oldRate, id);
+			else{
+				//aggiungo anche in tabelle di user-voto
+				rateService.insertUserRate(name.getName(), id, rate);
+				service.updateRate(0, rate, id);
+			}
+		}
 		else if(action.equals("cancel"))
 			service.updateSegnalation(new Date(), id);
 		else

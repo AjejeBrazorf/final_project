@@ -101,9 +101,11 @@ CREATE TABLE IF NOT EXISTS segnalazioni (
 CREATE FUNCTION vota() RETURNS trigger AS $emp_stamp$
 DECLARE
 newcount integer;
+flag integer;
 newrate double precision;
 somma double precision;
 BEGIN
+	
 if(new.count = 0) then
 	SELECT count, rate into newcount, newrate
 	from segnalazioni
@@ -115,8 +117,19 @@ somma = somma + new.rate;
 
 new.rate = somma/newcount;
 new.count = newcount;
-end if;
 
+elseif (new.count = 1) then
+	SELECT count, rate into newcount, newrate
+	from segnalazioni
+	where id = new.id;
+
+somma = newcount*newrate;
+somma = somma + new.rate;
+
+new.rate = somma/newcount;
+new.count = newcount;
+	
+end if;
 return new;
 END;
 $emp_stamp$ LANGUAGE plpgsql;
