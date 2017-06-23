@@ -49,6 +49,12 @@
 					style="background: #fbbc05;">Add </button>
 			</div>
 		</div>
+		
+		<div ng-show="showSpinner">
+        	<svg class="spinner" width="65px" height="65px" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg" style="position: absolute;left: 50%; top: 50%">
+			   <circle class="path" fill="none" stroke-width="6" stroke-linecap="round" cx="33" cy="33" r="30"></circle>
+			</svg>
+        </div>
 	</div>
 
 	<div
@@ -81,5 +87,4 @@
 		<leaflet style="height: 100%" defaults="defaults" event-broadcast="events"
 			markers="signalMarkers" paths="paths" lf-center="centerLocation" id="myMap"></leaflet>
 	</div>
-	<h ng-hide="true" id="topic" ng-model="topic"></h>
 </div>

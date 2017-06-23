@@ -6,9 +6,11 @@ function connectToTopic(topic) {
     stompClient = Stomp.over(socket);
     stompClient.connect({}, function (frame) {
         console.log('Connected: ' + frame);
+        $("#spinner").hide();
         stompClient.subscribe('/topic/'+topic, function (response) {
         	console.log(response);
         	showMessage(JSON.parse(response.body));
+            $("#spinner").hide();
         });
     });
 }
@@ -22,6 +24,7 @@ function disconnect() {
 
 function sendMessage(text) {
 	var topic;
+    $("#spinner").show();
 	if(window.location.pathname=="/cartopic") topic="traffic";
 	sendMessageWithTopic(text,topic);
     
@@ -40,10 +43,12 @@ function showTime(date) {
 }
 
 function readMessagesFromServer(messages){
+    $("#spinner").show();
 	for(var i=0; i< messages.length; i++){
 		messages[i].user=messages[i].nickname;
 		showMessage(messages[i]);
 	}
+    $("#spinner").hide();
 }
 
 function showMessage(response) {
@@ -100,7 +105,8 @@ $(window).bind('beforeunload', function(){
 
 $(document).ready(function(){
     
-  
+    $("#spinner").show();
+
     
     $("#sendmessage input").focus(function(){
         if($(this).val() == "Send message..."){
