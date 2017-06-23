@@ -192,7 +192,7 @@ app.factory('DataProvider',
 		}
 
 		DataProvider.findPath = function(lat1, lng1, lat2, lng2){
-			return readJson('.findPath?lat1='+lat1+'&lng1='+lng1+'&lat2='+lat2+'&lng2='+lng2)
+			return readJson('/findPath?lat1='+lat1+'&lng1='+lng1+'&lat2='+lat2+'&lng2='+lng2)
 				.then( function (response){ 
 					console.log(response);
 					return response;
