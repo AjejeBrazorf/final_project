@@ -42,8 +42,7 @@
 
 <body ng-app="App">
 
-	<div ng-controller="AuthCtrl" ng-init="setAuthenticated(true)"
-		sec:authorize="isAuthenticated()">
+	<div ng-controller="AuthCtrl" ng-init="setAuthenticated(true)" sec:authorize="isAuthenticated()">
 		<input id="imgsrc" value="../images/user.ico" th:value="${image}"
 			ng-init="setuserImage()" ng-model="img.compressed.dataURL" hidden="true" />
 	</div>

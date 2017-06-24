@@ -35,9 +35,11 @@ app.controller('AuthCtrl', ['$scope', '$rootScope',
 				dataURL:""
 			}
 	};
+	$rootScope.authenticated=false;
 	
 	$scope.setAuthenticated=function(auth){
 		console.log(auth);
+		$rootScope.authenticated=auth;
 		console.log($rootScope.authenticated);
 		if(auth){
 			$rootScope.img.compressed.dataURL=$('#imgsrc').val();
