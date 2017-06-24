@@ -53,7 +53,7 @@
 			</li>
 			 <li  sec:authorize="isAuthenticated()" >
 	           <a href="/userpage" style="padding: 2px;">
-				<img ng-if="authenticated" style="height: 50px;" id="img" ng-src="{{userImagesrc}}" />
+				<img class="navbarImg"  style="height: 50px;" ng-init="setuserImage()" id="img"  src="../images/user.ico" ng-src="{{img.compressed.dataURL}}" alt="User Avatar" />
 				</a>
 			</li>
 			<li sec:authorize="isAuthenticated()" >        

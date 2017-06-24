@@ -21,6 +21,13 @@ a.stoplist {
 	-webkit-transition: color 0.1s;
 }
 
+.navbarImg{
+	height: 50px;
+    border-radius: 61%;
+    width: 50px;
+    padding: 5px;
+}
+
 a.stoplist:hover,
 a.stoplist:focus {
 	color: #fff;

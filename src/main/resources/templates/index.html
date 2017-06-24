@@ -45,7 +45,7 @@
 	<div ng-controller="AuthCtrl" ng-init="setAuthenticated(true)"
 		sec:authorize="isAuthenticated()">
 		<input id="imgsrc" value="../images/user.ico" th:value="${image}"
-			ng-init="setuserImage()" ng-model="userImage" hidden="true" />
+			ng-init="setuserImage()" ng-model="img.compressed.dataURL" hidden="true" />
 	</div>
 	<div ng-controller="AuthCtrl" ng-init="setAuthenticated(false)"
 		sec:authorize="!isAuthenticated()"></div>
