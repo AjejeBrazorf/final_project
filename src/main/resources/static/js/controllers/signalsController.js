@@ -189,7 +189,8 @@ app.controller('SignalsCtrl', ['$scope', 'DataProvider','$routeParams','$timeout
 			}
 			textIfSent+=n[i-1]+"<b>"+n[i]+"</b>";
 			i+=2;
-			if(i=>n.length) textIfSent+=n[i-1];
+			if(i>n.length) textIfSent+=n[i-2];
+			if(i==n.length) textIfSent+=n[i-1];
 		}
 
 		console.log($scope.address+" - "+$scope.chatSignalType);

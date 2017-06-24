@@ -69,7 +69,7 @@ function showMessage(response) {
 	    "<div class='message "+classUser+"'>"+
 			"<img src='"+ image +"'"+
 				"alt='User Avatar' class='img-circle' />"+
-			'<div class="bubble" style="background-color: #333333;"> '+response.message+
+			'<div class="bubble" style="background-color: rgba(0, 0, 0, 0.3);"> '+response.message+
 				"<span>"+showTime(response.date)+"</span>"+
 			"</div>"+
 		"</div>"+
