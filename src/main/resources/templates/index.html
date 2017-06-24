@@ -1,6 +1,7 @@
 <!doctype html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 
 <head>
 <!--
@@ -43,8 +44,8 @@
 
 	<div ng-controller="AuthCtrl" ng-init="setAuthenticated(true)"
 		sec:authorize="isAuthenticated()">
-		<input id="imgsrc" th:value="${image}" ng-init="setuserImage()"
-			ng-model="userImage" hidden="true" />
+		<input id="imgsrc" value="../images/user.ico" th:value="${image}"
+			ng-init="setuserImage()" ng-model="userImage" hidden="true" />
 	</div>
 	<div ng-controller="AuthCtrl" ng-init="setAuthenticated(false)"
 		sec:authorize="!isAuthenticated()"></div>
@@ -88,7 +89,6 @@
 	<script src="../js/controllers/routeController.js"></script>
 	<script src="../js/controllers/stopsController.js"></script>
 	<script src="../js/controllers/signalsController.js"></script>
-
 	<script src="../js/anime.min.js"></script>
 	<script src="../js/main.js"></script>
 	<script
@@ -101,17 +101,11 @@
 		src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
 		integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
 		crossorigin="anonymous"></script>
-
-
-<script src="../js/anime.min.js"></script>
-<script src="../js/main.js"></script>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCgFeLe0VVD6kjgGdwWJxDOrEt2MocUhF0"
-    async="async" defer="defer"></script>
-<script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/sockjs/1/sockjs.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
-  <script src="../js/sendToChat.js"></script>
+	<script src="https://cdn.jsdelivr.net/sockjs/1/sockjs.min.js"></script>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+	<script src="../js/sendToChat.js"></script>
+	<script src="../js/angular-image-compress.js"></script>
 </body>
 
 

@@ -1,4 +1,4 @@
-var app = angular.module('App', ['ngRoute', 'ngResource','ui-leaflet', 'ngMaterial'])
+var app = angular.module('App', ['ngRoute', 'ngResource','ui-leaflet', 'ngMaterial','ngImageCompress'])
 
 app.config(function ($routeProvider, $locationProvider,$httpProvider) {
 	$routeProvider

@@ -1,6 +1,6 @@
 app.controller('userCtrl', ['$scope', '$rootScope', 'DataProvider','$routeParams',
 	function ($scope, $rootScope, DataProvider,$routeParams) {
-
+    $scope.img={};
 	$scope.readFile=function() {  
 		if (this.files && this.files[0]) {
 			var FR= new FileReader();
@@ -17,8 +17,8 @@ app.controller('userCtrl', ['$scope', '$rootScope', 'DataProvider','$routeParams
 	
 	$scope.saveImgOnServer=function(){
 		console.log("salvo img su server");
-		console.log($scope.imageString);
-		DataProvider.changeImageUser($rootScope.userImagesrc).then( function(response){
+		console.log($scope.img.compressed.dataURL);	
+		DataProvider.changeImageUser($scope.img.compressed.dataURL).then( function(response){
 			console.log("foto aggiunta:"+response);
 		});
 	};

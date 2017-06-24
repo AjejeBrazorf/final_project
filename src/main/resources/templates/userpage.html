@@ -15,6 +15,10 @@
 <link rel="stylesheet" href="css/set1.css"></link>
 <link rel="stylesheet" href="css/input.css"></link>
 <link rel="stylesheet" href="css/style.css"></link>
+<link rel="stylesheet" href="css/normalize.css"></link>
+<link rel="stylesheet" href="css/demo.css"></link>
+<link href="css/offcanvas.css" rel="stylesheet" type="text/css"
+	media="all" />
 <title>UserPage</title>
 </head>
 <body ng-app="App" ng-controller="userCtrl">
@@ -26,12 +30,13 @@
 			<div class="profile-header-img chat-img">
 				<div ng-controller="AuthCtrl" ng-init="setAuthenticated(true)"
 					sec:authorize="isAuthenticated()">
-					<input id="imgsrc" th:value="${image}" ng-init="setuserImage()"
-						ng-model="userImage" hidden="true" />
+					<input id="imgsrc" value="../images/user.ico" th:value="${image}"
+						ng-init="setuserImage()" ng-model="userImage" hidden="true" />
 				</div>
-				<img id="img" ng-src="{{userImagesrc}}" alt="User Avatar"
-					class="img-circle imgprofile"> <input id="inp" type='file'
-					style="display: none;"></input></img>
+				<img id="img" ng-src="{{img.compressed.dataURL}}" alt="User Avatar"
+					class="img-circle imgprofile"> <input id="inp" type='file' image="img"
+					accept="image/*" resize-max-height="100" resize-max-width="100"
+					resize-quality="0.4" resize-type="image/jpg" ng-image-compress="" style="display: none;"></input></img>
 				<!-- badge -->
 				<div class="rank-label-container">
 					<span class="label label-default rank-label">User</span>
@@ -47,7 +52,7 @@
 		</div>
 		<form method="post">
 			<div class="col-md-7" style="padding-top: 80px">
-				<section class="content bgcolor-5">
+				<section class="content bgcolor-5" style="padding-left: 110px;">
 
 					<span class="input input--minoru"> <input
 						class="input__field input__field--yoko" type="text" name="oldpsw" />
@@ -281,6 +286,7 @@
 		src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
 		integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
 		crossorigin="anonymous"></script>
+		<script src="../js/angular-image-compress.js"></script>
 
 </body>
 
