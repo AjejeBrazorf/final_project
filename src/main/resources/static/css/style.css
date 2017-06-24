@@ -428,3 +428,6 @@ outline: 0;
     
 }
 
+.md-virtual-repeat-container.md-autocomplete-suggestions-container {
+    background-color: rgba(49, 49, 52, 0.53);
+}

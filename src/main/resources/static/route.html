@@ -15,8 +15,8 @@
                                     md-search-text-change="searchTextChange(from)"
                                     md-search-text="from"
                                     md-selected-item-change="selectedItemChange(item)"
-                                    md-items="item in querySearch(from)"
-                                    md-item-text="item.display"
+                                    md-items="item in hints"
+                                    md-item-text="item"
                                     md-min-length="0"
                                     placeholder="Partenza">
                                 <md-item-template>
@@ -46,8 +46,8 @@
                                 md-search-text-change="searchTextChange(to)"
                                 md-search-text="to"
                                 md-selected-item-change="selectedItemChange(item)"
-                                md-items="item in querySearch(to)"
-                                md-item-text="item.display"
+                                md-items="item in hints"
+                                md-item-text="item"
                                 md-min-length="0"
                                 placeholder="Arrivo">
                                 <md-item-template>
