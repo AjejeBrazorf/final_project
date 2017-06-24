@@ -206,27 +206,12 @@ body> .container{
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
 .sidebar-offcanvas {
   position: absolute;
   top: 0;
   width: 0;
 }
 
-.nav.navbar-nav{
-  max-height: 50px;
-}
 
 .nav.navbar-nav>*{
   max-height: inherit;
