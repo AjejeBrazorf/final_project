@@ -17,8 +17,6 @@ body {
 .amap{
 	color: white;
     -webkit-font-smoothing: antialiased;
-    font-size: initial;
-    background: \; z-index: inherit;
     text-decoration: none;
 }
 
@@ -202,6 +200,7 @@ body {
     -ms-transition: all 200ms cubic-bezier(0.000, 0.995, 0.990, 1.000);
     -o-transition: all 200ms cubic-bezier(0.000, 0.995, 0.990, 1.000);
     transition: all 200ms cubic-bezier(0.000, 0.995, 0.990, 1.000);
+        background: #333333;
 }
 #chat-messages.animate{
     opacity:1;
@@ -247,6 +246,9 @@ body {
     color:#8495a3;
     position:relative;
     float:left;
+    max-width: 100%;
+    margin-top: 10px;
+    margin-bottom: 33px;
 }
 #chat-messages div.message.right .bubble{
     float:right;
@@ -397,3 +399,4 @@ div.message.right .corner{
             transition: all 100ms ease-out;
 }
 #chatview, #sendmessage {overflow:hidden;}
+

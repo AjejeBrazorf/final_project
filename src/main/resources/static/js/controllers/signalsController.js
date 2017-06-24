@@ -148,6 +148,8 @@ app.controller('SignalsCtrl', ['$scope', 'DataProvider','$routeParams','$timeout
 
 
 	$scope.addSignalsFromChat = function(keyCode) {
+		$scope.showSpinner=true;
+
 		//se ho schiacciato invio vado avanti
 		$scope.chatSignalTypeTemp="";
 		var textIfSent="";
@@ -187,7 +189,8 @@ app.controller('SignalsCtrl', ['$scope', 'DataProvider','$routeParams','$timeout
 			}
 			textIfSent+=n[i-1]+"<b>"+n[i]+"</b>";
 			i+=2;
-			if(i=>n.length) textIfSent+=n[i-1];
+			if(i>n.length) textIfSent+=n[i-2];
+			if(i==n.length) textIfSent+=n[i-1];
 		}
 
 		console.log($scope.address+" - "+$scope.chatSignalType);
@@ -213,7 +216,6 @@ app.controller('SignalsCtrl', ['$scope', 'DataProvider','$routeParams','$timeout
 			}
 			return;
 		} 
-
 		$scope.markerAddress=$scope.address;
 		$scope.signal.type=$scope.chatSignalType;	
 
@@ -243,6 +245,7 @@ app.controller('SignalsCtrl', ['$scope', 'DataProvider','$routeParams','$timeout
 	
 	$scope.addSignals = function() {
 		console.log("entro in funzione");
+		$scope.showSpinner=true;
 
 		if(!stompClients[0])
 		{
@@ -348,6 +351,7 @@ app.controller('SignalsCtrl', ['$scope', 'DataProvider','$routeParams','$timeout
 			var s="../../images/map.jpg";
 			$scope.message='<a class="amap" href="../#/signals?lat='+signal.data.lat+'&lng='+signal.data.lng+'"><img src="'+s+'" class="mapimg"  />'+$scope.message+"</a>";
 			sendMessage($scope.message);
+			$scope.showSpinner=false;
 		});
 
 	};
@@ -367,6 +371,8 @@ app.controller('SignalsCtrl', ['$scope', 'DataProvider','$routeParams','$timeout
 		DataProvider.addSignalToServer(segnalation).then( function(signal){
 			console.log("segnale aggiunto:"+signal);
 			$scope.onSignalsFromServer(signal.data);
+			$scope.showSpinner=false;
+
 		});
 
 	};
@@ -473,6 +479,7 @@ app.controller('SignalsCtrl', ['$scope', 'DataProvider','$routeParams','$timeout
 
 
 	function searchTextChange(text) {
+		$scope.showSpinner=true;
 		$scope.hints = [];
 		if(text.length>0)
 			DataProvider.getPositionFromString($scope.address, onPositionAddress, onErrorPositionAddress);
@@ -545,7 +552,7 @@ app.controller('SignalsCtrl', ['$scope', 'DataProvider','$routeParams','$timeout
 			console.log(value.formatted_address);
 			$scope.hints.push(value.formatted_address);
 		});
-
+		$scope.showSpinner=false;
 	}
 
 
