@@ -45,7 +45,6 @@ public class ImageRestController {
 			Principal name, 
 			@RequestParam(value = "username", required = true, defaultValue = "null")String user){
 			String img=uq.getImageByNickname(user);
-
 			HttpEntity<?> r = new ResponseEntity<String>(img, HttpStatus.OK);
 			//System.out.println(r);
 		return r;

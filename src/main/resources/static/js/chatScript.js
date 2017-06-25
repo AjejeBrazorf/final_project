@@ -1,4 +1,5 @@
 var stompClient = null;
+var usersWhichWrote=[];
 
 function connectToTopic(topic) {
 	console.log('try to connect: ');
@@ -60,19 +61,22 @@ function showMessage(response) {
 	
 	if(response.user==$("#user").text())
 		classUser="right";
-				
-	getImage(response.user);
 	
-	var image="http://placehold.it/50/55C1E7/fff&text="+response.user[0].toUpperCase();
-	if(response.image!=null){
-		image= response.image;
+	var image="";
+
+	
+	if(usersWhichWrote[response.user]==null){
+		getImage(response.user);
+	}else{
+		image=usersWhichWrote[response.user];
 	}
+	
 	$("#scrollDown").remove();
 	
 	$("#chat-messages").append("" +
 	    "<div class='message "+classUser+"'>"+
-			"<img src='"+ image +"'"+
-				"alt='User Avatar' class='img-circle' />"+
+			"<img  src='"+ image +"'"+
+				"alt='User Avatar' class='img-circle "+response.user+"-image' />"+
 			'<div class="bubble" style="background-color: rgba(0, 0, 0, 0.3);"> '+response.message+
 				"<span>"+showTime(response.date)+"</span>"+
 			"</div>"+
@@ -177,6 +181,18 @@ function getImage(user){
 	.then(status)
 	.then(
 			function (response){
-				console.log(response);
+				response.text().then(function (text) {
+					  // do something with the text response 
+					console.log(text);
+					if(text==null || text.length==0){
+						text="http://placehold.it/50/55C1E7/fff&text="+user[0].toUpperCase();
+					}
+					usersWhichWrote[user]=text;
+					$("."+user+"-image").each(function(){
+						 $(this).attr("src",text);
+					})
+					return text;
+				});
 			})
+			
 }
