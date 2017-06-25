@@ -81,7 +81,7 @@ function showMessage(response) {
 				"<span>"+showTime(response.date)+"</span>"+
 			"</div>"+
 		"</div>"+
-		"<div id='scrollDown' style='height:75px'>"
+		"<div id='scrollDown' style='height:5px'>"
 	    );
 	
     	$('#chat-messages').animate({
