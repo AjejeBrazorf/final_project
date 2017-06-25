@@ -33,11 +33,11 @@ app.controller('RouteCtrl', ['$scope', 'DataProvider','$routeParams','$timeout',
 
 	// list of `state` value/display objects
 	$scope.hints=[];
+
 	//$scope.hints        	= loadAll();
 	$scope.querySearch   = querySearch;
 	$scope.selectedItemChange = selectedItemChange;
 	$scope.searchTextChange   = searchTextChange;
-
 	// ******************************
 	// Internal methods
 	// ******************************
@@ -68,7 +68,7 @@ app.controller('RouteCtrl', ['$scope', 'DataProvider','$routeParams','$timeout',
 	}
 
 	function selectedItemChange(item) {
-		console.log('Item changed to ' + JSON.stringify(item));
+		searchTextChange(item);
 	}
 
 	/**
