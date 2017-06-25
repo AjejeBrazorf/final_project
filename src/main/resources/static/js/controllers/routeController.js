@@ -8,7 +8,12 @@ app.controller('RouteCtrl', ['$scope', 'DataProvider','$routeParams','$timeout',
 			zoom: 11
 		},
 		paths: {
-	
+			p1: {
+                color: 'red',
+                weight: 8,
+                latlngs: [
+                   
+                ]            },
 		},
 		defaults: {
 			path: {
@@ -16,7 +21,24 @@ app.controller('RouteCtrl', ['$scope', 'DataProvider','$routeParams','$timeout',
 				color: '#5581ab',
 				opacity: 1
 			}
-		}
+		},
+        decorations: {
+            markers: {
+                coordinates: [],
+                patterns:  [
+                    {
+                        offset: 12,
+                        repeat: 25,
+                        symbol: L.Symbol.dash({pixelSize: 18, pathOptions: {color: '#f00', weight: 4}})
+                    },
+                    {
+                        offset: '10%',
+                        repeat: 25,
+                        symbol: L.Symbol.arrowHead({pixelSize: 10, polygon: false, pathOptions: {stroke: true}})
+                    }
+                ]
+            }
+        }
 	});
 
 
@@ -147,15 +169,21 @@ app.controller('RouteCtrl', ['$scope', 'DataProvider','$routeParams','$timeout',
 		}, onErrorPositionAddress);
 	}
 	
+
+	
 	$scope.makePathRequest = function(lat1, lng1, lat2, lng2){
 		$scope.showSpinner=true;
+		$scope.$apply();
 		DataProvider.findPath(lat1, lng1, lat2, lng2).then(function(positions){
 				console.log("results in routeCtrl");
-				console.log(positions);				
-				angular.forEach(positions, function(value, key) {
-					$scope.markers.push(value);
+				console.log(positions);		
+				$scope.decorations.markers.coordinates=[];
+				angular.forEach(positions, function(value, key) {	
+					let point = [value.lat, value.lng];
+					$scope.decorations.markers.coordinates.push(point);
 				});
 				leafletData.getMap("idRoute").then(function(map) {});
+				
 				$scope.showSpinner=false;
 		});
 	};
