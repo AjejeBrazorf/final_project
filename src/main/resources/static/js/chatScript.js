@@ -56,9 +56,13 @@ function showMessage(response) {
 	var imageSpan="";
 	var classUser="";
 	
+	console.log(response);
+	
 	if(response.user==$("#user").text())
 		classUser="right";
 				
+	getImage(response.user);
+	
 	var image="http://placehold.it/50/55C1E7/fff&text="+response.user[0].toUpperCase();
 	if(response.image!=null){
 		image= response.image;
@@ -136,6 +140,43 @@ function setSelectionRange(input, selectionStart, selectionEnd) {
 	  }
 	}
 
-	function setCaretToPos(input, pos) {
+function setCaretToPos(input, pos) {
 	  setSelectionRange(input, pos, pos);
 	}
+	
+	
+function status(response) {  
+		console.log(response.status);
+	  if (response.status >= 200 && response.status < 300) {  
+		    return Promise.resolve(response)
+		  } else {  
+			    return Promise.reject(new Error(response.statusText) )  
+			  }  
+	}
+
+function json(response) {
+		console.log(response);
+
+		  return response.json()
+	}
+
+function readJson(url){
+		return fetch(url)  
+		  .then(status)  
+		  .then(json)  
+		  .then(function(data) {  
+			    console.log('Request success with JSON', data); 
+		return data; 
+		  }).catch(function(error) {  
+			    console.log('Request failed', error);  
+			  });
+	}
+
+function getImage(user){
+	fetch("/imageUser?username="+user)
+	.then(status)
+	.then(
+			function (response){
+				console.log(response);
+			})
+}

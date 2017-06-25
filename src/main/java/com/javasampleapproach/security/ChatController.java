@@ -49,7 +49,6 @@ public class ChatController implements ApplicationListener<ApplicationEvent>{
     @SendTo("/topic/traffic")
     public ReceivedMessage sendMessageTraffic(SentMessage message, Principal name) throws Exception {
 		String nickname = pgq.getUsernameByMail(name.getName());
-		
 		pgq.insertMessage(new Date(), message.getText(), nickname, "traffic");
         return new ReceivedMessage(nickname, message.getText(), new Date());
     }
@@ -108,7 +107,8 @@ public class ChatController implements ApplicationListener<ApplicationEvent>{
 		return "cartopic";
 	}
 	
-	
+
+
 
 
 }

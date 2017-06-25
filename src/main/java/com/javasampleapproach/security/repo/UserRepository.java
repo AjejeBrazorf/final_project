@@ -18,7 +18,10 @@ public interface UserRepository extends JpaRepository<User, String>{
 	
 	@Query(value = "SELECT foto FROM dettagliouser u WHERE u.email = ?1", nativeQuery = true)
 	String findImageByemail(String mail);
-	
+
+	@Query(value = "SELECT foto FROM dettagliouser u WHERE u.nickname = ?1", nativeQuery = true)
+	String findImageByNickname(String nickname);
+
 	@Query(value = "insert into dettagliouser(nickname, email, gender, eta, istruzione, occupazione, hasCar, annoimmatricolazione, carburante, useCarSharing, fornitoreSharing, useBike, useBikeSharing, useMezziPubblici, tipoViaggio, foto)"
 			+ " VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10, ?11, ?12, ?13, ?14, ?15, ?16)"
 			+ " RETURNING nickname", nativeQuery = true)

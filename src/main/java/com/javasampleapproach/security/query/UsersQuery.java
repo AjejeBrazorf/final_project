@@ -54,6 +54,11 @@ public class UsersQuery{
 		return s;
 	}
 	
+	public String getImageByNickname(String nickname){
+		String s = uR.findImageByNickname(nickname);
+		return s;
+	}
+	
 	//lista di ultimi 10 messaggi dato un topic
 	public List<Message> getMessagebyTopic(String s){
 		return mR.findByTopic(s);
