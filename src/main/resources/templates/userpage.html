@@ -24,20 +24,21 @@
 <body ng-app="App" ng-controller="userCtrl">
 	<div th:replace="fragments/navbar :: navbar"></div>
 	<div class="row" style="text-align: center; height: 75%;">
-		<div class="col-md-12" style="padding-top:10%;">
+		<div class="col-md-12" style="padding-top: 10%;">
 			<div class="profile-header-img chat-img">
 				<div ng-controller="AuthCtrl" ng-init="setAuthenticated(true)"
 					sec:authorize="isAuthenticated()">
 					<input id="imgsrc" value="../images/user.ico" th:value="${image}"
-						ng-init="setuserImage()" ng-model="img.compressed.dataURL" hidden="true" />
+						ng-init="setuserImage()" ng-model="img.compressed.dataURL"
+						hidden="true" />
 				</div>
-				<img id="img" src="../images/user.ico" ng-click="openFileReader()" ng-init="setuserImage()" ng-src="{{img.compressed.dataURL}}" alt="User Avatar"
-					class="img-circle imgprofile">
-					 <input id="inp" type='file'
-					image="img" accept="image/*"  resize-max-height="200"
-					resize-max-width="200" resize-quality="0.5" resize-type="image/jpg"
-					ng-image-compress="" style="display: none;"></input>
-					</img>
+				<img id="img" src="../images/user.ico" ng-click="openFileReader()"
+					ng-init="setuserImage()" ng-src="{{img.compressed.dataURL}}"
+					alt="User Avatar" class="img-circle imgprofile"> <input
+					id="inp" type='file' image="img" accept="image/*"
+					resize-max-height="200" resize-max-width="200" resize-quality="0.5"
+					resize-type="image/jpg" ng-image-compress="" style="display: none;"></input>
+				</img>
 				<!-- badge -->
 			</div>
 
@@ -98,13 +99,7 @@
 					<h4>Age</h4>
 				</div>
 				<div class="col-md-2 ">
-					<span class="input input--minoru"> <input
-						class="input__field input__field--yoko" type="text"
-						name="birthday" /> <label class="input__label input__label--yoko"
-						for="input-16"> <span
-							class="input__label-content input__label-content--yoko"></span>
-					</label>
-					</span>
+					<input class="searchBox" type="number" name="birthday" />
 				</div>
 				<div class="col-md-2">
 					<h4>Instruction</h4>
@@ -157,13 +152,7 @@
 					<h4>Registration</h4>
 				</div>
 				<div class="col-md-2">
-					<span class="input input--minoru"> <input
-						class="input__field input__field--yoko" type="number"
-						name="carRegistration" /> <label
-						class="input__label input__label--yoko" for="input-16"> <span
-							class="input__label-content input__label-content--yoko"></span>
-					</label>
-					</span>
+					<input class="searchBox" type="number" name="carRegistration" />
 				</div>
 			</div>
 			<div class="row" style="margin-top: 20px">
