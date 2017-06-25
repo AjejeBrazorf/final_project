@@ -8,8 +8,7 @@ app.controller('RouteCtrl', ['$scope', 'DataProvider','$routeParams','$timeout',
 			zoom: 11
 		},
 		paths: {
-			p1: {
-			}
+	
 		},
 		defaults: {
 			path: {
@@ -34,11 +33,11 @@ app.controller('RouteCtrl', ['$scope', 'DataProvider','$routeParams','$timeout',
 
 	// list of `state` value/display objects
 	$scope.hints=[];
+
 	//$scope.hints        	= loadAll();
 	$scope.querySearch   = querySearch;
 	$scope.selectedItemChange = selectedItemChange;
 	$scope.searchTextChange   = searchTextChange;
-
 	// ******************************
 	// Internal methods
 	// ******************************
@@ -48,26 +47,28 @@ app.controller('RouteCtrl', ['$scope', 'DataProvider','$routeParams','$timeout',
 	 * remote dataservice call.
 	 */
 	function querySearch (query) {
-		var results = query ? $scope.hints.filter( createFilterFor(query) ) : $scope.hints,
-				deferred;
-		if ($scope.simulateQuery) {
-			deferred = $q.defer();
-			$timeout(function () { deferred.resolve( results ); }, Math.random() * 1000, false);
-			return deferred.promise;
-		} else {
-
-			return results;
-		}
+		console.log("quesry searc -> "+query+"\n hints");
+		console.log($scope.hints);
+		var results = $scope.hints;
+		return results;
 	}
 
 
 	function searchTextChange(text) {
 		console.log('Text changed to ' + text);
-		DataProvider.getPositionFromString($scope.from, onPositionAddress, onErrorPositionAddress);
+
+		if(text.length>0){
+			console.log("hints");
+			console.log($scope.hints);
+			$scope.hints=[];
+			DataProvider.getPositionFromString(text, $scope.onPositionAddress, onErrorPositionAddress);
+		}else{
+			$scope.hints=[];
+		}
 	}
 
 	function selectedItemChange(item) {
-		console.log('Item changed to ' + JSON.stringify(item));
+		searchTextChange(item);
 	}
 
 	/**
@@ -90,18 +91,19 @@ app.controller('RouteCtrl', ['$scope', 'DataProvider','$routeParams','$timeout',
 	 */
 	function createFilterFor(query) {
 		var lowercaseQuery = angular.lowercase(query);
-
-		return function filterFn(state) {
-			return (state.value.indexOf(lowercaseQuery) === 0);
+		console.log("createefilterfor");
+		return function filterFn(lowercaseQuery) {
+			return ($scope.hints.indexOf(lowercaseQuery) != -1);
 		};
 
 	}
 
 	function createFilterExistance(query) {
 		var lowercaseQuery = angular.lowercase(query);
+		console.log("createefilterexistance");
 
-		return function filterFn(state) {
-			return (state.value === lowercaseQuery);
+		return function filterFn(lowercaseQuery) {
+			return ($scope.hints.value === lowercaseQuery);
 		};
 
 	}
@@ -123,8 +125,9 @@ app.controller('RouteCtrl', ['$scope', 'DataProvider','$routeParams','$timeout',
 			console.log(lat1);
 			console.log(lng1);
 			
-			if(flagTo = true){
+			if(flagTo == true){
 				// fai richiesta al server
+				$scope.makePathRequest(lat1, lng1, lat2, lng2);
 			}
 			
 		}, onErrorPositionAddress);
@@ -136,12 +139,26 @@ app.controller('RouteCtrl', ['$scope', 'DataProvider','$routeParams','$timeout',
 			console.log(lat2);
 			console.log(lng2);
 			
-			if(flagFrom = true){
+			if(flagFrom == true){
 				// fai richiesta al server
+				$scope.makePathRequest(lat1, lng1, lat2, lng2);
 			}
 			
 		}, onErrorPositionAddress);
 	}
+	
+	$scope.makePathRequest = function(lat1, lng1, lat2, lng2){
+		$scope.showSpinner=true;
+		DataProvider.findPath(lat1, lng1, lat2, lng2).then(function(positions){
+				console.log("results in routeCtrl");
+				console.log(positions);				
+				angular.forEach(positions, function(value, key) {
+					$scope.markers.push(value);
+				});
+				leafletData.getMap("idRoute").then(function(map) {});
+				$scope.showSpinner=false;
+		});
+	};
 
 	function findPathToServer(lat1, lng1, lat2, lng2){
 		DataProvider.findPath(lat1, lng1, lat2, lng2).then(function(edges){
@@ -171,13 +188,14 @@ app.controller('RouteCtrl', ['$scope', 'DataProvider','$routeParams','$timeout',
 			message: "I'm here!"
 		});
 
+		$scope.centerLocation.zoom=16;
 		//updateMap
-		leafletData.getMap("myMap").then(function(map) {});
+		leafletData.getMap("idRoute").then(function(map) {});
 	}
 
 	var localPosition=DataProvider.getCurrentPosition(onCurrentPosition);
 
-	function onPositionAddress(positions) {
+	$scope.onPositionAddress=function (positions) {
 		console.log(positions);
 		var lat=positions[0].geometry.location.lat();
 		var lng=positions[0].geometry.location.lng();
@@ -185,13 +203,17 @@ app.controller('RouteCtrl', ['$scope', 'DataProvider','$routeParams','$timeout',
 		console.log(lng);
 		$scope.centerLocation.lat=lat;
 		$scope.centerLocation.lng=lng;
-		leafletData.getMap().then(function(map) {
-			L.GeoIP.centerMapOnPosition(map, 16);
-		});
+		$scope.centerLocation.zoom=16;
+		leafletData.getMap("idRoute").then(function(map) {});
 
+		console.log("in position address hints");
+		console.log($scope.hints);
+		
 		angular.forEach(positions, function(value, key) {
 			$scope.hints.push(value.formatted_address);
 		});
+		
+		console.log($scope.hints);
 
 //		map.setCenter(positions[0].geometry.location);
 //		var marker = new google.maps.Marker({
@@ -201,8 +223,9 @@ app.controller('RouteCtrl', ['$scope', 'DataProvider','$routeParams','$timeout',
 	}
 
 	function onErrorPositionAddress(status) {
-		alert('Geocode was not successful for the following reason: ' + status);
+		//alert('Geocode was not successful for the following reason: ' + status);
 	}
+	
 
 }
 ]);

@@ -1,4 +1,4 @@
-var app = angular.module('App', ['ngRoute', 'ngResource','ui-leaflet', 'ngMaterial'])
+var app = angular.module('App', ['ngRoute', 'ngResource','ui-leaflet', 'ngMaterial','ngImageCompress'])
 
 app.config(function ($routeProvider, $locationProvider,$httpProvider) {
 	$routeProvider
@@ -30,15 +30,19 @@ app.config(function ($routeProvider, $locationProvider,$httpProvider) {
 
 app.controller('AuthCtrl', ['$scope', '$rootScope',
 	function ($scope, $rootScope) {
+	$rootScope.img={
+			compressed:{
+				dataURL:""
+			}
+	};
+	$rootScope.authenticated=false;
 	
 	$scope.setAuthenticated=function(auth){
-		$rootScope.authenticated = auth;
-		$rootScope.userImagesrc={};
 		console.log(auth);
+		$rootScope.authenticated=auth;
 		console.log($rootScope.authenticated);
 		if(auth){
-			$rootScope.userImagesrc=$('#imgsrc').val();
-			console.log("root aoutenticato e setto immagine"+$rootScope.userImagesrc);	
+			$rootScope.img.compressed.dataURL=$('#imgsrc').val();
 		}else{
 			console.log("non setto imm");
 		}
@@ -47,8 +51,7 @@ app.controller('AuthCtrl', ['$scope', '$rootScope',
 	
 	
 	$scope.setuserImage=function(){
-		$rootScope.userImagesrc=$('#imgsrc').val();
-		console.log($rootScope.userImagesrc);	
+		$scope.img.compressed.dataURL=$('#imgsrc').val();
 	}
 	
 }]);
@@ -192,7 +195,7 @@ app.factory('DataProvider',
 		}
 
 		DataProvider.findPath = function(lat1, lng1, lat2, lng2){
-			return readJson('.findPath?lat1='+lat1+'&lng1='+lng1+'&lat2='+lat2+'&lng2='+lng2)
+			return readJson('/findPath?lat1='+lat1+'&lng1='+lng1+'&lat2='+lat2+'&lng2='+lng2)
 				.then( function (response){ 
 					console.log(response);
 					return response;

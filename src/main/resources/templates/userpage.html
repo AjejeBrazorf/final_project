@@ -15,58 +15,65 @@
 <link rel="stylesheet" href="css/set1.css"></link>
 <link rel="stylesheet" href="css/input.css"></link>
 <link rel="stylesheet" href="css/style.css"></link>
+<link rel="stylesheet" href="css/normalize.css"></link>
+<link rel="stylesheet" href="css/demo.css"></link>
+<link href="css/offcanvas.css" rel="stylesheet" type="text/css"
+	media="all" />
 <title>UserPage</title>
 </head>
 <body ng-app="App" ng-controller="userCtrl">
 	<div th:replace="fragments/navbar :: navbar"></div>
-	<div class="row imgcontainer"
-		style="border-bottom: 1px solid #9d9d9d !important; padding-bottom: 70px;">
-		<div class="col-md-2">
-
+	<div class="row" style="text-align: center; height: 75%;">
+		<div class="col-md-12" style="padding-top:10%;">
 			<div class="profile-header-img chat-img">
 				<div ng-controller="AuthCtrl" ng-init="setAuthenticated(true)"
 					sec:authorize="isAuthenticated()">
-					<input id="imgsrc" th:value="${image}" ng-init="setuserImage()"
-						ng-model="userImage" hidden="true" />
+					<input id="imgsrc" value="../images/user.ico" th:value="${image}"
+						ng-init="setuserImage()" ng-model="img.compressed.dataURL" hidden="true" />
 				</div>
-				<img id="img" ng-src="{{userImagesrc}}" alt="User Avatar"
-					class="img-circle imgprofile"> <input id="inp" type='file'
-					style="display: none;"></input></img>
+				<img id="img" src="../images/user.ico" ng-click="openFileReader()" ng-init="setuserImage()" ng-src="{{img.compressed.dataURL}}" alt="User Avatar"
+					class="img-circle imgprofile">
+					 <input id="inp" type='file'
+					image="img" accept="image/*"  resize-max-height="200"
+					resize-max-width="200" resize-quality="0.5" resize-type="image/jpg"
+					ng-image-compress="" style="display: none;"></input>
+					</img>
 				<!-- badge -->
-				<div class="rank-label-container">
-					<span class="label label-default rank-label">User</span>
-				</div>
 			</div>
 
 			<span class="input input--minoru">
 				<button ng-click="saveImgOnServer()"
 					style="height: 46px; margin-top: 2px;" class="btn-success">Change
 					Image</button>
-
 			</span>
 		</div>
+	</div>
+	<div class="row imgcontainer"
+		style="border-bottom: 1px solid #9d9d9d !important;">
 		<form method="post">
-			<div class="col-md-7" style="padding-top: 80px">
+			<div class="col-md-4" style="padding-top: 60px">
 				<section class="content bgcolor-5">
-
 					<span class="input input--minoru"> <input
 						class="input__field input__field--yoko" type="text" name="oldpsw" />
 						<label class="input__label input__label--yoko" for="input-16">
 							<span class="input__label-content input__label-content--yoko">Old
 								Passowrd</span>
 					</label>
-					</span> <span class="input input--minoru"> <input
+					</span>
+				</section>
+			</div>
+			<div class="col-md-4" style="padding-top: 60px">
+				<section class="content bgcolor-5">
+					<span class="input input--minoru"> <input
 						class="input__field input__field--yoko" type="text" name="newpsw" />
 						<label class="input__label input__label--yoko" for="input-17">
 							<span class="input__label-content input__label-content--yoko">New
 								Password</span>
 					</label>
 					</span>
-
-
 				</section>
 			</div>
-			<div class="col-md-3" style="padding-top: 85px;">
+			<div class="col-md-4" style="padding-top: 80px;">
 				<span class="input input--minoru">
 					<button type="submit" style="height: 46px; margin-top: 2px;"
 						class="btn-success">Change Password</button>
@@ -111,7 +118,7 @@
 				</div>
 			</div>
 			<div class="row"
-				style="margin-top: 13px; border-bottom: solid 1px; margin-bottom: 20px; padding-bottom: 30px;">
+				style="margin-top: 13px; border-bottom: solid 1px; margin-bottom: 20px; padding-bottom: 50px;">
 				<div class="col-md-2">
 					<h4>Occupation</h4>
 				</div>
@@ -124,7 +131,7 @@
 				</div>
 			</div>
 
-			<div class="row" style="margin-top: 40px;">
+			<div class="row" style="margin-top: 50px;">
 				<div class="col-md-2">
 					<h4>Car</h4>
 				</div>
@@ -159,7 +166,7 @@
 					</span>
 				</div>
 			</div>
-			<div class="row" style="margin-top: 10px">
+			<div class="row" style="margin-top: 20px">
 				<div class="col-md-2">
 					<h4>Car Sharing</h4>
 				</div>
@@ -179,7 +186,7 @@
 					</select>
 				</div>
 			</div>
-			<div class="row" style="margin-top: 10px">
+			<div class="row" style="margin-top: 20px">
 				<div class="col-md-2">
 					<h4>Bike Sharing</h4>
 				</div>
@@ -208,7 +215,7 @@
 					</select>
 				</div>
 			</div>
-			<div class="row" style="margin-top: 10px">
+			<div class="row" style="margin-top: 20px">
 				<div class="col-md-2">
 					<h4>Ticket type</h4>
 				</div>
@@ -281,6 +288,7 @@
 		src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
 		integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
 		crossorigin="anonymous"></script>
+	<script src="../js/angular-image-compress.js"></script>
 
 </body>
 

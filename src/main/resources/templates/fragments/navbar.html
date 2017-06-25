@@ -1,90 +1,91 @@
-    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous" />
-    <!-- Optional theme -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous" />
-    <!-- Custom styles for this template -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
-    <link rel="stylesheet" href="css/style.css"></link>
-    <link rel="stylesheet" href="css/normalize.css"></link>
-    <link rel="stylesheet" href="css/demo.css"></link>
-    <link rel="stylesheet" href="css/leaflet.awesome-markers.css"></link>
-    <link href="css/offcanvas.css" rel="stylesheet" type="text/css" media="all"/>
-    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.css"/>
+
+<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+	integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+	crossorigin="anonymous" />
+<!-- Optional theme -->
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+	integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp"
+	crossorigin="anonymous" />
+<!-- Custom styles for this template -->
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+<link rel="stylesheet" href="css/style.css"></link>
+<link rel="stylesheet" href="css/normalize.css"></link>
+<link rel="stylesheet" href="css/demo.css"></link>
+<link rel="stylesheet" href="css/leaflet.awesome-markers.css"></link>
+<link href="css/offcanvas.css" rel="stylesheet" type="text/css"
+	media="all" />
+<link rel="stylesheet"
+	href="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.css" />
 <div ng-app="App">
-<nav class="navbar navbar-fixed-top navbar-inverse" th:fragment="navbar" role="navigation" style=" border-radius: 0;" ng-controller="navCtrl"  ng-click="changeClass()">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"  aria-expanded="false">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <a class="navbar-brand" href="#" style="padding: 15px;">CinqueTi</a>
-    </div>
-      <div id="navbar" class="collapse navbar-collapse">
-		<ul class="nav navbar-nav">
-			<li >
-	           <a th:href="@{~/#/}">Home </a>
-			</li>
-			<li >
-	          <a th:href="@{~/#/stops}">Bus Stops </a>
-			</li>
-			 <li>
-	          <a th:href="@{~/#/route}">Find Route </a>
-			</li>
-			 <li>
-	          <a th:href="@{~/#/signals}">	Signals </a>
-			</li>	
-			<li >
-	          <a th:href="@{~/#/chat}">	Chat </a>
-			</li>	
-		</ul>
-		<ul class="nav navbar-nav navbar-right" style="padding-right:20px">
-        <li sec:authorize="!isAuthenticated()">
-				<a href="/registration">
-					Sign Up
-				</a>
-			</li>
-			<li sec:authorize="!isAuthenticated()">
-				<a href="/login">
-					Sign In 
-				</a>
-			</li>
-			 <li  sec:authorize="isAuthenticated()" >
-	           <a href="/userpage" style="padding: 2px;">
-				<img ng-if="authenticated" style="height: 50px;" id="img" ng-src="{{userImagesrc}}" />
-				</a>
-			</li>
-			<li sec:authorize="isAuthenticated()" >        
-	       		<a id="user" sec:authentication="name" th:text="${nickname}" href="/userpage">		
-				</a>
-		   </li>
-			<li sec:authorize="isAuthenticated()" >        
-	       		 <a th:href="@{/logout}">
-					Sign out 
-				</a>
-		   </li>
-       </ul>	
-	</div>
-      <!-- /.nav-collapse -->
-  </nav>
-  <!-- /.navbar -->
+	<nav class="navbar navbar-fixed-top navbar-inverse"
+		th:fragment="navbar" role="navigation"
+		style="border-radius: 0; background: black;" ng-controller="navCtrl"
+		ng-click="changeClass()">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<a class="navbar-brand" href="#" style="padding: 15px;">CinqueTi</a>
+		</div>
+		<div id="myNavbar" class="collapse navbar-collapse">
+			<ul class="nav navbar-nav">
+				<li><a th:href="@{~/#/}">Home </a></li>
+				<li><a th:href="@{~/#/stops}">Bus Stops </a></li>
+				<li><a th:href="@{~/#/route}">Find Route </a></li>
+				<li><a th:href="@{~/#/signals}"> Signals </a></li>
+				<li><a th:href="@{~/#/chat}"> Chat </a></li>
+			</ul>
+			<ul class="nav navbar-nav navbar-right" >
+				<li sec:authorize="!isAuthenticated()"><a href="/registration">
+						Sign Up </a></li>
+				<li sec:authorize="!isAuthenticated()"><a href="/login">
+						Sign In </a></li>
+				<li sec:authorize="isAuthenticated()"><a href="/userpage"
+					style="padding: 2px;"> <img class="navbarImg"
+						style="height: 50px;" ng-init="setuserImage()" id="img"
+						src="../images/user.ico" ng-src="{{img.compressed.dataURL}}"
+						alt="User Avatar" />
+				</a></li>
+				<li sec:authorize="isAuthenticated()"><a id="user"
+					sec:authentication="name" th:text="${nickname}" href="/userpage">
+				</a></li>
+				<li sec:authorize="isAuthenticated()"><a th:href="@{/logout}">
+						Sign out </a></li>
+			</ul>
+		</div>
+		<!-- /.nav-collapse -->
+	</nav>
+	<!-- /.navbar -->
 </div>
-  
-  
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
-<script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-animate.min.js'></script>
-<script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-route.min.js'></script>
-<script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-aria.min.js'></script>
-<script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-messages.min.js'></script>
-<script src='https://cdn.gitcdn.xyz/cdn/angular/bower-material/v1.0.0-rc4/angular-material.js'></script>
+
+
+<script
+	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+<script
+	src='https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-animate.min.js'></script>
+<script
+	src='https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-route.min.js'></script>
+<script
+	src='https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-aria.min.js'></script>
+<script
+	src='https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-messages.min.js'></script>
+<script
+	src='https://cdn.gitcdn.xyz/cdn/angular/bower-material/v1.0.0-rc4/angular-material.js'></script>
 <!-- Latest compiled and minified JavaScript -->
 <script src="../node_modules/leaflet/dist/leaflet.js"></script>
 <script src="../node_modules/leaflet.awesome-markers.min.js"></script>
-<script src="../node_modules/angular-simple-logger/dist/angular-simple-logger.js"></script>
+<script
+	src="../node_modules/angular-simple-logger/dist/angular-simple-logger.js"></script>
 <script src="../node_modules/ui-leaflet/dist/ui-leaflet.js"></script>
 <script src="../js/angular-resource.js"></script>
 <script src="../js/angular-route.js"></script>
-<script src='https://s3-us-west-2.amazonaws.com/s.cdpn.io/t-114/assets-cache.js'></script>
+<script
+	src='https://s3-us-west-2.amazonaws.com/s.cdpn.io/t-114/assets-cache.js'></script>
 <script src="../js/app.js"></script>
