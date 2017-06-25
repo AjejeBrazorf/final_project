@@ -242,6 +242,7 @@ app.controller('SignalsCtrl', ['$scope', 'DataProvider','$routeParams','$timeout
 			$scope.addresshints={};	
 			$scope.signalshints["show"]=false;
 			$scope.addresshints["show"]=false;	
+			
 
 		}else{
 			sendMessage($scope.inputMess);
@@ -358,6 +359,10 @@ app.controller('SignalsCtrl', ['$scope', 'DataProvider','$routeParams','$timeout
 		segnalation.type = $scope.signal.type;
 		segnalation.address = positions[0].formatted_address;
 		console.log(segnalation);
+		$scope.addresshints={};	
+		$scope.signalshints={};
+		$scope.addresshints["show"]=false;	
+		$scope.signalshints["show"]=false;
 		return DataProvider.addSignalToServer(segnalation).then( function(signal){
 			console.log("segnale aggiunto:"+signal);
 			$scope.onSignalsFromServer(signal.data);	
@@ -365,8 +370,12 @@ app.controller('SignalsCtrl', ['$scope', 'DataProvider','$routeParams','$timeout
 			$scope.message='<a class="amap" href="../#/signals?lat='+signal.data.lat+'&lng='+signal.data.lng+'"><img src="'+s+'" class="mapimg"  />'+$scope.message+"</a>";
 			sendMessage($scope.message);
 			$scope.showSpinner=false;
+			$scope.addresshints={};	
+			$scope.signalshints={};
+			$scope.addresshints["show"]=false;	
+			$scope.signalshints["show"]=false;
+			segnalation.address = "";
 		});
-
 	};
 
 	$scope.onPositionReady=function(positions) {
