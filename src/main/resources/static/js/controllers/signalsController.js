@@ -52,6 +52,7 @@ app.controller('SignalsCtrl', ['$scope', 'DataProvider','$routeParams','$timeout
 	$scope.errorAddress="";
 	$scope.markerAddress="";
 	$scope.signalMarkers={};
+	$scope.tagPressed=false;
 	if($rootScope.dbMarkers!=null)
 		$scope.signalMarkers=$rootScope.dbMarkers;
 
@@ -153,8 +154,16 @@ app.controller('SignalsCtrl', ['$scope', 'DataProvider','$routeParams','$timeout
 		//se ho schiacciato invio vado avanti
 		$scope.chatSignalTypeTemp="";
 		var textIfSent="";
-		if ($scope.inputMess.length==0 || $scope.inputMess=="Send message...") return;
+		if ($scope.inputMess.length==0 || $scope.inputMess=="Send message...") {
+			$scope.signalshints={};
+			$scope.addresshints={};
+			$scope.tagPressed=false;
+			$scope.signalshints["show"]=false;
+			$scope.addresshints["show"]=false;
+			return;	
+		}
 		if(keyCode == 222){ 
+			$scope.tagPressed=true;
 			$scope.inputMess+="#";
 			console.log("chiamo setcaret");
 			var pos=$scope.inputMess.length-1;
@@ -200,19 +209,22 @@ app.controller('SignalsCtrl', ['$scope', 'DataProvider','$routeParams','$timeout
 			$scope.signalshints={};
 			if($scope.chatSignalType==null&&$scope.chatSignalTypeTemp!=null ){
 				$scope.signalshints["show"]=false;
-				angular.forEach($scope.signalsType, function(value, key) {
-					var k=key.toLowerCase();
-					var indexOfType=k.indexOf($scope.chatSignalTypeTemp);
-					if(indexOfType!=-1){
-						console.log("ho trovato "+$scope.chatSignalTypeTemp+" in "+k);
-						$scope.signalshints[key]=k;
-						$scope.signalshints["show"]=true;
-					}		
-				});
+				if($scope.tagPressed){
+					angular.forEach($scope.signalsType, function(value, key) {
+						var k=key.toLowerCase();
+						var indexOfType=k.indexOf($scope.chatSignalTypeTemp);
+						if(indexOfType!=-1){
+							console.log("ho trovato "+$scope.chatSignalTypeTemp+" in "+k);
+							$scope.signalshints[key]=k;
 
+							$scope.signalshints["show"]=true;
+						}		
+					});
+				}
 			}else{
 				$scope.signalshints["show"]=false;
 				$scope.addresshints["show"]=false;	
+				$scope.tagPressed=false;
 			}
 			return;
 		} 
@@ -239,10 +251,11 @@ app.controller('SignalsCtrl', ['$scope', 'DataProvider','$routeParams','$timeout
 		$scope.address = "";
 		$scope.chatSignalType="";
 		$scope.inputMess="";
+
 	}
 
 	//add signal to map
-	
+
 	$scope.addSignals = function() {
 		console.log("entro in funzione");
 		$scope.showSpinner=true;
