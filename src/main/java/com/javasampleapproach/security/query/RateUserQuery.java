@@ -22,9 +22,9 @@ public class RateUserQuery {
 	}
 
 	//insert UserRate
-	public Integer isPresentUserRate(String username, String idSegnalation){
+	public Integer isPresentUserRate(String username, int idSegnalation){
 		int rate;
-		if((rate = rR.getUserRate(username, Integer.parseInt(idSegnalation))) > 0)
+		if((rate = rR.getUserRate(username, idSegnalation)) > 0)
 			return rate;
 		else
 			return null;

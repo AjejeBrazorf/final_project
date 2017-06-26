@@ -5,6 +5,7 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
 import java.net.URI;
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.javasampleapproach.security.model.SegnalationForClient;
 import com.javasampleapproach.security.model.Segnalazione;
 import com.javasampleapproach.security.model.TipoSegnalazione;
 import com.javasampleapproach.security.query.RateUserQuery;
@@ -40,19 +42,28 @@ public class SegnalationRestController {
 	
 	
 	@RequestMapping(value="/segnalations", method=RequestMethod.GET, produces="application/json")
-	public HttpEntity<List<Segnalazione>> getSegnalations(
+	public HttpEntity<List<SegnalationForClient>> getSegnalations(
+			Principal name,
 			@RequestParam(value = "type", required = false)String type){
 		
 		List<Segnalazione> list;
+		List<SegnalationForClient> newList = new ArrayList<>();
+		SegnalationForClient sfc = new SegnalationForClient();
+		
 		if(type == null){
 			list = service.getAll();
 		}else{
 			int intType = (TipoSegnalazione.valueOf(type)).ordinal();
 			list = service.getAllforType(intType);
 		}
-		for(Segnalazione s:list)
-			System.out.println("s : " + s.toString());
-		return new ResponseEntity<List<Segnalazione>>(list, HttpStatus.OK);
+		for(Segnalazione s:list){
+			int voto = rateService.isPresentUserRate(name.getName(), s.getId());
+			sfc.setSegnalazione(s);
+			sfc.setVoto(voto);
+			newList.add(sfc);
+		}
+			
+		return new ResponseEntity<List<SegnalationForClient>>(newList, HttpStatus.OK);
 	}
 	
 	@RequestMapping(value="/segnalations/{id}", method=RequestMethod.GET, produces="application/json")
@@ -71,7 +82,7 @@ public class SegnalationRestController {
 			@RequestParam(value = "rate", required = false, defaultValue = "null")Integer rate){
 		if(action.equals("rate")){
 			Integer oldRate;
-			if((oldRate = rateService.isPresentUserRate(name.getName(), id))!= null)
+			if((oldRate = rateService.isPresentUserRate(name.getName(), Integer.parseInt(id)))!= null)
 				service.updateRate(1, rate-oldRate, id);
 			else{
 				//aggiungo anche in tabelle di user-voto
