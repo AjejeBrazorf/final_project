@@ -127,6 +127,8 @@ app.factory('DataProvider',
 						    params: values
 						    });
 			promise.then( function(item) {
+				console.log("aggiunto al server");
+				console.log(item.data);
 				return item.data;
 			} , 
 			function error() { }
@@ -135,8 +137,10 @@ app.factory('DataProvider',
 		};
 		
 		DataProvider.updateSignalRate= function(item) {
+			console.log("ite è ");
+			console.log(item);
 			var promise = $http({
-						    url: "../segnalations/"+id,
+						    url: "../segnalations/"+item.id,
 						    method: "PUT",
 						    params: item
 						    });

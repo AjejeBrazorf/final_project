@@ -419,10 +419,13 @@ app.controller('SignalsCtrl', ['$scope', 'DataProvider','$routeParams','$timeout
 
 	};
 
-	$scope.onSignalsFromServer=function(marker) {
+	$scope.onSignalsFromServer=function(item) {
+		console.log("received ");
+		console.log(item);
+		item.segnalazione.action=item.voto;
+		marker=item.segnalazione;
 		$scope.yourVote=3;
 		console.log(marker);
-		marker.youVoted=0;
 		console.log($scope.icons[marker.tipo]);
 		console.log("auth??????"+$rootScope.authenticated);
 		marker.icon = $scope.icons[marker.tipo];

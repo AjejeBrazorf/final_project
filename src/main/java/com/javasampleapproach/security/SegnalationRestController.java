@@ -58,7 +58,7 @@ public class SegnalationRestController {
 			list = service.getAllforType(intType);
 		}
 		for(Segnalazione s:list){
-			if(name.getName() != null){
+			if(name != null){
 				voto = rateService.isPresentUserRate(name.getName(), s.getId());
 				sfc.setVoto(voto);
 			}
