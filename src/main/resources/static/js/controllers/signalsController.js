@@ -400,8 +400,10 @@ app.controller('SignalsCtrl', ['$scope', 'DataProvider','$routeParams','$timeout
 	};
 
 	$scope.onSignalsFromServer=function(marker) {
+		$scope.votodb=4;
 		console.log( marker);
 		console.log($scope.icons[marker.tipo]);
+		console.log("auth??????"+$rootScope.authenticated);
 		marker.icon = $scope.icons[marker.tipo];
 		marker.dataInizio = $filter('date')(marker.dataInizio, "MM/dd/yyyy  h:mma");
 		var s='<h1 class="typesignal">'+marker.tipo+'</h1>'+
@@ -409,9 +411,15 @@ app.controller('SignalsCtrl', ['$scope', 'DataProvider','$routeParams','$timeout
 		'<div><h2 class="time"> from '+marker.dataInizio+'</h2></div>'+
 		'<div ng-cloak="" class="sliderdemoBasicUsage">'+
 		'<md-content style="margin: 16px; padding:16px">'+
+		'<h5 style="text-align: center;">Your rate</h5><br>'+
 		'<div layout="">'+
-		'<md-slider flex="" class="md-warn" md-discrete=""  ng-readonly="readonly" ng-model="signalMarkers['+ marker.id+'].rate" step="1" min="1" max="5" aria-label="rating"></md-slider>'+
-		'<h3 style="padding-left: 25px; margin-top: 10px;">{{signalMarkers['+ marker.id+'].rate}}</h3><br>'+
+			'<md-slider flex="" class="md-warn" md-discrete=""  ng-disabled="'+!$rootScope.authenticated+'" ng-model="signalMarkers['+ marker.id+'].rate" step="1" min="1" max="5" aria-label="rating"></md-slider><br>'+
+			'<h3 style="padding-left: 25px; margin-top: 10px;">{{signalMarkers['+ marker.id+'].rate}}</h3><br>'+
+		'</div>'+
+		'<h5 style="text-align: center;">Average rate</h5><br>'+
+		'<div layout="">'+
+		'<md-slider flex="" class="md-warn" md-discrete=""  ng-disabled="true" ng-model="votodb" step="1" min="1" max="5" aria-label="rating"></md-slider><br>'+
+		'<h3 style="padding-left: 25px; margin-top: 10px;">{{votodb}}</h3><br>'+
 		'</div>'+
 		'</md-content>'+
 		'<div><h2 class="time">{{signalMarkers['+ marker.id+'].nickname}}</h2></div>'+
