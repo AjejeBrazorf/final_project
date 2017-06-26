@@ -13,7 +13,6 @@ import com.javasampleapproach.security.repo.SegnalationRepository;
 @Service
 public class SegnalationQuery {
 
-	private static final int minutesOfInactivity = 5;
 	@Autowired
 	SegnalationRepository sR;
 	
