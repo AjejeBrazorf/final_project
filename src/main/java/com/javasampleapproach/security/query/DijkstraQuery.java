@@ -178,19 +178,6 @@ public class DijkstraQuery {
 			List<String> value = pair.getValue();
 			for(int i=0; i<value.size(); i++){
 				if(value.get(i).equals(stopId)){
-					if(i>0){
-						String previousStop = value.get(i-1);
-						Edge edge = new Edge();
-						edge.setIdSource(stopId);
-						edge.setIdDestination(previousStop);
-						Double distance = 0d;
-						if(!previousStop.equals(stopId))
-							distance= getDistance(stopId, previousStop);
-						edge.setCost(distance.intValue());
-						edge.setMode(false);
-						edge.setLineId(pair.getKey());
-						lista.add(edge);
-					}
 					if(i!=(value.size()-1)){
 						String nextStop = value.get(i+1);
 						Edge edge = new Edge();

@@ -55,6 +55,12 @@ public class MongoQuery {
 			MinPath mp = mpl.get(0);
 			List<Double> pCoord = lq.pointFromStopid(mp.getEdges().get(0).getIdSource());
 			
+			for(int i=0;i<mp.getEdges().size();i++){
+				Edge e = mp.getEdges().get(i);
+				System.out.println("IdSource "+e.getIdSource() +" idDest: "+e.getIdDestination() + " mode : " + e.isMode());
+				System.out.println("linea id"+ e.getLineId());
+			}
+			
 			if(pCoord.get(0)!=lat1 || pCoord.get(1)!=lng1){
 				EdgeMaps em = new EdgeMaps(lat1, lng1, 
 							pCoord.get(0), pCoord.get(1));

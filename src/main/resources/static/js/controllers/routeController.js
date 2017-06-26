@@ -181,6 +181,7 @@ app.controller('RouteCtrl', ['$scope', 'DataProvider','$routeParams','$timeout',
 
 	$scope.getPointNameStart= function(text,iPath){
 		$showSpinner=true;
+		console.log("waiting for nr "+iPath);
 		DataProvider.getPositionFromString(text, function(position){
 			console.log(position[0].formatted_address);
 			$scope.fullPath[iPath].start=position[0].formatted_address;
@@ -190,6 +191,7 @@ app.controller('RouteCtrl', ['$scope', 'DataProvider','$routeParams','$timeout',
 	
 	$scope.getPointNameEnd= function(text,iPath){
 		$showSpinner=true;
+		console.log("waiting for nr "+iPath);
 		DataProvider.getPositionFromString(text, function(position){
 			console.log(position[0].formatted_address);
 			$scope.fullPath[iPath].end=position[0].formatted_address;
@@ -199,8 +201,10 @@ app.controller('RouteCtrl', ['$scope', 'DataProvider','$routeParams','$timeout',
 	
 	$scope.checkSpinner= function(){
 		$scope.countStartEndPointReceived++;
-		if($scope.countStartEndPointReceived==$scope.fullPath.length)
+		if($scope.countStartEndPointReceived==$scope.fullPath.length-1){
 			$scope.showSpinner=false;
+			console.log($scope.fullPath);
+		}
 	}
 
 	$scope.makePathRequest = function(lat1, lng1, lat2, lng2){
@@ -240,7 +244,7 @@ app.controller('RouteCtrl', ['$scope', 'DataProvider','$routeParams','$timeout',
 							typr:""
 					};
 					
-//					path.push(point);
+					path.push(point);
 					if(value.mode==false){
 						$scope.byFoot[countFoot]={
 								patterns:[],
@@ -249,7 +253,7 @@ app.controller('RouteCtrl', ['$scope', 'DataProvider','$routeParams','$timeout',
 						$scope.byFoot[countFoot].patterns=$scope.decorations.byFoot.patterns;
 						$scope.byFoot[countFoot].coordinates=path;
 						countFoot++;
-						$scope.fullPath[countFullPath].type="bus";
+						$scope.fullPath[countFullPath].type="foot";
 					}else{
 						$scope.byBus[countBus]={
 								patterns:[],
@@ -258,7 +262,7 @@ app.controller('RouteCtrl', ['$scope', 'DataProvider','$routeParams','$timeout',
 						$scope.byBus[countBus].patterns=$scope.decorations.byBus.patterns;
 						$scope.byBus[countBus].coordinates=path;
 						countBus++;
-						$scope.fullPath[countFullPath].type="foot";
+						$scope.fullPath[countFullPath].type="bus";
 					}
 					
 					$scope.getPointNameStart(path[0][0]+","+path[0][1],countFullPath);
