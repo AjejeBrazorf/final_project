@@ -420,12 +420,14 @@ div.message.right .corner{
 	heigth:0;
 	padding:0;
 	background: rgba(0, 0, 0, 0);
+    display: none;
 }
 
 .chatHintsAddress.close {
 	heigth:0;
 	padding:0;
 	background: rgba(0, 0, 0, 0);
+	display: none;
 }		
 
 .hint {
