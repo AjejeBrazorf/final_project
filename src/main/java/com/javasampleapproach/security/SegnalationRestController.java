@@ -32,20 +32,20 @@ import rest.ArgumentsResource;
 
 @RestController
 public class SegnalationRestController {
-
+	
 	@Autowired
 	private SegnalationQuery service;
 	@Autowired
 	private UsersQuery userService;
 	@Autowired
 	private RateUserQuery rateService;
-
-
+	
+	
 	@RequestMapping(value="/segnalations", method=RequestMethod.GET, produces="application/json")
 	public HttpEntity<List<SegnalationForClient>> getSegnalations(
 			Principal name,
 			@RequestParam(value = "type", required = false)String type){
-
+		
 		List<Segnalazione> list;
 		List<SegnalationForClient> newList = new ArrayList<>();
 		SegnalationForClient sfc = new SegnalationForClient();
@@ -70,13 +70,21 @@ public class SegnalationRestController {
 	}
 	
 	@RequestMapping(value="/segnalations/{id}", method=RequestMethod.GET, produces="application/json")
-	public HttpEntity<Segnalazione> getSegnalation(
+	public HttpEntity<SegnalationForClient> getSegnalation(
+			Principal name,
 			@PathVariable String id){
-
+		SegnalationForClient sfc = new SegnalationForClient();
+		int voto;
 		Segnalazione s = service.getById(id);
-		return new ResponseEntity<Segnalazione>(s, HttpStatus.OK);
+		if(name != null){
+			voto = rateService.isPresentUserRate(name.getName(), s.getId());
+			sfc.setVoto(voto);
+		}
+		sfc.setSegnalazione(s);
+		
+		return new ResponseEntity<SegnalationForClient>(sfc, HttpStatus.OK);
 	}
-
+	
 	@RequestMapping(value="/segnalations/{id}", method=RequestMethod.PUT, produces="application/json")
 	public HttpEntity<?> rateSegnalation(
 			@PathVariable String id,
@@ -97,10 +105,10 @@ public class SegnalationRestController {
 			service.updateSegnalation(new Date(), id);
 		else
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-
+		
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
-
+	
 	@RequestMapping(value="/segnalations", method=RequestMethod.POST, produces="application/json")
 	public HttpEntity<Segnalazione> insertSegnalation(
 			Principal name, 
@@ -108,19 +116,19 @@ public class SegnalationRestController {
 			@RequestParam(value = "lng", required = true)Double lng,
 			@RequestParam(value = "address", required = true)String indirizzo,
 			@RequestParam(value = "type", required = true)String tipo){
-
+		
 		System.out.println("type : "+ tipo);
-
+		
 		int t = TipoSegnalazione.valueOf(tipo).ordinal();
 		String nickname = userService.getUsernameByMail(name.getName());
 		Date date = new Date();
 		String id = service.insertSegnalation(nickname, lat, lng, date, indirizzo, t);
-
+		
 		Segnalazione s = new Segnalazione(nickname, lat, lng, date, null, indirizzo, TipoSegnalazione.valueOf(tipo), 0d, 0);
 		s.setId(Integer.parseInt(id));
 		System.out.println("Segnalazione creata");
 		return new ResponseEntity<Segnalazione>(s, HttpStatus.CREATED);
-
+		
 	}
-
+	
 }
