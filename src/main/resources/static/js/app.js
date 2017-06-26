@@ -133,6 +133,23 @@ app.factory('DataProvider',
 			);
 			return promise;
 		};
+		
+		DataProvider.updateSignalRate= function(item) {
+			var promise = $http({
+						    url: "../segnalations/"+id,
+						    method: "PUT",
+						    params: item
+						    });
+			promise.then( function(item) {
+				return item.data;
+			} , 
+			function error() { }
+			);
+			return promise;
+		};
+
+		
+		
 
 		function status(response) {  
 			console.log(response.status);

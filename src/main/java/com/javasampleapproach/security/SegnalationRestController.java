@@ -32,48 +32,50 @@ import rest.ArgumentsResource;
 
 @RestController
 public class SegnalationRestController {
-	
+
 	@Autowired
 	private SegnalationQuery service;
 	@Autowired
 	private UsersQuery userService;
 	@Autowired
 	private RateUserQuery rateService;
-	
-	
+
+
 	@RequestMapping(value="/segnalations", method=RequestMethod.GET, produces="application/json")
 	public HttpEntity<List<SegnalationForClient>> getSegnalations(
 			Principal name,
 			@RequestParam(value = "type", required = false)String type){
-		
+
 		List<Segnalazione> list;
 		List<SegnalationForClient> newList = new ArrayList<>();
 		SegnalationForClient sfc = new SegnalationForClient();
-		
+
 		if(type == null){
 			list = service.getAll();
 		}else{
 			int intType = (TipoSegnalazione.valueOf(type)).ordinal();
 			list = service.getAllforType(intType);
 		}
-		for(Segnalazione s:list){
-			int voto = rateService.isPresentUserRate(name.getName(), s.getId());
-			sfc.setSegnalazione(s);
-			sfc.setVoto(voto);
-			newList.add(sfc);
-		}
-			
+		if(list.size()>0)
+			for(Segnalazione s:list){
+				System.out.println(name.getName());
+				int voto = rateService.isPresentUserRate(name.getName(), s.getId());
+				sfc.setSegnalazione(s);
+				sfc.setVoto(voto);
+				newList.add(sfc);
+			}
+
 		return new ResponseEntity<List<SegnalationForClient>>(newList, HttpStatus.OK);
 	}
-	
+
 	@RequestMapping(value="/segnalations/{id}", method=RequestMethod.GET, produces="application/json")
 	public HttpEntity<Segnalazione> getSegnalation(
 			@PathVariable String id){
-		
+
 		Segnalazione s = service.getById(id);
 		return new ResponseEntity<Segnalazione>(s, HttpStatus.OK);
 	}
-	
+
 	@RequestMapping(value="/segnalations/{id}", method=RequestMethod.PUT, produces="application/json")
 	public HttpEntity<?> rateSegnalation(
 			@PathVariable String id,
@@ -94,10 +96,10 @@ public class SegnalationRestController {
 			service.updateSegnalation(new Date(), id);
 		else
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-		
+
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
-	
+
 	@RequestMapping(value="/segnalations", method=RequestMethod.POST, produces="application/json")
 	public HttpEntity<Segnalazione> insertSegnalation(
 			Principal name, 
@@ -105,19 +107,19 @@ public class SegnalationRestController {
 			@RequestParam(value = "lng", required = true)Double lng,
 			@RequestParam(value = "address", required = true)String indirizzo,
 			@RequestParam(value = "type", required = true)String tipo){
-		
+
 		System.out.println("type : "+ tipo);
-		
+
 		int t = TipoSegnalazione.valueOf(tipo).ordinal();
 		String nickname = userService.getUsernameByMail(name.getName());
 		Date date = new Date();
 		String id = service.insertSegnalation(nickname, lat, lng, date, indirizzo, t);
-		
+
 		Segnalazione s = new Segnalazione(nickname, lat, lng, date, null, indirizzo, TipoSegnalazione.valueOf(tipo), 0d, 0);
 		s.setId(Integer.parseInt(id));
 		System.out.println("Segnalazione creata");
 		return new ResponseEntity<Segnalazione>(s, HttpStatus.CREATED);
-		
+
 	}
-	
+
 }

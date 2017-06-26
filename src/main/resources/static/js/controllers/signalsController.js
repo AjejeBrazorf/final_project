@@ -380,8 +380,20 @@ app.controller('SignalsCtrl', ['$scope', 'DataProvider','$routeParams','$timeout
 	
 	
 	//send new rate to server
-	$scope.updateSignalRate=function(){
-	console.log("nuovo voto" + $scope.yourVote) ; 
+	$scope.updateSignalRate=function(id){
+		console.log("nuovo voto al marker "+id+" di" + $scope.yourVote) ;
+
+		//update Rate
+		//mode : 0  new vote
+		//mode : 1  update of old vote
+		let action=$scope.signalMarkers[id].action;
+			
+		let item={
+				"id": id,
+				"rate": $scope.yourVote,
+				"action":action
+		};
+		DataProvider.updateSignalRate(item);
 	}
 	
 	
@@ -409,7 +421,8 @@ app.controller('SignalsCtrl', ['$scope', 'DataProvider','$routeParams','$timeout
 
 	$scope.onSignalsFromServer=function(marker) {
 		$scope.yourVote=3;
-		console.log( marker);
+		console.log(marker);
+		marker.youVoted=0;
 		console.log($scope.icons[marker.tipo]);
 		console.log("auth??????"+$rootScope.authenticated);
 		marker.icon = $scope.icons[marker.tipo];
@@ -421,7 +434,7 @@ app.controller('SignalsCtrl', ['$scope', 'DataProvider','$routeParams','$timeout
 		'<md-content style="margin: 16px; padding:16px">'+
 		'<h5 style="text-align: center;">Your rate</h5><br>'+
 		'<div layout="">'+
-			'<md-slider flex="" class="md-warn" md-discrete="" ng-mouseup="updateSignalRate()" ng-disabled="'+!$rootScope.authenticated+'" ng-model="yourVote" step="1" min="1" max="5" aria-label="rating"></md-slider><br>'+
+			'<md-slider flex="" class="md-warn" md-discrete="" ng-mouseup="updateSignalRate('+ marker.id+')" ng-disabled="'+!$rootScope.authenticated+'" ng-model="yourVote" step="1" min="1" max="5" aria-label="rating"></md-slider><br>'+
 			'<h3 style="padding-left: 25px; margin-top: 10px;">{{yourVote}}</h3><br>'+
 		'</div>'+
 		'<h5 style="text-align: center;">Average rate</h5><br>'+
