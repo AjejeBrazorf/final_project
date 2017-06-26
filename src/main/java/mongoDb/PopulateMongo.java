@@ -20,6 +20,8 @@ import com.javasampleapproach.security.model.BusStop;
 import com.javasampleapproach.security.model.Edge;
 import com.javasampleapproach.security.query.DijkstraQuery;
 
+//db.paths_list.createIndex( { idSource: 1, idDestination: 1} )
+
 public class PopulateMongo {
 	private static List<String> nodes ;
 	private static MultiKeyMap<String,Edge> edges;

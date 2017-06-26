@@ -12,6 +12,7 @@ import com.javasampleapproach.security.repo.SegnalationRepository;
 
 @Service
 public class SegnalationQuery {
+
 	@Autowired
 	SegnalationRepository sR;
 	

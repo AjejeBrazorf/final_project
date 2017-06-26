@@ -377,6 +377,14 @@ app.controller('SignalsCtrl', ['$scope', 'DataProvider','$routeParams','$timeout
 			segnalation.address = "";
 		});
 	};
+	
+	
+	//send new rate to server
+	$scope.updateSignalRate=function(){
+	console.log("nuovo voto" + $scope.yourVote) ; 
+	}
+	
+	
 
 	$scope.onPositionReady=function(positions) {
 		console.log(positions);
@@ -400,7 +408,7 @@ app.controller('SignalsCtrl', ['$scope', 'DataProvider','$routeParams','$timeout
 	};
 
 	$scope.onSignalsFromServer=function(marker) {
-		$scope.votodb=4;
+		$scope.yourVote=3;
 		console.log( marker);
 		console.log($scope.icons[marker.tipo]);
 		console.log("auth??????"+$rootScope.authenticated);
@@ -413,13 +421,13 @@ app.controller('SignalsCtrl', ['$scope', 'DataProvider','$routeParams','$timeout
 		'<md-content style="margin: 16px; padding:16px">'+
 		'<h5 style="text-align: center;">Your rate</h5><br>'+
 		'<div layout="">'+
-			'<md-slider flex="" class="md-warn" md-discrete=""  ng-disabled="'+!$rootScope.authenticated+'" ng-model="signalMarkers['+ marker.id+'].rate" step="1" min="1" max="5" aria-label="rating"></md-slider><br>'+
-			'<h3 style="padding-left: 25px; margin-top: 10px;">{{signalMarkers['+ marker.id+'].rate}}</h3><br>'+
+			'<md-slider flex="" class="md-warn" md-discrete="" ng-mouseup="updateSignalRate()" ng-disabled="'+!$rootScope.authenticated+'" ng-model="yourVote" step="1" min="1" max="5" aria-label="rating"></md-slider><br>'+
+			'<h3 style="padding-left: 25px; margin-top: 10px;">{{yourVote}}</h3><br>'+
 		'</div>'+
 		'<h5 style="text-align: center;">Average rate</h5><br>'+
 		'<div layout="">'+
-		'<md-slider flex="" class="md-warn" md-discrete=""  ng-disabled="true" ng-model="votodb" step="1" min="1" max="5" aria-label="rating"></md-slider><br>'+
-		'<h3 style="padding-left: 25px; margin-top: 10px;">{{votodb}}</h3><br>'+
+			'<md-slider flex="" class="md-warn" md-discrete="" ng-disabled="true"  ng-model="signalMarkers['+ marker.id+'].rate" step="1" min="1" max="5" aria-label="rating"></md-slider><br>'+
+			'<h3 style="padding-left: 25px; margin-top: 10px;">{{signalMarkers['+ marker.id+'].rate}}</h3><br>'+
 		'</div>'+
 		'</md-content>'+
 		'<div><h2 class="time">{{signalMarkers['+ marker.id+'].nickname}}</h2></div>'+
