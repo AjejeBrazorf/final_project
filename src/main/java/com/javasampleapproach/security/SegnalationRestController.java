@@ -48,7 +48,6 @@ public class SegnalationRestController {
 		
 		List<Segnalazione> list;
 		List<SegnalationForClient> newList = new ArrayList<>();
-		SegnalationForClient sfc = new SegnalationForClient();
 		int voto;
 		
 		if(type == null){
@@ -58,6 +57,7 @@ public class SegnalationRestController {
 			list = service.getAllforType(intType);
 		}
 		for(Segnalazione s:list){
+			SegnalationForClient sfc = new SegnalationForClient();
 			if(name != null){
 				voto = rateService.isPresentUserRate(name.getName(), s.getId());
 				sfc.setVoto(voto);
@@ -65,7 +65,7 @@ public class SegnalationRestController {
 			sfc.setSegnalazione(s);
 			newList.add(sfc);
 		}
-			
+		
 		return new ResponseEntity<List<SegnalationForClient>>(newList, HttpStatus.OK);
 	}
 	
@@ -91,14 +91,20 @@ public class SegnalationRestController {
 			Principal name,
 			@RequestParam(value = "action", required = true)String action,
 			@RequestParam(value = "rate", required = false, defaultValue = "null")Integer rate){
+		System.out.println("action : " +action);
 		if(action.equals("rate")){
 			Integer oldRate;
-			if((oldRate = rateService.isPresentUserRate(name.getName(), Integer.parseInt(id)))!= null)
+			oldRate = rateService.isPresentUserRate(name.getName(), id);
+			System.out.println("oldrate: " +oldRate);
+			if(oldRate != null){
 				service.updateRate(1, rate-oldRate, id);
+			}
 			else{
 				//aggiungo anche in tabelle di user-voto
 				rateService.insertUserRate(name.getName(), id, rate);
+				System.out.println("action 2: " +action);
 				service.updateRate(0, rate, id);
+				System.out.println("action 3: " +action);
 			}
 		}
 		else if(action.equals("cancel"))

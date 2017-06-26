@@ -36,7 +36,7 @@ app.controller('AuthCtrl', ['$scope', '$rootScope',
 			}
 	};
 	$rootScope.authenticated=false;
-	
+
 	$scope.setAuthenticated=function(auth){
 		console.log(auth);
 		$rootScope.authenticated=auth;
@@ -48,201 +48,203 @@ app.controller('AuthCtrl', ['$scope', '$rootScope',
 		}
 	}
 
-	
-	
+
+
 	$scope.setuserImage=function(){
 		$scope.img.compressed.dataURL=$('#imgsrc').val();
 	}
-	
+
 }]);
 
 app.factory('DataProvider', 
-	function($http){
-		var DataProvider = {};
-		var lines = [];
-		var stops = [];
+		function($http){
+	var DataProvider = {};
+	var lines = [];
+	var stops = [];
 
-		DataProvider.getLines= function() {
-			return readJson('../lines').then(function (response){
-				DataProvider.lines=response.lines;
-				return response.lines;
-			});
-		};
+	DataProvider.getLines= function() {
+		return readJson('../lines').then(function (response){
+			DataProvider.lines=response.lines;
+			return response.lines;
+		});
+	};
 
-		DataProvider.getLine= function(line) {
-			var array = DataProvider.extractLine();
-			return array;
-		};
+	DataProvider.getLine= function(line) {
+		var array = DataProvider.extractLine();
+		return array;
+	};
 
-		DataProvider.getLinePromise= function(line) {
-			var array = DataProvider.getLines().then( function(){return DataProvider.extractLine();});
-			console.log("getLinePromise modafocka");
-			return array;
-		};
+	DataProvider.getLinePromise= function(line) {
+		var array = DataProvider.getLines().then( function(){return DataProvider.extractLine();});
+		console.log("getLinePromise modafocka");
+		return array;
+	};
 
-		DataProvider.extractLine = function(){
-			var array;
-			angular.forEach(lines, function(value, key) {
-				if(value.line==line){
-					array = value;
+	DataProvider.extractLine = function(){
+		var array;
+		angular.forEach(lines, function(value, key) {
+			if(value.line==line){
+				array = value;
+			}
+		});
+		return array;
+	};
+
+	DataProvider.getPaths= function(line) {
+		return readJson('../'+line+'/stops').then( function (response){ 
+			var paths = [];
+			var stops = [];
+			var stopKs= [];
+			angular.forEach(response.stops, function (stop, stop_key) {
+				if(stopKs.indexOf(stop.id)==-1 ) {
+					stops.push(stop);
+					stopKs.push(stop.id);
+				}else{
+					paths.push(stops);
+					stops=[];
+					stopKs=[];
+					stops.push(stop);
+					stopKs.push(stop.id);
 				}
 			});
-			return array;
-		};
+			paths.push(stops);
+			return paths;
+		});
+	};
 
-		DataProvider.getPaths= function(line) {
-			return readJson('../'+line+'/stops').then( function (response){ 
-				var paths = [];
-				var stops = [];
-				var stopKs= [];
-				angular.forEach(response.stops, function (stop, stop_key) {
-					if(stopKs.indexOf(stop.id)==-1 ) {
-						stops.push(stop);
-						stopKs.push(stop.id);
-					}else{
-						paths.push(stops);
-						stops=[];
-						stopKs=[];
-						stops.push(stop);
-						stopKs.push(stop.id);
-					}
-				});
-				paths.push(stops);
-				return paths;
-			});
-		};
-
-		DataProvider.getSignals= function() {
-			return readJson('../segnalations').then( function (response){ 
-				console.log(response);
-				return response;
-			});
-		};
-		 
-		DataProvider.addSignalToServer= function(item) {
-			var values= {'lat': item.lat, 'lng': item.lng, 'type': item.type, 'address':item.address};
-			var promise = $http({
-						    url: "../segnalations",
-						    method: "POST",
-						    params: values
-						    });
-			promise.then( function(item) {
-				console.log("aggiunto al server");
-				console.log(item.data);
-				return item.data;
-			} , 
-			function error() { }
-			);
-			return promise;
-		};
-		
-		DataProvider.updateSignalRate= function(item) {
-			console.log("ite è ");
-			console.log(item);
-			var promise = $http({
-						    url: "../segnalations/"+item.id,
-						    method: "PUT",
-						    params: item
-						    });
-			promise.then( function(item) {
-				return item.data;
-			} , 
-			function error() { }
-			);
-			return promise;
-		};
-
-		
-		
-
-		function status(response) {  
-			console.log(response.status);
-		  if (response.status >= 200 && response.status < 300) {  
-			    return Promise.resolve(response)
-			  } else {  
-				    return Promise.reject(new Error(response.statusText) )  
-				  }  
-		}
-
-		function json(response) {
+	DataProvider.getSignals= function() {
+		return readJson('../segnalations').then( function (response){ 
 			console.log(response);
+			return response;
+		});
+	};
+	 
+	DataProvider.addSignalToServer= function(item) {
+		var values= {'lat': item.lat, 'lng': item.lng, 'type': item.type, 'address':item.address};
+		var promise = $http({
+			url: "../segnalations",
+			method: "POST",
+			params: values
+		});
+		promise.then( function(item) {
+			console.log("aggiunto al server");
+			console.log(item.data);
+			return item.data;
+		} , 
+		function error() { }
+		);
+		return promise;
+	};
 
-			  return response.json()
+	DataProvider.updateSignalRate= function(item,id) {
+		var values={
+				'action': item.action,
+				'rate':item.rate
 		}
+		var promise = $http({
+			url: "../segnalations/"+id,
+			method: "PUT",
+			params: values
+		});
+		promise.then( function(item) {
+			return item.data;
+		} , 
+		function error() { }
+		);
+		return promise;
+	};
 
-		function readJson(url){
-			return fetch(url)  
-			  .then(status)  
-			  .then(json)  
-			  .then(function(data) {  
-				    console.log('Request success with JSON', data); 
-			return data; 
-			  }).catch(function(error) {  
-				    console.log('Request failed', error);  
-				  });
-		}
 
-		//get the local position 
-		DataProvider.getCurrentPosition = function(onSuccess){
 
-			infoWindow = new google.maps.InfoWindow;
 
-			// Try HTML5 geolocation.
-			if (navigator.geolocation) {
-				navigator.geolocation.getCurrentPosition(function(position) {
-					onSuccess(position);
-				}, function() {
-					handleLocationError(true, infoWindow, map.getCenter());
-				});
-			} else {
-				// Browser doesn't support Geolocation
-				console.log("error");
-			}
-
-			return 
-
-		}
-
-		//get lat&long for a given name
-		DataProvider.getPositionFromString = function(name, onSuccess, onError){
-			var geocoder = new google.maps.Geocoder();
-			geocoder.geocode( { 'address': name}, function(results, status) {
-				if (status == 'OK') {
-					onSuccess(results);
-				} else {
-					onError(status);
-				}
-			});
-		}
-
-		DataProvider.findPath = function(lat1, lng1, lat2, lng2){
-			return readJson('/findPath?lat1='+lat1+'&lng1='+lng1+'&lat2='+lat2+'&lng2='+lng2)
-				.then( function (response){ 
-					console.log(response);
-					return response;
-			});
-
-		}
-		
-		DataProvider.changeImageUser= function(foto) {
-			var values= {'image': foto};
-			var promise = $http({
-						    url: "../image",
-						    method: "PUT",
-						    params: values
-						    });
-			promise.then( function(item) {
-				console.log("Foto salvata");
-			} , 
-			function error() { 
-				console.log("Errore in salvataggio foto");
-			}
-			);
-			return promise;
-		};
-
-		return DataProvider;
+	function status(response) {  
+		console.log(response.status);
+	  if (response.status >= 200 && response.status < 300) {  
+		    return Promise.resolve(response)
+		  } else {  
+			    return Promise.reject(new Error(response.statusText) )  
+			  }  
 	}
+
+	function json(response) {
+		console.log(response);
+
+		  return response.json()
+	}
+
+	function readJson(url){
+		return fetch(url)  
+		  .then(status)  
+		  .then(json)  
+		  .then(function(data) {  
+			    console.log('Request success with JSON', data); 
+		return data; 
+		  }).catch(function(error) {  
+			    console.log('Request failed', error);  
+			  });
+	}
+
+	//get the local position 
+	DataProvider.getCurrentPosition = function(onSuccess){
+
+		infoWindow = new google.maps.InfoWindow;
+
+		// Try HTML5 geolocation.
+		if (navigator.geolocation) {
+			navigator.geolocation.getCurrentPosition(function(position) {
+				onSuccess(position);
+			}, function() {
+				handleLocationError(true, infoWindow, map.getCenter());
+			});
+		} else {
+			// Browser doesn't support Geolocation
+			console.log("error");
+		}
+
+		return 
+
+	}
+
+	//get lat&long for a given name
+	DataProvider.getPositionFromString = function(name, onSuccess, onError){
+		var geocoder = new google.maps.Geocoder();
+		geocoder.geocode( { 'address': name}, function(results, status) {
+			if (status == 'OK') {
+				onSuccess(results);
+			} else {
+				onError(status);
+			}
+		});
+	}
+
+	DataProvider.findPath = function(lat1, lng1, lat2, lng2){
+		return readJson('/findPath?lat1='+lat1+'&lng1='+lng1+'&lat2='+lat2+'&lng2='+lng2)
+		.then( function (response){ 
+			console.log(response);
+			return response;
+		});
+
+	}
+
+	DataProvider.changeImageUser= function(foto) {
+		var values= {'image': foto};
+		var promise = $http({
+			url: "../image",
+			method: "PUT",
+			params: values
+		});
+		promise.then( function(item) {
+			console.log("Foto salvata");
+		} , 
+		function error() { 
+			console.log("Errore in salvataggio foto");
+		}
+		);
+		return promise;
+	};
+
+	return DataProvider;
+}
 );
 
 

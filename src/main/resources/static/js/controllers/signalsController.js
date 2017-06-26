@@ -364,8 +364,12 @@ app.controller('SignalsCtrl', ['$scope', 'DataProvider','$routeParams','$timeout
 		$scope.addresshints["show"]=false;	
 		$scope.signalshints["show"]=false;
 		return DataProvider.addSignalToServer(segnalation).then( function(signal){
-			console.log("segnale aggiunto:"+signal);
-			$scope.onSignalsFromServer(signal.data);	
+			console.log("segnale aggiunto:");
+			console.log(signal);
+			var item={
+					segnalazione:signal.data,
+			}
+			$scope.onSignalsFromServer(item);	
 			var s="../../images/map.jpg";
 			$scope.message='<a class="amap" href="../#/signals?lat='+signal.data.lat+'&lng='+signal.data.lng+'"><img src="'+s+'" class="mapimg"  />'+$scope.message+"</a>";
 			sendMessage($scope.message);
@@ -389,11 +393,10 @@ app.controller('SignalsCtrl', ['$scope', 'DataProvider','$routeParams','$timeout
 		let action=$scope.signalMarkers[id].action;
 			
 		let item={
-				"id": id,
-				"rate": $scope.yourVote,
-				"action":action
+				"action":'rate',
+				"rate": $scope.yourVote
 		};
-		DataProvider.updateSignalRate(item);
+		DataProvider.updateSignalRate(item,id);
 	}
 	
 	
