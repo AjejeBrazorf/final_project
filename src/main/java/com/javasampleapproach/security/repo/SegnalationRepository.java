@@ -22,9 +22,9 @@ public interface SegnalationRepository extends JpaRepository<Segnalazione, Integ
 	Segnalazione findById(String id);
 	
 	@Query(value = "INSERT into segnalazioni(nickname, lat, lng, tipo, rate, count, dataInizio, dataFine, indirizzo)"
-			+ " VALUES (?1, ?2, ?3, ?4, 0, 0, ?5, now() + interval '?7 minutes', ?6) "
+			+ " VALUES (?1, ?2, ?3, ?4, 0, 0, ?5, now() + interval '5 minutes', ?6) "
 			+ "RETURNING id", nativeQuery = true)
-	String insertSegnalazioni(String nickname, double lat, double lng, int tipo, Date dataInizio, String indirizzo, int minutes);
+	String insertSegnalazioni(String nickname, double lat, double lng, int tipo, Date dataInizio, String indirizzo);
 
 	@Query(value = "UPDATE segnalazioni SET dataFine = ?1 WHERE id = ?2"
 			+ " RETURNING id", nativeQuery = true)

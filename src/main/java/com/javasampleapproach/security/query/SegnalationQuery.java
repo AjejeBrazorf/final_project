@@ -13,7 +13,6 @@ import com.javasampleapproach.security.repo.SegnalationRepository;
 @Service
 public class SegnalationQuery {
 
-	private static final int minutesOfInactivity = 5;
 	@Autowired
 	SegnalationRepository sR;
 	
@@ -34,7 +33,7 @@ public class SegnalationQuery {
 	
 	//insert new Segnalation
 	public String insertSegnalation(String nickname, double lat, double lng, Date dataInizio, String indirizzo, int tipo){
-		return sR.insertSegnalazioni(nickname, lat, lng, tipo, dataInizio, indirizzo, minutesOfInactivity);
+		return sR.insertSegnalazioni(nickname, lat, lng, tipo, dataInizio, indirizzo);
 	}
 	
 	//change data fine of a segnalation
