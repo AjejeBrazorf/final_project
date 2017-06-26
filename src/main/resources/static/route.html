@@ -70,6 +70,17 @@
                     <button ng-click="findPath()" type="submit" class="btn-success">Calcola percorso</button>
                 </div>
             </div>
+            <div class="row">
+                <div class="col-md-12 col-sm-12 " style="height: 72px;padding: 27px;">
+                    <ul>
+                    <li ng-repeat="fp in fullPath">
+                    	<i ng-if="fp.type=='foot'"> Walk </i>
+                    	<i ng-if="fp.type=='bus'"> Take the bus</i>
+                    	from {{fp.start}} to {{fp.end}}
+                    </li>
+                    </ul>
+                </div>
+            </div>
         </div>
         <!--<li style="padding: 0px; margin: 0;  list-style-type: none; "  ng-repeat="stop in stops">
             <div class="row" style="padding: 0px; margin: 0;">

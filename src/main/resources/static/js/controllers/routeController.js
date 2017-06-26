@@ -9,11 +9,11 @@ app.controller('RouteCtrl', ['$scope', 'DataProvider','$routeParams','$timeout',
 		},
 		paths: {
 			p1: {
-                color: 'red',
-                weight: 8,
-                latlngs: [
-                   
-                ]            },
+				color: 'red',
+				weight: 8,
+				latlngs: [
+
+					]            },
 		},
 		defaults: {
 			path: {
@@ -22,23 +22,33 @@ app.controller('RouteCtrl', ['$scope', 'DataProvider','$routeParams','$timeout',
 				opacity: 1
 			}
 		},
-        decorations: {
-            markers: {
-                coordinates: [],
-                patterns:  [
-                    {
-                        offset: 12,
-                        repeat: 25,
-                        symbol: L.Symbol.dash({pixelSize: 18, pathOptions: {color: '#f00', weight: 4}})
-                    },
-                    {
-                        offset: '10%',
-                        repeat: 25,
-                        symbol: L.Symbol.arrowHead({pixelSize: 10, polygon: false, pathOptions: {stroke: true}})
-                    }
-                ]
-            }
-        }
+		decorations: {
+			byFoot: {
+				coordinates: [],
+				patterns:[
+						{
+							offset: 12,
+							repeat: 25,
+							symbol: L.Symbol.dash({pixelSize: 18, pathOptions: {color: '#f00', weight: 4}})
+						},
+						{
+							offset: '10%',
+							repeat: 25,
+							symbol: L.Symbol.arrowHead({pixelSize: 10, polygon: false, pathOptions: {stroke: true}})
+						}
+						]
+			},
+			byBus: {
+				coordinates: [],
+				patterns:  [
+					{
+						offset: 0,
+						repeat: 10,
+						symbol: L.Symbol.dash({pixelSize: 0})
+					}
+					]
+			}
+		}
 	});
 
 
@@ -146,52 +156,143 @@ app.controller('RouteCtrl', ['$scope', 'DataProvider','$routeParams','$timeout',
 			lng1=positions[0].geometry.location.lng();
 			console.log(lat1);
 			console.log(lng1);
-			
+
 			if(flagTo == true){
 				// fai richiesta al server
 				$scope.makePathRequest(lat1, lng1, lat2, lng2);
 			}
-			
+
 		}, onErrorPositionAddress);
-		
+
 		DataProvider.getPositionFromString($scope.to, function(positions){
 			flagTo = true;
 			lat2=positions[0].geometry.location.lat();
 			lng2=positions[0].geometry.location.lng();
 			console.log(lat2);
 			console.log(lng2);
-			
+
 			if(flagFrom == true){
 				// fai richiesta al server
 				$scope.makePathRequest(lat1, lng1, lat2, lng2);
 			}
-			
+
+		}, onErrorPositionAddress);
+	}
+
+	$scope.getPointNameStart= function(text,iPath){
+		$showSpinner=true;
+		DataProvider.getPositionFromString(text, function(position){
+			console.log(position[0].formatted_address);
+			$scope.fullPath[iPath].start=position[0].formatted_address;
+			$scope.checkSpinner();
 		}, onErrorPositionAddress);
 	}
 	
-
+	$scope.getPointNameEnd= function(text,iPath){
+		$showSpinner=true;
+		DataProvider.getPositionFromString(text, function(position){
+			console.log(position[0].formatted_address);
+			$scope.fullPath[iPath].end=position[0].formatted_address;
+			$scope.checkSpinner();
+		}, onErrorPositionAddress);
+	}
 	
+	$scope.checkSpinner= function(){
+		$scope.countStartEndPointReceived++;
+		if($scope.countStartEndPointReceived==$scope.fullPath.length)
+			$scope.showSpinner=false;
+	}
+
 	$scope.makePathRequest = function(lat1, lng1, lat2, lng2){
 		$scope.showSpinner=true;
 		$scope.$apply();
-		DataProvider.findPath(lat1, lng1, lat2, lng2).then(function(positions){
-				console.log("results in routeCtrl");
-				console.log(positions);		
-				$scope.decorations.markers.coordinates=[];
-				angular.forEach(positions, function(value, key) {	
-					let point = [value.lat, value.lng];
-					$scope.decorations.markers.coordinates.push(point);
-				});
-				leafletData.getMap("idRoute").then(function(map) {});
+		DataProvider.findPath(lat1, lng1, lat2, lng2).then(function(positions){	
+			$scope.countStartEndPointReceived=0;
+			$scope.decorations.byFoot.coordinates=[];
+			$scope.decorations.byBus.coordinates=[];
+			$scope.byFoot={};
+			let countFoot=0;
+			$scope.byFoot[countFoot]={
+					patterns:[],
+					coordinates:[]
+			};
+			$scope.byBus={};
+			let countBus=0;
+			$scope.byBus[countBus]={
+					patterns:[],
+					coordinates:[]
+			};
+			let path=[];
+			let lastMode=positions[0].mode;
+			
+			$scope.fullPath={};
+			var countFullPath=0;
+			
+			angular.forEach(positions, function(value, key) {	
+				let point = [value.lat, value.lng];
+				console.log(value.mode);
+				if(value.mode!=lastMode){
+					var lastPoint=path[path.length-1];
+					
+					$scope.fullPath[countFullPath]={
+							start:"",
+							end:"",
+							typr:""
+					};
+					
+//					path.push(point);
+					if(value.mode==false){
+						$scope.byFoot[countFoot]={
+								patterns:[],
+								coordinates:[]
+						};
+						$scope.byFoot[countFoot].patterns=$scope.decorations.byFoot.patterns;
+						$scope.byFoot[countFoot].coordinates=path;
+						countFoot++;
+						$scope.fullPath[countFullPath].type="bus";
+					}else{
+						$scope.byBus[countBus]={
+								patterns:[],
+								coordinates:[]
+						};
+						$scope.byBus[countBus].patterns=$scope.decorations.byBus.patterns;
+						$scope.byBus[countBus].coordinates=path;
+						countBus++;
+						$scope.fullPath[countFullPath].type="foot";
+					}
+					
+					$scope.getPointNameStart(path[0][0]+","+path[0][1],countFullPath);
+					$scope.getPointNameEnd(lastPoint[0]+","+lastPoint[1],countFullPath);
+					countFullPath++;
+					path=[];
+					path.push(lastPoint);
+					lastMode=value.mode;
+				}
+				path.push(point);
 				
-				$scope.showSpinner=false;
+			});
+			
+			
+			angular.forEach($scope.byFoot, function (value,key){
+				$scope.decorations["foot"+key]=value;
+			});
+			angular.forEach($scope.byBus, function (value,key){
+				$scope.decorations["bus"+key]=value;
+			});
+			
+			console.log($scope.byFoot);
+			console.log($scope.byBus);
+			
+			leafletData.getMap("idRoute").then(function(map) {});
+
+			$scope.showSpinner=false;
 		});
 	};
 
 	function findPathToServer(lat1, lng1, lat2, lng2){
 		DataProvider.findPath(lat1, lng1, lat2, lng2).then(function(edges){
 			console.log(edges);
-			
+
 			//da visualizzare a schermo
 		});
 	}
@@ -236,11 +337,11 @@ app.controller('RouteCtrl', ['$scope', 'DataProvider','$routeParams','$timeout',
 
 		console.log("in position address hints");
 		console.log($scope.hints);
-		
+
 		angular.forEach(positions, function(value, key) {
 			$scope.hints.push(value.formatted_address);
 		});
-		
+
 		console.log($scope.hints);
 
 //		map.setCenter(positions[0].geometry.location);
@@ -253,7 +354,7 @@ app.controller('RouteCtrl', ['$scope', 'DataProvider','$routeParams','$timeout',
 	function onErrorPositionAddress(status) {
 		//alert('Geocode was not successful for the following reason: ' + status);
 	}
-	
+
 
 }
 ]);
