@@ -49,25 +49,26 @@ public class SegnalationRestController {
 		List<Segnalazione> list;
 		List<SegnalationForClient> newList = new ArrayList<>();
 		SegnalationForClient sfc = new SegnalationForClient();
-
+		int voto;
+		
 		if(type == null){
 			list = service.getAll();
 		}else{
 			int intType = (TipoSegnalazione.valueOf(type)).ordinal();
 			list = service.getAllforType(intType);
 		}
-		if(list.size()>0)
-			for(Segnalazione s:list){
-				System.out.println(name.getName());
-				int voto = rateService.isPresentUserRate(name.getName(), s.getId());
-				sfc.setSegnalazione(s);
+		for(Segnalazione s:list){
+			if(name.getName() != null){
+				voto = rateService.isPresentUserRate(name.getName(), s.getId());
 				sfc.setVoto(voto);
-				newList.add(sfc);
 			}
-
+			sfc.setSegnalazione(s);
+			newList.add(sfc);
+		}
+			
 		return new ResponseEntity<List<SegnalationForClient>>(newList, HttpStatus.OK);
 	}
-
+	
 	@RequestMapping(value="/segnalations/{id}", method=RequestMethod.GET, produces="application/json")
 	public HttpEntity<Segnalazione> getSegnalation(
 			@PathVariable String id){
