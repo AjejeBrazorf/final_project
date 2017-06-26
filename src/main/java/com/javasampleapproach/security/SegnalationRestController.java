@@ -58,7 +58,7 @@ public class SegnalationRestController {
 			list = service.getAllforType(intType);
 		}
 		for(Segnalazione s:list){
-			if(name.getName() != null){
+			if(name != null){
 				voto = rateService.isPresentUserRate(name.getName(), s.getId());
 				sfc.setVoto(voto);
 			}
@@ -70,11 +70,19 @@ public class SegnalationRestController {
 	}
 	
 	@RequestMapping(value="/segnalations/{id}", method=RequestMethod.GET, produces="application/json")
-	public HttpEntity<Segnalazione> getSegnalation(
+	public HttpEntity<SegnalationForClient> getSegnalation(
+			Principal name,
 			@PathVariable String id){
-		
+		SegnalationForClient sfc = new SegnalationForClient();
+		int voto;
 		Segnalazione s = service.getById(id);
-		return new ResponseEntity<Segnalazione>(s, HttpStatus.OK);
+		if(name != null){
+			voto = rateService.isPresentUserRate(name.getName(), s.getId());
+			sfc.setVoto(voto);
+		}
+		sfc.setSegnalazione(s);
+		
+		return new ResponseEntity<SegnalationForClient>(sfc, HttpStatus.OK);
 	}
 	
 	@RequestMapping(value="/segnalations/{id}", method=RequestMethod.PUT, produces="application/json")
