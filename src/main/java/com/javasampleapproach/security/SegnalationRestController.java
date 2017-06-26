@@ -49,6 +49,7 @@ public class SegnalationRestController {
 		List<Segnalazione> list;
 		List<SegnalationForClient> newList = new ArrayList<>();
 		SegnalationForClient sfc = new SegnalationForClient();
+		int voto;
 		
 		if(type == null){
 			list = service.getAll();
@@ -57,9 +58,11 @@ public class SegnalationRestController {
 			list = service.getAllforType(intType);
 		}
 		for(Segnalazione s:list){
-			int voto = rateService.isPresentUserRate(name.getName(), s.getId());
+			if(name.getName() != null){
+				voto = rateService.isPresentUserRate(name.getName(), s.getId());
+				sfc.setVoto(voto);
+			}
 			sfc.setSegnalazione(s);
-			sfc.setVoto(voto);
 			newList.add(sfc);
 		}
 			
