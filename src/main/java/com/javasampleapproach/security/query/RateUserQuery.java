@@ -13,18 +13,18 @@ public class RateUserQuery {
 	
 	//insert UserRate
 	public void insertUserRate(String username, String idSegnalation, int rate){
-		rR.insertUserRate(username, idSegnalation, rate);
+		rR.insertUserRate(username, Integer.parseInt(idSegnalation), rate);
 	}
 	
 	//insert UserRate
 	public void updateUserRate(String username, String idSegnalation, int rate){
-		rR.updateUserRate(rate, username, idSegnalation);
+		rR.updateUserRate(rate, username, Integer.parseInt(idSegnalation));
 	}
 
 	//insert UserRate
 	public Integer isPresentUserRate(String username, String idSegnalation){
 		int rate;
-		if((rate = rR.getUserRate(username, idSegnalation)) > 0)
+		if((rate = rR.getUserRate(username, Integer.parseInt(idSegnalation))) > 0)
 			return rate;
 		else
 			return null;

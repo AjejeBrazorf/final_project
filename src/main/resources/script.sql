@@ -58,7 +58,7 @@ CREATE TABLE IF NOT EXISTS activationCode (
 
 CREATE TABLE IF NOT EXISTS rateUser (
   username varchar(255) NOT NULL,
-  idsegnalation varchar(255) NOT NULL,
+  idsegnalation integer NOT NULL,
   rate int NOT NULL,
   primary key(username, idsegnalation),
   foreign key (username) references dettaglioUser(email),
@@ -106,6 +106,7 @@ newrate double precision;
 somma double precision;
 BEGIN
 	
+new.dataFine = localtimestamp + interval '5 minutes';
 if(new.count = 0) then
 	SELECT count, rate into newcount, newrate
 	from segnalazioni

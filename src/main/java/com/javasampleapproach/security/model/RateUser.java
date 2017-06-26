@@ -2,20 +2,21 @@ package com.javasampleapproach.security.model;
 
 import java.io.Serializable;
 
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "segnalazioni")
+@Table(name = "rateUser")
 public class RateUser implements Serializable{
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
-	String username;
-	int idSegnalazione;
+	@EmbeddedId
+	RateUserId id;
 	int rate;
 	
 	
@@ -24,23 +25,11 @@ public class RateUser implements Serializable{
 	}
 	
 	public RateUser(String username, int idSegnalazione, int rate){
-		this.username = username;
-		this.idSegnalazione = idSegnalazione;
+		this.id.setUsername(username);
+		this.id.setIdsegnalation(idSegnalazione);
 		this.rate = rate;
 	}
 	
-	public String getUsername() {
-		return username;
-	}
-	public void setUsername(String username) {
-		this.username = username;
-	}
-	public int getIdSegnalazione() {
-		return idSegnalazione;
-	}
-	public void setIdSegnalazione(int idSegnalazione) {
-		this.idSegnalazione = idSegnalazione;
-	}
 	public int getRate() {
 		return rate;
 	}
@@ -48,4 +37,11 @@ public class RateUser implements Serializable{
 		this.rate = rate;
 	}
 	
+	public RateUserId getId() {
+		return id;
+	}
+
+	public void setId(RateUserId id) {
+		this.id = id;
+	}
 }
