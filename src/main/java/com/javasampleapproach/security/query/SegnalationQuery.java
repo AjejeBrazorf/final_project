@@ -7,11 +7,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.javasampleapproach.security.model.Segnalazione;
+import com.javasampleapproach.security.repo.RateUserRepository;
 import com.javasampleapproach.security.repo.SegnalationRepository;
 
 @Service
 public class SegnalationQuery {
 
+	private static final int minutesOfInactivity = 5;
 	@Autowired
 	SegnalationRepository sR;
 	
@@ -32,7 +34,7 @@ public class SegnalationQuery {
 	
 	//insert new Segnalation
 	public String insertSegnalation(String nickname, double lat, double lng, Date dataInizio, String indirizzo, int tipo){
-		return sR.insertSegnalazioni(nickname, lat, lng, tipo, dataInizio, indirizzo);
+		return sR.insertSegnalazioni(nickname, lat, lng, tipo, dataInizio, indirizzo, minutesOfInactivity);
 	}
 	
 	//change data fine of a segnalation
@@ -40,8 +42,12 @@ public class SegnalationQuery {
 		return sR.updateSegnalazione(dataFine, id);
 	}
 	
+
 	//update Rate
-	public String updateRate(double rate, String id){
-		return sR.updateRate(rate, id);
+	//mode : 0  new vote
+	//mode : 1  update of old vote
+	public String updateRate(int mode, double rate, String id){
+		return sR.updateRate(mode, rate, id);
 	}
+
 }

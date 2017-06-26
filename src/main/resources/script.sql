@@ -58,7 +58,7 @@ CREATE TABLE IF NOT EXISTS activationCode (
 
 CREATE TABLE IF NOT EXISTS rateUser (
   username varchar(255) NOT NULL,
-  idsegnalation varchar(255) NOT NULL,
+  idsegnalation integer NOT NULL,
   rate int NOT NULL,
   primary key(username, idsegnalation),
   foreign key (username) references dettaglioUser(email),
@@ -101,9 +101,12 @@ CREATE TABLE IF NOT EXISTS segnalazioni (
 CREATE FUNCTION vota() RETURNS trigger AS $emp_stamp$
 DECLARE
 newcount integer;
+flag integer;
 newrate double precision;
 somma double precision;
 BEGIN
+	
+new.dataFine = localtimestamp + interval '5 minutes';
 if(new.count = 0) then
 	SELECT count, rate into newcount, newrate
 	from segnalazioni
@@ -115,8 +118,19 @@ somma = somma + new.rate;
 
 new.rate = somma/newcount;
 new.count = newcount;
-end if;
 
+elseif (new.count = 1) then
+	SELECT count, rate into newcount, newrate
+	from segnalazioni
+	where id = new.id;
+
+somma = newcount*newrate;
+somma = somma + new.rate;
+
+new.rate = somma/newcount;
+new.count = newcount;
+	
+end if;
 return new;
 END;
 $emp_stamp$ LANGUAGE plpgsql;
