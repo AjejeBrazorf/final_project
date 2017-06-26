@@ -175,9 +175,9 @@ body {
     opacity:0;
     margin-top:30px;
     width: 100%;
-    100%: 270px
+        /* height: 100%; */
+    padding-bottom: 70px;
     overflow-y:scroll;
-    height: 100%;
     overflow-x:hidden;
     padding-right: 20px;
     -webkit-transition: all 200ms cubic-bezier(0.000, 0.995, 0.990, 1.000);
@@ -214,6 +214,7 @@ body {
       margin-left: -38px;
       border-radius: 50%;
       width: 30px;
+      heigth: 30px;
       margin-top: 12px;
 }
 #chat-messages div.message.right img{
@@ -419,12 +420,14 @@ div.message.right .corner{
 	heigth:0;
 	padding:0;
 	background: rgba(0, 0, 0, 0);
+    display: none;
 }
 
 .chatHintsAddress.close {
 	heigth:0;
 	padding:0;
 	background: rgba(0, 0, 0, 0);
+	display: none;
 }		
 
 .hint {

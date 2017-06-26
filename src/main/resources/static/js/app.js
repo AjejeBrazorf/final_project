@@ -1,4 +1,4 @@
-var app = angular.module('App', ['ngRoute', 'ngResource','ui-leaflet', 'ngMaterial'])
+var app = angular.module('App', ['ngRoute', 'ngResource','ui-leaflet', 'ngMaterial','ngImageCompress'])
 
 app.config(function ($routeProvider, $locationProvider,$httpProvider) {
 	$routeProvider
@@ -30,16 +30,30 @@ app.config(function ($routeProvider, $locationProvider,$httpProvider) {
 
 app.controller('AuthCtrl', ['$scope', '$rootScope',
 	function ($scope, $rootScope) {
-
-
-
-
+	$rootScope.img={
+			compressed:{
+				dataURL:""
+			}
+	};
+	$rootScope.authenticated=false;
+	
 	$scope.setAuthenticated=function(auth){
-		$rootScope.authenticated = auth;
 		console.log(auth);
+		$rootScope.authenticated=auth;
 		console.log($rootScope.authenticated);
+		if(auth){
+			$rootScope.img.compressed.dataURL=$('#imgsrc').val();
+		}else{
+			console.log("non setto imm");
+		}
 	}
 
+	
+	
+	$scope.setuserImage=function(){
+		$scope.img.compressed.dataURL=$('#imgsrc').val();
+	}
+	
 }]);
 
 app.factory('DataProvider', 
@@ -181,13 +195,30 @@ app.factory('DataProvider',
 		}
 
 		DataProvider.findPath = function(lat1, lng1, lat2, lng2){
-			return readJson('.findPath?lat1='+lat1+'&lng1='+lng1+'&lat2='+lat2+'&lng2='+lng2)
+			return readJson('/findPath?lat1='+lat1+'&lng1='+lng1+'&lat2='+lat2+'&lng2='+lng2)
 				.then( function (response){ 
 					console.log(response);
 					return response;
 			});
 
 		}
+		
+		DataProvider.changeImageUser= function(foto) {
+			var values= {'image': foto};
+			var promise = $http({
+						    url: "../image",
+						    method: "PUT",
+						    params: values
+						    });
+			promise.then( function(item) {
+				console.log("Foto salvata");
+			} , 
+			function error() { 
+				console.log("Errore in salvataggio foto");
+			}
+			);
+			return promise;
+		};
 
 		return DataProvider;
 	}

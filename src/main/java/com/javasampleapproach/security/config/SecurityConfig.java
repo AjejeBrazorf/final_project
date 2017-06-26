@@ -29,7 +29,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
             .authorizeRequests()
                 .antMatchers("/", "/users", "/arguments", "/*/messages", "/registration", "/addUser", "/addInfo").permitAll()
-                .antMatchers("/lines","/*/stops","/signup_final","/segnalations","/findPath").permitAll()
+                .antMatchers("/lines","/*/stops","/signup_final","/segnalations","/findPath","/imageUser").permitAll()
                 .antMatchers("/css/**", "/js/**", "/images/**", "/node_modules/**").permitAll()
                 .antMatchers("/main.html","/route.html","/stops.html","/signals.html").permitAll()
                 .anyRequest().authenticated()

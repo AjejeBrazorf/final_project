@@ -16,9 +16,8 @@
 }
 
 .profile-header-img > img.img-circle {
-    width: 120px;
-    height: 120px;
-    border: 2px solid #51D2B7;
+    width: 200px;
+    height: 200px;
 }
 
 .profile-header {
@@ -207,27 +206,12 @@ body> .container{
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
 .sidebar-offcanvas {
   position: absolute;
   top: 0;
   width: 0;
 }
 
-.nav.navbar-nav{
-  max-height: 50px;
-}
 
 .nav.navbar-nav>*{
   max-height: inherit;

@@ -50,6 +50,7 @@ public class AppController {
 	private ActivationQuery aq;
 
 
+	
 	@PostMapping("/addUser")
 	public String goToUserpage(Model model, HttpServletRequest request,
 			@RequestParam(value="email", required=true) String email,
@@ -200,10 +201,14 @@ public class AppController {
 
 		User user = pgq.getUserbyUsername(name.getName());
 		model.addAttribute("user",user);
+		model.addAttribute("image", pgq.getImage(name.getName()));
 		model.addAttribute("nickname", pgq.getUsernameByMail(name.getName()));
 		return "userpage";
 	}
 
+	
+
+	
 	@RequestMapping("/logout")
 	public String logout(Model model) {
 		model.addAttribute("user", "");

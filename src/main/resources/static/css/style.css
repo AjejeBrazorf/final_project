@@ -72,7 +72,7 @@ li > .tab{
 	background-color: #ea4335;
 }
 
-.btn-success:hover{
+.btn-success:hover,.btn-success:focus,.btn-success:active,.btn-success:active:hover{
 	width: 100%;
     height: 50px;
     box-shadow: 0 1px 3px 0 rgba(0,0,0,.2), 0 1px 1px 0 rgba(0,0,0,.14), 0 2px 1px -1px rgba(0,0,0,.12);
@@ -83,7 +83,7 @@ li > .tab{
     background-position: 0 -15px; 
 }
 
-.btn-success.red:hover,.btn-success.red:active{
+.btn-success.red:hover,.btn-success:focus,.btn-success.red:active, .btn-success:active:hover{
 	width: 100%;
     height: 50px;
     box-shadow: 0 1px 3px 0 rgba(0,0,0,.2), 0 1px 1px 0 rgba(0,0,0,.14), 0 2px 1px -1px rgba(0,0,0,.12);
@@ -428,3 +428,6 @@ outline: 0;
     
 }
 
+.md-virtual-repeat-container.md-autocomplete-suggestions-container {
+    background-color: rgba(49, 49, 52, 0.53);
+}

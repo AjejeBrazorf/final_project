@@ -1,7 +1,7 @@
 app.controller('navCtrl', ['$scope', '$rootScope',
 	function ($scope, $rootScope) {
-
 	$rootScope.$on("$routeChangeSuccess", function (event, current, previous, rejection) {
+		$scope.userImage=$rootScope.rootUserImage;
 		console.log("success on "+current.$$route.originalPath);
 		$("li>a").each(function () {
 			var href=this.href.split("/")[this.href.split("/").length-1];

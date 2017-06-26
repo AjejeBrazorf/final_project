@@ -21,6 +21,13 @@ a.stoplist {
 	-webkit-transition: color 0.1s;
 }
 
+.navbarImg{
+	height: 50px;
+    border-radius: 61%;
+    width: 50px;
+    padding: 5px;
+}
+
 a.stoplist:hover,
 a.stoplist:focus {
 	color: #fff;
@@ -121,7 +128,6 @@ a.stoplist:focus {
 /* Content */
 .content {
 	position: relative;
-	display: flex;
 	flex-wrap: wrap;
 	align-items: center;
 	padding: 0 0 1em;

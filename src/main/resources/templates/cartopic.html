@@ -15,10 +15,11 @@
 	integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp"
 	crossorigin="anonymous" />
 <!-- Custom styles for this template -->
- 
-    <link rel="stylesheet" href="../node_modules/leaflet/dist/leaflet.css"></link>
-    <link rel="stylesheet" href="../css/leaflet.awesome-markers.css"></link>
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+
+<link rel="stylesheet" href="../node_modules/leaflet/dist/leaflet.css"></link>
+<link rel="stylesheet" href="../css/leaflet.awesome-markers.css"></link>
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
 <link href="../css/offcanvas.css" rel="stylesheet" type="text/css"
 	media="all" />
 <link href="../css/chat.css" rel="stylesheet" type="text/css"
@@ -29,66 +30,100 @@
 <title>Car</title>
 </head>
 <body ng-controller="SignalsCtrl">
-	<div th:replace="fragments/navbar :: navbar">
- 	</div>
- 
+	<div th:replace="fragments/navbar :: navbar"></div>
+
+
 	<div class="container" style="height: 100%; margin-top: -25px;">
 		<div id="chatview" class="p1" style="display: block;">
-			<div id="profile" class="animate" >
+			<div id="profile" class="animate">
 				<span id="topic">traffic</span>
-			</div>
-			<div id="chat-messages" class="animate">
-			</div>
-				<div class="chatHintsSignals" ng-init="signalshints['show']=false"  ng-class="{ 'close' : signalshints.show==false}">
-					<ul>
-						<li class="hint" ng-repeat="(key, hint) in signalshints" ng-hide="key=='show'" ng-click="onHintClick(hint,'signaltype')">{{hint}}</li>
-					</ul>
+				<div ng-controller="AuthCtrl" ng-init="setAuthenticated(true)"
+					sec:authorize="isAuthenticated()">
+					<input id="imgsrc" th:value="${image}" ng-init="setuserImage()"
+						ng-model="userImage" hidden="true" />
 				</div>
-				<div class="chatHintsAddress" ng-init="addresshints['show']=false"  ng-class="{ 'close' : addresshints.show==false}">
-					<ul>
-						<li class="hint" ng-repeat="(key, address) in addresshints" ng-hide="key=='show'" ng-click="onHintClick(address,'address')">{{address}}</li>
-					</ul>
-				</div>
-			
+				<div ng-controller="AuthCtrl" ng-init="setAuthenticated(false)"
+					sec:authorize="!isAuthenticated()"></div>
+			</div>
+			<div id="chat-messages" class="animate"></div>
+			<div class="chatHintsSignals" ng-init="signalshints['show']=false"
+				ng-class="{ 'close' : signalshints.show==false}">
+				<ul>
+					<li class="hint" ng-repeat="(key, hint) in signalshints"
+						ng-hide="key=='show'" ng-click="onHintClick(hint,'signaltype')">{{hint}}</li>
+				</ul>
+			</div>
+			<div class="chatHintsAddress" ng-init="addresshints['show']=false"
+				ng-class="{ 'close' : addresshints.show==false}">
+				<ul>
+					<li class="hint" ng-repeat="(key, address) in addresshints"
+						ng-hide="key=='show'" ng-click="onHintClick(address,'address')">{{address}}</li>
+				</ul>
+			</div>
+			<div id="spinner" >
+				<svg class="spinner" width="65px" height="65px" viewBox="0 0 66 66"
+					xmlns="http://www.w3.org/2000/svg"
+					style="position: absolute; left: 50%; top: 50%">
+			   <circle class="path" fill="none" stroke-width="6"
+						stroke-linecap="round" cx="33" cy="33" r="30"></circle>
+			</svg>
+			</div>
 		</div>
- 
-		<div id="sendmessage" >
-			<form >
+
+		<div id="sendmessage">
+			<form>
 				<input type="text" value="Send message..."
-					class="searchBox inputMess" id="btn-input" ng-model="inputMess" autocomplete="off" ng-keyup="addSignalsFromChat($event.keyCode)" />
-				<button id="btn-chat" class="inputMess btn searchBox" style=" background: #ea4335  !important;" ng-click="addSignalsFromChat(13)">Send</button>
-				
+					class="searchBox inputMess" id="btn-input" ng-model="inputMess"
+					autocomplete="off" ng-keyup="addSignalsFromChat($event.keyCode)" />
+				<button id="btn-chat" class="inputMess btn searchBox"
+					style="background: #ea4335 !important;"
+					ng-click="addSignalsFromChat(13)">Send</button>
+
 			</form>
 		</div>
- 
+
 	</div>
-	
+
 	<!-- Javascript code -->
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
-<script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-animate.min.js'></script>
-<script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-route.min.js'></script>
-<script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-aria.min.js'></script>
-<script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-messages.min.js'></script>
-<script src='https://cdn.gitcdn.xyz/cdn/angular/bower-material/v1.0.0-rc4/angular-material.js'></script>
-<!-- Latest compiled and minified JavaScript -->
-<script src="../node_modules/leaflet/dist/leaflet.js"></script>
-<script src="../node_modules/leaflet.awesome-markers.min.js"></script>
-<script src="../node_modules/angular-simple-logger/dist/angular-simple-logger.js"></script>
-<script src="../node_modules/ui-leaflet/dist/ui-leaflet.js"></script>
-<script src="../js/angular-resource.js"></script>
-<script src="../js/angular-route.js"></script>
-<script src='https://s3-us-west-2.amazonaws.com/s.cdpn.io/t-114/assets-cache.js'></script>
-<script src="../js/app.js"></script>
-<script src="../js/controllers/navController.js"></script>
-<script src="../js/controllers/signalsController.js"></script>
-<script src="../js/anime.min.js"></script>
-<script src="../js/main.js"></script>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCgFeLe0VVD6kjgGdwWJxDOrEt2MocUhF0"
-    async="async" defer="defer"></script>
-<script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-  
-	
+	<script
+		src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+	<script
+		src='https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-animate.min.js'></script>
+	<script
+		src='https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-route.min.js'></script>
+	<script
+		src='https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-aria.min.js'></script>
+	<script
+		src='https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-messages.min.js'></script>
+	<script
+		src='https://cdn.gitcdn.xyz/cdn/angular/bower-material/v1.0.0-rc4/angular-material.js'></script>
+	<!-- Latest compiled and minified JavaScript -->
+	<script src="../node_modules/leaflet/dist/leaflet.js"></script>
+	<script src="../node_modules/leaflet.awesome-markers.min.js"></script>
+	<script
+		src="../node_modules/angular-simple-logger/dist/angular-simple-logger.js"></script>
+	<script src="../node_modules/ui-leaflet/dist/ui-leaflet.js"></script>
+	<script src="../js/angular-resource.js"></script>
+	<script src="../js/angular-route.js"></script>
+	<script
+		src='https://s3-us-west-2.amazonaws.com/s.cdpn.io/t-114/assets-cache.js'></script>
+	<script src="../js/app.js"></script>
+	<script src="../js/controllers/navController.js"></script>
+	<script src="../js/controllers/signalsController.js"></script>
+	<script src="../js/anime.min.js"></script>
+	<script src="../js/main.js"></script>
+	<script
+		src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCgFeLe0VVD6kjgGdwWJxDOrEt2MocUhF0"
+		async="async" defer="defer"></script>
+	<script src="https://code.jquery.com/jquery-3.2.1.min.js"
+		integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+		crossorigin="anonymous"></script>
+	<script
+		src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+		integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+		crossorigin="anonymous"></script>
+
+
 	<script src="https://cdn.jsdelivr.net/sockjs/1/sockjs.min.js"></script>
 	<script
 		src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
@@ -97,8 +132,10 @@
 	<script
 		src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 	<script src="../js/chatScript.js"></script>
- 
- 
+   <script src="../js/angular-image-compress.js"></script>
+	
+
+
 </body>
 <script th:inline="javascript">
 /*<![CDATA[*/
@@ -117,5 +154,5 @@ $( document ).ready(function() {
 </script>
 
 </html>
- 
- 
+
+

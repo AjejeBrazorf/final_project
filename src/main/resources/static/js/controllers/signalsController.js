@@ -52,6 +52,7 @@ app.controller('SignalsCtrl', ['$scope', 'DataProvider','$routeParams','$timeout
 	$scope.errorAddress="";
 	$scope.markerAddress="";
 	$scope.signalMarkers={};
+	$scope.tagPressed=false;
 	if($rootScope.dbMarkers!=null)
 		$scope.signalMarkers=$rootScope.dbMarkers;
 
@@ -148,11 +149,21 @@ app.controller('SignalsCtrl', ['$scope', 'DataProvider','$routeParams','$timeout
 
 
 	$scope.addSignalsFromChat = function(keyCode) {
+		$scope.showSpinner=true;
+
 		//se ho schiacciato invio vado avanti
 		$scope.chatSignalTypeTemp="";
 		var textIfSent="";
-		if ($scope.inputMess.length==0 || $scope.inputMess=="Send message...") return;
+		if ($scope.inputMess.length==0 || $scope.inputMess=="Send message...") {
+			$scope.signalshints={};
+			$scope.addresshints={};
+			$scope.tagPressed=false;
+			$scope.signalshints["show"]=false;
+			$scope.addresshints["show"]=false;
+			return;	
+		}
 		if(keyCode == 222){ 
+			$scope.tagPressed=true;
 			$scope.inputMess+="#";
 			console.log("chiamo setcaret");
 			var pos=$scope.inputMess.length-1;
@@ -187,7 +198,8 @@ app.controller('SignalsCtrl', ['$scope', 'DataProvider','$routeParams','$timeout
 			}
 			textIfSent+=n[i-1]+"<b>"+n[i]+"</b>";
 			i+=2;
-			if(i=>n.length) textIfSent+=n[i-1];
+			if(i>n.length) textIfSent+=n[i-2];
+			if(i==n.length) textIfSent+=n[i-1];
 		}
 
 		console.log($scope.address+" - "+$scope.chatSignalType);
@@ -197,23 +209,25 @@ app.controller('SignalsCtrl', ['$scope', 'DataProvider','$routeParams','$timeout
 			$scope.signalshints={};
 			if($scope.chatSignalType==null&&$scope.chatSignalTypeTemp!=null ){
 				$scope.signalshints["show"]=false;
-				angular.forEach($scope.signalsType, function(value, key) {
-					var k=key.toLowerCase();
-					var indexOfType=k.indexOf($scope.chatSignalTypeTemp);
-					if(indexOfType!=-1){
-						console.log("ho trovato "+$scope.chatSignalTypeTemp+" in "+k);
-						$scope.signalshints[key]=k;
-						$scope.signalshints["show"]=true;
-					}		
-				});
+				if($scope.tagPressed){
+					angular.forEach($scope.signalsType, function(value, key) {
+						var k=key.toLowerCase();
+						var indexOfType=k.indexOf($scope.chatSignalTypeTemp);
+						if(indexOfType!=-1){
+							console.log("ho trovato "+$scope.chatSignalTypeTemp+" in "+k);
+							$scope.signalshints[key]=k;
 
+							$scope.signalshints["show"]=true;
+						}		
+					});
+				}
 			}else{
 				$scope.signalshints["show"]=false;
 				$scope.addresshints["show"]=false;	
+				$scope.tagPressed=false;
 			}
 			return;
 		} 
-
 		$scope.markerAddress=$scope.address;
 		$scope.signal.type=$scope.chatSignalType;	
 
@@ -228,6 +242,7 @@ app.controller('SignalsCtrl', ['$scope', 'DataProvider','$routeParams','$timeout
 			$scope.addresshints={};	
 			$scope.signalshints["show"]=false;
 			$scope.addresshints["show"]=false;	
+			
 
 		}else{
 			sendMessage($scope.inputMess);
@@ -237,12 +252,14 @@ app.controller('SignalsCtrl', ['$scope', 'DataProvider','$routeParams','$timeout
 		$scope.address = "";
 		$scope.chatSignalType="";
 		$scope.inputMess="";
+
 	}
 
 	//add signal to map
-	
+
 	$scope.addSignals = function() {
 		console.log("entro in funzione");
+		$scope.showSpinner=true;
 
 		if(!stompClients[0])
 		{
@@ -342,13 +359,23 @@ app.controller('SignalsCtrl', ['$scope', 'DataProvider','$routeParams','$timeout
 		segnalation.type = $scope.signal.type;
 		segnalation.address = positions[0].formatted_address;
 		console.log(segnalation);
+		$scope.addresshints={};	
+		$scope.signalshints={};
+		$scope.addresshints["show"]=false;	
+		$scope.signalshints["show"]=false;
 		return DataProvider.addSignalToServer(segnalation).then( function(signal){
 			console.log("segnale aggiunto:"+signal);
 			$scope.onSignalsFromServer(signal.data);	
-			$scope.message='<a href="../#/signals?lat='+signal.data.lat+'&lng='+signal.data.lng+' ">'+$scope.message+"</a>";
+			var s="../../images/map.jpg";
+			$scope.message='<a class="amap" href="../#/signals?lat='+signal.data.lat+'&lng='+signal.data.lng+'"><img src="'+s+'" class="mapimg"  />'+$scope.message+"</a>";
 			sendMessage($scope.message);
+			$scope.showSpinner=false;
+			$scope.addresshints={};	
+			$scope.signalshints={};
+			$scope.addresshints["show"]=false;	
+			$scope.signalshints["show"]=false;
+			segnalation.address = "";
 		});
-
 	};
 
 	$scope.onPositionReady=function(positions) {
@@ -366,13 +393,17 @@ app.controller('SignalsCtrl', ['$scope', 'DataProvider','$routeParams','$timeout
 		DataProvider.addSignalToServer(segnalation).then( function(signal){
 			console.log("segnale aggiunto:"+signal);
 			$scope.onSignalsFromServer(signal.data);
+			$scope.showSpinner=false;
+
 		});
 
 	};
 
 	$scope.onSignalsFromServer=function(marker) {
+		$scope.votodb=4;
 		console.log( marker);
 		console.log($scope.icons[marker.tipo]);
+		console.log("auth??????"+$rootScope.authenticated);
 		marker.icon = $scope.icons[marker.tipo];
 		marker.dataInizio = $filter('date')(marker.dataInizio, "MM/dd/yyyy  h:mma");
 		var s='<h1 class="typesignal">'+marker.tipo+'</h1>'+
@@ -380,9 +411,15 @@ app.controller('SignalsCtrl', ['$scope', 'DataProvider','$routeParams','$timeout
 		'<div><h2 class="time"> from '+marker.dataInizio+'</h2></div>'+
 		'<div ng-cloak="" class="sliderdemoBasicUsage">'+
 		'<md-content style="margin: 16px; padding:16px">'+
+		'<h5 style="text-align: center;">Your rate</h5><br>'+
 		'<div layout="">'+
-		'<md-slider flex="" class="md-warn" md-discrete=""  ng-readonly="readonly" ng-model="signalMarkers['+ marker.id+'].rate" step="1" min="1" max="5" aria-label="rating"></md-slider>'+
-		'<h3 style="padding-left: 25px; margin-top: 10px;">{{signalMarkers['+ marker.id+'].rate}}</h3><br>'+
+			'<md-slider flex="" class="md-warn" md-discrete=""  ng-disabled="'+!$rootScope.authenticated+'" ng-model="signalMarkers['+ marker.id+'].rate" step="1" min="1" max="5" aria-label="rating"></md-slider><br>'+
+			'<h3 style="padding-left: 25px; margin-top: 10px;">{{signalMarkers['+ marker.id+'].rate}}</h3><br>'+
+		'</div>'+
+		'<h5 style="text-align: center;">Average rate</h5><br>'+
+		'<div layout="">'+
+		'<md-slider flex="" class="md-warn" md-discrete=""  ng-disabled="true" ng-model="votodb" step="1" min="1" max="5" aria-label="rating"></md-slider><br>'+
+		'<h3 style="padding-left: 25px; margin-top: 10px;">{{votodb}}</h3><br>'+
 		'</div>'+
 		'</md-content>'+
 		'<div><h2 class="time">{{signalMarkers['+ marker.id+'].nickname}}</h2></div>'+
@@ -472,6 +509,7 @@ app.controller('SignalsCtrl', ['$scope', 'DataProvider','$routeParams','$timeout
 
 
 	function searchTextChange(text) {
+		$scope.showSpinner=true;
 		$scope.hints = [];
 		if(text.length>0)
 			DataProvider.getPositionFromString($scope.address, onPositionAddress, onErrorPositionAddress);
@@ -544,7 +582,7 @@ app.controller('SignalsCtrl', ['$scope', 'DataProvider','$routeParams','$timeout
 			console.log(value.formatted_address);
 			$scope.hints.push(value.formatted_address);
 		});
-
+		$scope.showSpinner=false;
 	}
 
 

@@ -1,77 +1,109 @@
 <!doctype html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 
 <head>
- <!--
+<!--
       <script type="text/javascript">
       angular.element(document.getElementsByTagName('head')).append(angular.element('<base href="' + window.location.pathname + '" />'));
     </script>
     -->
-  <meta charset="UTF-8"></meta>
-  <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-  <title>Cinque Ti</title>
-    <link rel="stylesheet" href="node_modules/leaflet/dist/leaflet.css"></link>
-    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous" />
-    <!-- Optional theme -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous" />
-    <!-- Custom styles for this template -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
-    <link rel="stylesheet" href="css/style.css"></link>
-    <link rel="stylesheet" href="css/normalize.css"></link>
-    <link rel="stylesheet" href="css/demo.css"></link>
-    <link rel="stylesheet" href="css/leaflet.awesome-markers.css"></link>
-    <link href="css/offcanvas.css" rel="stylesheet" type="text/css" media="all"/>
-    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.css"/>
-    <script>document.documentElement.className = 'js';</script>
+<meta charset="UTF-8"></meta>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<title>Cinque Ti</title>
+<link rel="stylesheet" href="node_modules/leaflet/dist/leaflet.css"></link>
+<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+	integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+	crossorigin="anonymous" />
+<!-- Optional theme -->
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+	integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp"
+	crossorigin="anonymous" />
+<!-- Custom styles for this template -->
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+<link rel="stylesheet" href="css/style.css"></link>
+<link rel="stylesheet" href="css/normalize.css"></link>
+<link rel="stylesheet" href="css/demo.css"></link>
+<link rel="stylesheet" href="css/leaflet.awesome-markers.css"></link>
+<link href="css/offcanvas.css" rel="stylesheet" type="text/css"
+	media="all" />
+<link rel="stylesheet"
+	href="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.css" />
+<script>
+	document.documentElement.className = 'js';
+</script>
 </head>
 
 <body ng-app="App">
 
-<div ng-controller="AuthCtrl" ng-init="setAuthenticated(true)" sec:authorize="isAuthenticated()"></div>
-<div ng-controller="AuthCtrl" ng-init="setAuthenticated(false)" sec:authorize="!isAuthenticated()"></div>
+	<div ng-controller="AuthCtrl" ng-init="setAuthenticated(true)" sec:authorize="isAuthenticated()">
+		<input id="imgsrc" value="../images/user.ico" th:value="${image}"
+			ng-init="setuserImage()" ng-model="img.compressed.dataURL" hidden="true" />
+	</div>
+	<div ng-controller="AuthCtrl" ng-init="setAuthenticated(false)"
+		sec:authorize="!isAuthenticated()"></div>
 
-<div th:replace="fragments/navbar :: navbar"></div>
+	<div th:replace="fragments/navbar :: navbar"></div>
 
-<!-- Page Content -->
-<div class="container" style=" position: fixed; height: 90%; width: 100%; margin-top: 70px;">
-    <div ng-view="true" style="height: 100%; overflow-y: auto; overflow-x: hidden"></div>
-</div>
-<!-- /.container -->
+	<!-- Page Content -->
+	<div class="container"
+		style="position: fixed; height: 90%; width: 100%; margin-top: 70px;">
+		<div ng-view="true"
+			style="height: 100%; overflow-y: auto; overflow-x: hidden"></div>
+	</div>
+	<!-- /.container -->
 
 
-<!-- Javascript code -->
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
-<script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-animate.min.js'></script>
-<script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-route.min.js'></script>
-<script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-aria.min.js'></script>
-<script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-messages.min.js'></script>
-<script src='https://cdn.gitcdn.xyz/cdn/angular/bower-material/v1.0.0-rc4/angular-material.js'></script>
-<!-- Latest compiled and minified JavaScript -->
-<script src="../node_modules/leaflet/dist/leaflet.js"></script>
-<script src="../node_modules/leaflet.awesome-markers.min.js"></script>
-<script src="../node_modules/angular-simple-logger/dist/angular-simple-logger.js"></script>
-<script src="../node_modules/ui-leaflet/dist/ui-leaflet.js"></script>
-<script src="../js/angular-resource.js"></script>
-<script src="../js/angular-route.js"></script>
-<script src='https://s3-us-west-2.amazonaws.com/s.cdpn.io/t-114/assets-cache.js'></script>
-<script src="../js/app.js"></script>
-<script src="../js/controllers/navController.js"></script>
-<script src="../js/controllers/routeController.js"></script>
-<script src="../js/controllers/stopsController.js"></script>
-<script src="../js/controllers/signalsController.js"></script>
-
-<script src="../js/anime.min.js"></script>
-<script src="../js/main.js"></script>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCgFeLe0VVD6kjgGdwWJxDOrEt2MocUhF0"
+	<!-- Javascript code -->
+	<script
+		src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+	<script
+		src='https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-animate.min.js'></script>
+	<script
+		src='https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-route.min.js'></script>
+	<script
+		src='https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-aria.min.js'></script>
+	<script
+		src='https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-messages.min.js'></script>
+	<script
+		src='https://cdn.gitcdn.xyz/cdn/angular/bower-material/v1.0.0-rc4/angular-material.js'></script>
+	<!-- Latest compiled and minified JavaScript -->
+	<script src="../node_modules/leaflet/dist/leaflet.js"></script>
+	<script src="../node_modules/leaflet.awesome-markers.min.js"></script>
+	<script
+		src="../node_modules/angular-simple-logger/dist/angular-simple-logger.js"></script>
+	<script src="../node_modules/ui-leaflet/dist/ui-leaflet.js"></script>
+	<script src="../node_modules/Leaflet.PolylineDecorator/leaflet.polylineDecorator.js"></script>
+	<script src="../js/angular-resource.js"></script>
+	<script src="../js/angular-route.js"></script>
+	<script
+		src='https://s3-us-west-2.amazonaws.com/s.cdpn.io/t-114/assets-cache.js'></script>
+	<script src="../js/app.js"></script>
+	<script src="../js/controllers/navController.js"></script>
+	<script src="../js/controllers/routeController.js"></script>
+	<script src="../js/controllers/stopsController.js"></script>
+	<script src="../js/controllers/signalsController.js"></script>
+	<script src="../js/anime.min.js"></script>
+	<script src="../js/main.js"></script>
+	<script src="https://cdn.jsdelivr.net/sockjs/1/sockjs.min.js"></script>
+	<script	src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+	<script src="../js/sendToChat.js"></script>
+	<script src="../js/angular-image-compress.js"></script>
+	<script src="../js/anime.min.js"></script>
+	<script src="../js/main.js"></script>
+	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCgFeLe0VVD6kjgGdwWJxDOrEt2MocUhF0"
     async="async" defer="defer"></script>
-<script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/sockjs/1/sockjs.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
-  <script src="../js/sendToChat.js"></script>
+	<script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/sockjs/1/sockjs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+    <script src="../js/sendToChat.js"></script>
 </body>
 
 

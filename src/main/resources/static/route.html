@@ -1,4 +1,4 @@
-
+<link rel="stylesheet" href="css/route.css"></link>
 <div class="row" style="height: 100%">
     <div class="col-sm-6 col-md-6 listContainer">
         <div class="row"  style="height: 100%; border: solid 15px #37373e;">
@@ -9,18 +9,18 @@
                 <div layout="column" ng-cloak class="col-md-11 col-sm-11">
                     <md-content class="md-padding">
                         <form ng-submit="$event.preventDefault()">
-                            <md-autocomplete
+                            <md-autocomplete class="searchBox"
                                     md-no-cache="noCache"
                                     md-selected-item="selectedItem"
                                     md-search-text-change="searchTextChange(from)"
                                     md-search-text="from"
                                     md-selected-item-change="selectedItemChange(item)"
-                                    md-items="item in querySearch(from)"
-                                    md-item-text="item.display"
+                                    md-items="item in hints"
+                                    md-item-text="item"
                                     md-min-length="0"
                                     placeholder="Partenza">
                                 <md-item-template>
-                                    <span md-highlight-text="from" md-highlight-flags="^i">{{item.display}}</span>
+                                    <span md-highlight-text="from" md-highlight-flags="^i">{{item}}</span>
                                 </md-item-template>
                                 <md-not-found>
                                     Nessuna corrispondenza per "{{from}}".
@@ -40,18 +40,18 @@
                 <div layout="column" ng-cloak class="col-md-11 col-sm-11">
                 <md-content class="md-padding">
                     <form ng-submit="$event.preventDefault()">
-                        <md-autocomplete
+                        <md-autocomplete class="searchBox"
                                 md-no-cache="noCache"
                                 md-selected-item="selectedItem1"
                                 md-search-text-change="searchTextChange(to)"
                                 md-search-text="to"
                                 md-selected-item-change="selectedItemChange(item)"
-                                md-items="item in querySearch(to)"
-                                md-item-text="item.display"
+                                md-items="item in hints"
+                                md-item-text="item"
                                 md-min-length="0"
                                 placeholder="Arrivo">
-                            <md-item-template>
-                                <span md-highlight-text="to" md-highlight-flags="^i">{{item.display}}</span>
+                                <md-item-template>
+                                <span md-highlight-text="to" md-highlight-flags="^i">{{item}}</span>
                             </md-item-template>
                             <md-not-found>
                                 Nessuna corrispondenza per "{{to}}".
@@ -67,7 +67,18 @@
             <div class="row">
                 <div class="col-md-1 col-sm-1 " style="height: 72px;padding: 27px;"></div>
                 <div class="col-md-11 col-sm-11" style="padding: 31px; " >
-                    <button ng-click="findPath()" type="submit" class="btn-success">Calcola percorso</button>
+                    <button ng-click="findPath()" type="submit" class="btn-success red">Calcola percorso</button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 col-sm-12 " style="height: 72px;padding: 27px;">
+                    <ul>
+                    <li ng-repeat="fp in fullPath">
+                    	<i ng-if="fp.type=='foot'"> Walk </i>
+                    	<i ng-if="fp.type=='bus'"> Take the bus</i>
+                    	from {{fp.start}} to {{fp.end}}
+                    </li>
+                    </ul>
                 </div>
             </div>
         </div>
@@ -77,15 +88,14 @@
                 <div class="col-sm-10 col-md-10" style="text-align: left"> {{stop.name}} </div>
             </div>
         </li>-->
+        <div ng-show="showSpinner" ng-init="showSpinner=false">
+        	<svg class="spinner" width="65px" height="65px" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg" style="position: absolute;left: 50%; top: 50%">
+			   <circle class="path" fill="none" stroke-width="6" stroke-linecap="round" cx="33" cy="33" r="30"></circle>
+			</svg>
+        </div>
     </div>
 
     <div class="col-sm-6 col-md-6" style=" height: 100%; border: solid 15px #37373e;">
-        <leaflet id="idRoute" style="height: 100%" defaults="defaults" markers="markers" paths="paths" lf-center="centerLocation"></leaflet>
-
+        <leaflet id="idRoute" style="height: 100%" defaults="defaults" markers="markers" paths="paths" lf-center="centerLocation" decorations="decorations" ></leaflet>
     </div>
 </div>
-
-
-
-
-

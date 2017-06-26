@@ -1,0 +1,8 @@
+input
+{
+	color: #f2f0f0;
+}
+
+.md-autocomplete-suggestions>li{
+	    background: #5f5f65 !important;
+}
