@@ -68,7 +68,7 @@ public class GraphDijkstra {
 							       .append("idDestination", found.getIdDestination())
 							       .append("mode", found.isMode())
 							       .append("cost", found.getCost())
-							       .append("line", found.getLineId());
+							       .append("lineId", found.getLineId());
 				minPath.add(doc);
 				sourcePoint = this.name;
 					
