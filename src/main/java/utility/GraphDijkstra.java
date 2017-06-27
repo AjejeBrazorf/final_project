@@ -21,7 +21,6 @@ public class GraphDijkstra {
 	   public static List<Document> minPath = new ArrayList<Document>();
 	   public static int totCost = 0;
 	   
-	   
 	   public int getCost(){ return totCost;}
 	   public List<Document> getPath(){ return minPath;}
 	   public void clearCost(){totCost = 0;}
@@ -38,6 +37,7 @@ public class GraphDijkstra {
 		public int dist = Integer.MAX_VALUE; // MAX_VALUE assumed to be infinity
 		public Node previous = null;
 		public final Map<Node, Integer> neighbours = new HashMap<Node, Integer>();
+		public int flag =0;
 	 
 		public Node(String name)
 		{
@@ -76,10 +76,12 @@ public class GraphDijkstra {
 				for (Edge e : vicini){
 					if(previousLine!= null && e.getLineId().equals(previousLine)){
 						found = e;
+						flag = 1;
 						break;
 					}
 				}
-				found = vicini.get(0);
+				if(flag == 0)
+					found = vicini.get(0);
 				
 				Document doc = new Document("idSource",found.getIdSource())
 							       .append("idDestination", found.getIdDestination())
@@ -89,6 +91,7 @@ public class GraphDijkstra {
 				minPath.add(doc);
 				sourcePoint = this.name;
 				previousLine = found.getLineId();
+				flag = 0;
 					
 			}
 		}
