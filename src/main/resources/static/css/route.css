@@ -5,4 +5,5 @@ input
 
 .md-autocomplete-suggestions>li{
 	    background: #5f5f65 !important;
+	    color: white;
 }

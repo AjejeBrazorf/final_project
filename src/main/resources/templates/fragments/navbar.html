@@ -22,7 +22,7 @@
 <link rel="stylesheet"
 	href="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.css" />
 <div ng-app="App">
-	<nav class="navbar navbar-fixed-top navbar-inverse"
+	<nav class="navbar navbar-fixed-top navbar-inverse" ng-class="{'navbarCharge': showSpinner}"
 		th:fragment="navbar" role="navigation"
 		style="border-radius: 0; background: black;" ng-controller="navCtrl"
 		ng-click="changeClass()">
@@ -42,7 +42,7 @@
 				<li><a th:href="@{~/#/signals}"> Signals </a></li>
 				<li><a th:href="@{~/#/chat}"> Chat </a></li>
 			</ul>
-			<ul class="nav navbar-nav navbar-right" >
+			<ul class="nav navbar-nav navbar-right" style="margin-right: 0px; !important" >
 				<li sec:authorize="!isAuthenticated()"><a href="/registration">
 						Sign Up </a></li>
 				<li sec:authorize="!isAuthenticated()"><a href="/login">
@@ -56,7 +56,7 @@
 				<li sec:authorize="isAuthenticated()"><a id="user"
 					sec:authentication="name" th:text="${nickname}" href="/userpage">
 				</a></li>
-				<li sec:authorize="isAuthenticated()"><a th:href="@{/logout}">
+				<li sec:authorize="isAuthenticated()"><a th:href="@{/logout}" >
 						Sign out </a></li>
 			</ul>
 		</div>
