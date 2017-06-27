@@ -396,8 +396,23 @@ app.controller('SignalsCtrl', ['$scope', 'DataProvider','$routeParams','$timeout
 				"action":'rate',
 				"rate": $scope.yourVote
 		};
-		DataProvider.updateSignalRate(item,id);
+		DataProvider.updateSignalRate(item,id).then(function(item){
+			//update signal's rate average
+			let rate=item.config.params.rate;
+			$scope.signalMarkers[id].rate=rate;
+		});
 	}
+	
+	
+	//send new rate to server
+	$scope.deleteSignal=function(id){
+		let action=$scope.signalMarkers[id].action;	
+		let item={
+				"action":'cancel'
+		};
+		DataProvider.deleteSignal(item,id);
+		delete $scope.signalMarkers[id]
+	};
 	
 	
 
@@ -438,18 +453,18 @@ app.controller('SignalsCtrl', ['$scope', 'DataProvider','$routeParams','$timeout
 		'<div><h2 class="time"> from '+marker.dataInizio+'</h2></div>'+
 		'<div ng-cloak="" class="sliderdemoBasicUsage">'+
 		'<md-content style="margin: 16px; padding:16px">'+
-		'<h5 style="text-align: center;">Your rate</h5><br>'+
-		'<div layout="">'+
+		'<h5 ng-show="signalMarkers['+ marker.id+'].nickname!=nickname" style="text-align: center;">Your rate</h5><br>'+
+		'<div ng-show="signalMarkers['+ marker.id+'].nickname!=nickname"layout="">'+
 			'<md-slider flex="" class="md-warn" md-discrete="" ng-mouseup="updateSignalRate('+ marker.id+')" ng-disabled="'+!$rootScope.authenticated+'" ng-model="yourVote" step="1" min="1" max="5" aria-label="rating"></md-slider><br>'+
 			'<h3 style="padding-left: 25px; margin-top: 10px;">{{yourVote}}</h3><br>'+
 		'</div>'+
 		'<h5 style="text-align: center;">Average rate</h5><br>'+
 		'<div layout="">'+
-			'<md-slider flex="" class="md-warn" md-discrete="" ng-disabled="true"  ng-model="signalMarkers['+ marker.id+'].rate" step="1" min="1" max="5" aria-label="rating"></md-slider><br>'+
+			'<md-slider flex="" class="md-primary" md-discrete="" ng-disabled="true"  ng-model="signalMarkers['+ marker.id+'].rate" step="1" min="1" max="5" aria-label="rating"></md-slider><br>'+
 			'<h3 style="padding-left: 25px; margin-top: 10px;">{{signalMarkers['+ marker.id+'].rate}}</h3><br>'+
 		'</div>'+
 		'</md-content>'+
-		'<div><h2 class="time">{{signalMarkers['+ marker.id+'].nickname}}</h2></div>'+
+		'<div style="text"><h2 class="time">{{signalMarkers['+ marker.id+'].nickname}}</h2> <i ng-show="signalMarkers['+ marker.id+'].nickname==nickname" ng-click="deleteSignal('+marker.id+')"  style="float: right; margin-top: -30px;" class="fa fa-2x fa-trash-o" aria-hidden="true"></i></div>'+
 		'</div>';
 
 		$scope.ppContainer='<div id="Marker'+ marker.id+'">'+s+'</div>';
