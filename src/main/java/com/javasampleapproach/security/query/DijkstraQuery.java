@@ -28,7 +28,7 @@ public class DijkstraQuery {
 	private SessionFactory sf = HibernateUtil.getSessionFactory();
 	private Session session;
 	private final double costantePiedi = 1.5;
-	private final double costanteMetro = 0.5;
+	private final double costanteMetro = 0.5d;
 	private final double radius = 250d;
 	private Map<String, List<String>> map = new HashMap<String, List<String>>();
 	
@@ -198,7 +198,6 @@ public class DijkstraQuery {
 		return lista;
 	}
 	
-	
 	public List<Edge> getNeighboursForLines(){
 		List<Edge> lista = new ArrayList<Edge>();
 		Iterator<Entry<String, List<String>>> it = map.entrySet().iterator();
@@ -223,20 +222,15 @@ public class DijkstraQuery {
 						distance= getDistance(startStop, nextStop);
 					//if line METRO set a lower cost
 					if(linea.equals("METRO"))
-						edge.setCost((int)(distance.intValue()*costanteMetro));
+						edge.setCost((int)(distance.intValue()*costanteMetro/5));
 					else
 						edge.setCost(distance.intValue()/5);
 					edge.setMode(false);
 					edge.setLineId(linea);
 					lista.add(edge);
-					
-					if(linea.equals("2") && startStop.equals("101"))
-						System.out.println("From : "+startStop+" To: "+nextStop+" Cost :"+distance.intValue()/5);
 				}
-				System.out.println("Added edges for line "+linea);
-				if(linea.equals("2") && startStop.equals("101"))
-					return lista;
-			}			
+			}
+			System.out.println("Added edges for line "+linea);
 		}
 		return lista;
 	}

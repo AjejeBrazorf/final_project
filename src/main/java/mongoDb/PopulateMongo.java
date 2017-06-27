@@ -51,7 +51,7 @@ public class PopulateMongo {
 			}
             
             
-			/*mongo = new MongoClient(ipAddress, 27017);
+			mongo = new MongoClient(ipAddress, 27017);
 			
 			MongoDatabase db = mongo.getDatabase("trasporti");
 			System.out.println("Connect to database successfully");
@@ -66,7 +66,7 @@ public class PopulateMongo {
 							myPassword.toCharArray()
 							)
 					);
-			MongoClient mongo2 = new MongoClient( seeds, credentials );
+			MongoClient mongo2 = new MongoClient( seeds, credentials );*/
 			
 			MongoCollection<Document> collection = db.getCollection("paths_list");
 			
@@ -77,7 +77,7 @@ public class PopulateMongo {
 				List<Document> minPaths = graph.printAllPaths(id);
 				collection.insertMany(minPaths);
 			}
-			*/
+			
 			System.out.println("Documents inserted successfully");
 		    } catch (MongoException e) {
 		    	e.printStackTrace();
