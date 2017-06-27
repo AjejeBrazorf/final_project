@@ -145,6 +145,20 @@ text-align: center;
   
 }
 
+.searchRouteDiv{
+	padding-right: 0;
+	margin-right: 0;
+	overflow-x: hidden;
+}
+
+.buttonDownPage{
+	margin-left: 0px;
+	margin-right: 0px;
+	position: fixed;
+	bottom: 12px;
+	width: 50%;
+}
+
 .leaflet-popup-content-wrapper, .leaflet-popup-tip {
     background: #37373e;
     box-shadow: 0 3px 14px rgba(0,0,0,0.4);

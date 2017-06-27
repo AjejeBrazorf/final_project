@@ -60,10 +60,12 @@ footer {
   width: 100%;
   padding: 0;
   margin: 0;
+  position: fixed;
+	width: 100%;
+	top: 52px;
+	bottom: 0px;
 }
-body> .container{
-  margin-top: -35px;
-}
+
 
 #mapid {
   position: fixed;
@@ -212,6 +214,14 @@ body> .container{
   width: 0;
 }
 
+.navbar-fixed-top{
+	    	transition: 0.2s all cubic-bezier(0.67, 0, 1, 1);
+    
+}
+
+.navbarCharge{
+	    border-bottom: 1px solid #4285f4;
+}
 
 .nav.navbar-nav>*{
   max-height: inherit;
