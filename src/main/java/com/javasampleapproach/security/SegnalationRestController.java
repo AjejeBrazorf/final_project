@@ -99,7 +99,9 @@ public class SegnalationRestController {
 			System.out.println("oldrate: " +oldRate);
 			if(oldRate != null){
 				newAverage = service.updateRate(1, rate-oldRate, id);
+				System.out.println("Ho aggiornato la media");
 				rateService.updateUserRate(name.getName(), id, rate);
+				System.out.println("Ho aggiornato il voto dello user");
 			}
 			else{
 				//aggiungo anche in tabelle di user-voto
