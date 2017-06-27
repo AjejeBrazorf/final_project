@@ -45,7 +45,7 @@ public class SegnalationQuery {
 	//update Rate
 	//mode : 0  new vote
 	//mode : 1  update of old vote
-	public String updateRate(int mode, double rate, String id){
+	public Double updateRate(int mode, double rate, String id){
 		return sR.updateRate(mode, rate, Integer.parseInt(id));
 	}
 

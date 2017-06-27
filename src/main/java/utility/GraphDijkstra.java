@@ -133,6 +133,7 @@ public class GraphDijkstra {
 	   /** Implementation of dijkstra's algorithm using a binary heap. */
 	   private void dijkstra(final NavigableSet<Node> q) {      
 	      Node u, v;
+	      String previousLine = "";
 	      while (!q.isEmpty()) {
 	 
 	         u = q.pollFirst(); // vertex with shortest distance (first iteration will return source)
@@ -143,7 +144,18 @@ public class GraphDijkstra {
 	            v = a.getKey(); //the neighbour in this iteration
 	 
 	            final int alternateDist = u.dist + a.getValue();
-	            if (alternateDist < v.dist) { // shorter path to neighbour found
+	            
+	            //preferisco la linea che ho usato per raggiungere il nodo prima
+	            Edge e = mkm.get(u.name, v.name);
+	            if(e.getLineId().equals(previousLine)){
+	            	previousLine = e.getLineId();
+	            	q.remove(v);
+	            	v.dist = alternateDist;
+	            	v.previous = u;
+	            	q.add(v);
+	            }
+	            //altrimenti vedo la distanza
+	            else if (alternateDist < v.dist) { // shorter path to neighbour found
 	               q.remove(v);
 	               v.dist = alternateDist;
 	               v.previous = u;
