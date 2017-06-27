@@ -17,7 +17,7 @@ import sun.security.x509.IPAddressName;
 public class HibernateUtil {
 	
 	private static final SessionFactory sessionFactory = buildSessionFactory();
-	private static final String ipAddress = "localhost";
+	private static final String ipAddress = "192.168.99.100";
 	
 	private static SessionFactory buildSessionFactory() {
 		try {
@@ -26,8 +26,8 @@ public class HibernateUtil {
 					.applySetting(Environment.DRIVER,"org.postgresql.Driver")
 					//qua sono da cambiare a seconda se JPA o Hibernate
 					.applySetting(Environment.USER, "postgres")
-			    	.applySetting(Environment.PASS, "juventus")
-			    	.applySetting(Environment.URL,"jdbc:postgresql://"+ ipAddress + ":5432/springbootdb")
+			    	.applySetting(Environment.PASS, "ai-user-password")
+			    	.applySetting(Environment.URL,"jdbc:postgresql://"+ ipAddress + ":5432/trasporti")
 					.applySetting(Environment.DIALECT,"org.hibernate.spatial.dialect.postgis.PostgisDialect")
 					.applySetting(Environment.HBM2DDL_AUTO,"validate")
 					.applySetting(Environment.CURRENT_SESSION_CONTEXT_CLASS, "thread")

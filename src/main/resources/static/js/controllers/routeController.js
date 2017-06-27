@@ -152,7 +152,7 @@ app.controller('RouteCtrl', ['$scope', 'DataProvider','$routeParams','$timeout',
 		console.log("entro in funzione");
 		console.log($scope.from+" == "+ $scope.yourPosition);
 		if($scope.from==$scope.yourPosition)
-			$scope.from=$scope.myLat+"-"+$scope.myLng;
+			$scope.from=$scope.myLat+","+$scope.myLng;
 		console.log($scope.from+" == "+ $scope.yourPosition);
 			
 		var lat1, lng1, lat2, lng2;
@@ -172,7 +172,7 @@ app.controller('RouteCtrl', ['$scope', 'DataProvider','$routeParams','$timeout',
 
 		console.log($scope.to+" == "+ $scope.yourPosition);
 		if($scope.to==$scope.yourPosition)
-			$scope.to=$scope.myLat+"-"+$scope.myLng;
+			$scope.to=$scope.myLat+","+$scope.myLng;
 		console.log($scope.to+" == "+ $scope.yourPosition);
 		
 		DataProvider.getPositionFromString($scope.to, function(positions){
