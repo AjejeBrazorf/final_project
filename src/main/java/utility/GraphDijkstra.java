@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.NavigableSet;
 import java.util.TreeSet;
 
@@ -21,6 +20,7 @@ public class GraphDijkstra {
 	   public static List<Document> minPath = new ArrayList<Document>();
 	   public static int totCost = 0;
 	   
+	   
 	   public int getCost(){ return totCost;}
 	   public List<Document> getPath(){ return minPath;}
 	   public void clearCost(){totCost = 0;}
@@ -29,7 +29,7 @@ public class GraphDijkstra {
 	   
 	   
 	   public static String sourcePoint = null;
-	   public static String previousLine = null;
+	   
 	 
 	   /** One vertex of the graph, complete with mappings to neighbouring vertices */
 	  public static class Node implements Comparable<Node>{
@@ -37,7 +37,6 @@ public class GraphDijkstra {
 		public int dist = Integer.MAX_VALUE; // MAX_VALUE assumed to be infinity
 		public Node previous = null;
 		public final Map<Node, Integer> neighbours = new HashMap<Node, Integer>();
-		public int flag =0;
 	 
 		public Node(String name)
 		{
@@ -63,26 +62,8 @@ public class GraphDijkstra {
 				totCost = this.dist;
 				//minPath.add(this.name);
 				
-				List<Edge> vicini = new ArrayList<>();
-				
-				//prendo gli edge tra quelle due fermate
-				for(Entry<MultiKey<? extends String>, Edge> m : mkm.entrySet()){
-					if(m.getKey().getKey(0).equals(sourcePoint) && m.getKey().getKey(1).equals(this.name) ||
-					   m.getKey().getKey(0).equals(this.name) && m.getKey().getKey(1).equals(sourcePoint))
-						vicini.add(m.getValue());
-				}
-				
-				Edge found = new Edge();
-				for (Edge e : vicini){
-					if(previousLine!= null && e.getLineId()!=null && e.getLineId().equals(previousLine)){
-						found = e;
-						flag = 1;
-						break;
-					}
-				}
-				if(flag == 0)
-					found = vicini.get(0);
-				
+					
+				Edge found = mkm.get(sourcePoint, this.name);
 				Document doc = new Document("idSource",found.getIdSource())
 							       .append("idDestination", found.getIdDestination())
 							       .append("mode", found.isMode())
@@ -90,9 +71,9 @@ public class GraphDijkstra {
 							       .append("lineId", found.getLineId());
 				minPath.add(doc);
 				sourcePoint = this.name;
-				previousLine = found.getLineId();
-				flag = 0;
 					
+				
+				
 			}
 		}
 	 
@@ -152,7 +133,6 @@ public class GraphDijkstra {
 	   /** Implementation of dijkstra's algorithm using a binary heap. */
 	   private void dijkstra(final NavigableSet<Node> q) {      
 	      Node u, v;
-	      String previousLine = "";
 	      while (!q.isEmpty()) {
 	 
 	         u = q.pollFirst(); // vertex with shortest distance (first iteration will return source)
@@ -163,18 +143,7 @@ public class GraphDijkstra {
 	            v = a.getKey(); //the neighbour in this iteration
 	 
 	            final int alternateDist = u.dist + a.getValue();
-	            
-	            //preferisco la linea che ho usato per raggiungere il nodo prima
-	            Edge e = mkm.get(u.name, v.name);
-	            if(e.isMode()!=true && e.getLineId().equals(previousLine)){
-	            	previousLine = e.getLineId();
-	            	q.remove(v);
-	            	v.dist = alternateDist;
-	            	v.previous = u;
-	            	q.add(v);
-	            }
-	            //altrimenti vedo la distanza
-	            else if (alternateDist < v.dist) { // shorter path to neighbour found
+	            if (alternateDist < v.dist) { // shorter path to neighbour found
 	               q.remove(v);
 	               v.dist = alternateDist;
 	               v.previous = u;

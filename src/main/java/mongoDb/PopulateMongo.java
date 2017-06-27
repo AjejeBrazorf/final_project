@@ -21,6 +21,7 @@ import com.javasampleapproach.security.model.Edge;
 import com.javasampleapproach.security.query.DijkstraQuery;
 
 //db.paths_list.createIndex( { idSource: 1, idDestination: 1} )
+//db.paths_list.find({$and:[{idSource:{$eq:'100'}} , {idDestination:{$eq:'10'}}]})
 
 public class PopulateMongo {
 	private static List<String> nodes ;
@@ -36,29 +37,21 @@ public class PopulateMongo {
 		try {
 			
 			nodes = new ArrayList<String>();
-            edges = new MultiKeyMap<String,Edge>();
-            dq = new DijkstraQuery();
-            Iterator<BusStop> it = dq.getStops().iterator();
-            while (it.hasNext()) {
-            	BusStop stop = it.next();
-                nodes.add(stop.getId());
-                
-                //find neighbours
-                //first on foot
-                for(Edge e :dq.getNeighboursWalkForStop(stop.getId())){
-                	edges.put(e.getIdSource(), e.getIdDestination(), e);
-                }
-                //edges.addAll(dq.getNeighboursWalkForStop(stop.getId()));
-                
-                //then by bus 
-                for(Edge e :dq.getNeighboursForStop(stop.getId())){
-                	edges.put(e.getIdSource(), e.getIdDestination(), e);
-                }
-                //edges.addAll(dq.getNeighboursForStop(stop.getId()));
-                System.out.println("Added edges for node "+stop.getName());
-            }
+			edges = new MultiKeyMap<String,Edge>();
+			dq = new DijkstraQuery();
+			Iterator<BusStop> it = dq.getStops().iterator();
+			while (it.hasNext()) {
+				BusStop stop = it.next();
+				nodes.add(stop.getId());
+			}
+
+			//then by bus 
+			for(Edge e :dq.getNeighboursForLines()){
+				edges.put(e.getIdSource(), e.getIdDestination(), e);
+			}
             
-			mongo = new MongoClient(ipAddress, 27017);
+            
+			/*mongo = new MongoClient(ipAddress, 27017);
 			
 			MongoDatabase db = mongo.getDatabase("trasporti");
 			System.out.println("Connect to database successfully");
@@ -73,7 +66,7 @@ public class PopulateMongo {
 							myPassword.toCharArray()
 							)
 					);
-			MongoClient mongo2 = new MongoClient( seeds, credentials );*/
+			MongoClient mongo2 = new MongoClient( seeds, credentials );
 			
 			MongoCollection<Document> collection = db.getCollection("paths_list");
 			
@@ -84,7 +77,7 @@ public class PopulateMongo {
 				List<Document> minPaths = graph.printAllPaths(id);
 				collection.insertMany(minPaths);
 			}
-			
+			*/
 			System.out.println("Documents inserted successfully");
 		    } catch (MongoException e) {
 		    	e.printStackTrace();

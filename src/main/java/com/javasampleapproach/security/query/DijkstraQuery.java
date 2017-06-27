@@ -27,7 +27,8 @@ public class DijkstraQuery {
 	
 	private SessionFactory sf = HibernateUtil.getSessionFactory();
 	private Session session;
-	private final double costantePiedi = 2;
+	private final double costantePiedi = 1.5;
+	private final double costanteMetro = 0.5;
 	private final double radius = 250d;
 	private Map<String, List<String>> map = new HashMap<String, List<String>>();
 	
@@ -35,7 +36,6 @@ public class DijkstraQuery {
 		session = sf.getCurrentSession();
 		
 		JSONParser parser = new JSONParser();
-
 
 		Object obj;
 		try {
@@ -57,17 +57,11 @@ public class DijkstraQuery {
 				map.put(lineName, stopsId);
 			}
 			
-			
-			
-			
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -186,7 +180,11 @@ public class DijkstraQuery {
 						Double distance = 0d;
 						if(!nextStop.equals(stopId))
 							distance= getDistance(stopId, nextStop);
-						edge.setCost(distance.intValue());
+						//if line METRO set a lower cost
+						if(pair.getKey().equals("METRO"))
+							edge.setCost((int)(distance.intValue()*costanteMetro));
+						else
+							edge.setCost(distance.intValue());
 						edge.setMode(false);
 						edge.setLineId(pair.getKey());
 						lista.add(edge);
@@ -197,6 +195,49 @@ public class DijkstraQuery {
         }
 		
 		
+		return lista;
+	}
+	
+	
+	public List<Edge> getNeighboursForLines(){
+		List<Edge> lista = new ArrayList<Edge>();
+		Iterator<Entry<String, List<String>>> it = map.entrySet().iterator();
+		while (it.hasNext()) {
+			Map.Entry<String,List<String>> pair = (Map.Entry<String, List<String>>)it.next();
+			String linea = pair.getKey();
+			List<String> value = pair.getValue();
+			for(int i=0; i<value.size()-1; i++){
+				
+				String startStop = value.get(i);
+				
+				//get Stop reachable by walk
+				lista.addAll(getNeighboursWalkForStop(startStop));
+				
+				for(int j=(i+1); j<value.size(); j++){
+					String nextStop = value.get(j);
+					Edge edge = new Edge();
+					edge.setIdSource(startStop);
+					edge.setIdDestination(nextStop);
+					Double distance = 0d;
+					if(!nextStop.equals(startStop))
+						distance= getDistance(startStop, nextStop);
+					//if line METRO set a lower cost
+					if(linea.equals("METRO"))
+						edge.setCost((int)(distance.intValue()*costanteMetro));
+					else
+						edge.setCost(distance.intValue()/5);
+					edge.setMode(false);
+					edge.setLineId(linea);
+					lista.add(edge);
+					
+					if(linea.equals("2") && startStop.equals("101"))
+						System.out.println("From : "+startStop+" To: "+nextStop+" Cost :"+distance.intValue()/5);
+				}
+				System.out.println("Added edges for line "+linea);
+				if(linea.equals("2") && startStop.equals("101"))
+					return lista;
+			}			
+		}
 		return lista;
 	}
 
