@@ -25,7 +25,7 @@ import com.javasampleapproach.security.query.DijkstraQuery;
 public class PopulateMongo {
 	private static List<String> nodes ;
 	private static MultiKeyMap<String,Edge> edges;
-    private static final String ipAddress = "192.168.99.100";
+    private static final String ipAddress = "localhost";
     
 	public static void main(String[] args) {
 		String myUserName = "user_ai";

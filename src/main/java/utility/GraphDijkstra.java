@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.NavigableSet;
 import java.util.TreeSet;
 
@@ -20,7 +21,6 @@ public class GraphDijkstra {
 	   public static List<Document> minPath = new ArrayList<Document>();
 	   public static int totCost = 0;
 	   
-	   
 	   public int getCost(){ return totCost;}
 	   public List<Document> getPath(){ return minPath;}
 	   public void clearCost(){totCost = 0;}
@@ -29,7 +29,7 @@ public class GraphDijkstra {
 	   
 	   
 	   public static String sourcePoint = null;
-	   
+	   public static String previousLine = null;
 	 
 	   /** One vertex of the graph, complete with mappings to neighbouring vertices */
 	  public static class Node implements Comparable<Node>{
@@ -37,6 +37,7 @@ public class GraphDijkstra {
 		public int dist = Integer.MAX_VALUE; // MAX_VALUE assumed to be infinity
 		public Node previous = null;
 		public final Map<Node, Integer> neighbours = new HashMap<Node, Integer>();
+		public int flag =0;
 	 
 		public Node(String name)
 		{
@@ -62,8 +63,26 @@ public class GraphDijkstra {
 				totCost = this.dist;
 				//minPath.add(this.name);
 				
-					
-				Edge found = mkm.get(sourcePoint, this.name);
+				List<Edge> vicini = new ArrayList<>();
+				
+				//prendo gli edge tra quelle due fermate
+				for(Entry<MultiKey<? extends String>, Edge> m : mkm.entrySet()){
+					if(m.getKey().getKey(0).equals(sourcePoint) && m.getKey().getKey(1).equals(this.name) ||
+					   m.getKey().getKey(0).equals(this.name) && m.getKey().getKey(1).equals(sourcePoint))
+						vicini.add(m.getValue());
+				}
+				
+				Edge found = new Edge();
+				for (Edge e : vicini){
+					if(previousLine!= null && e.getLineId()!=null && e.getLineId().equals(previousLine)){
+						found = e;
+						flag = 1;
+						break;
+					}
+				}
+				if(flag == 0)
+					found = vicini.get(0);
+				
 				Document doc = new Document("idSource",found.getIdSource())
 							       .append("idDestination", found.getIdDestination())
 							       .append("mode", found.isMode())
@@ -71,9 +90,9 @@ public class GraphDijkstra {
 							       .append("lineId", found.getLineId());
 				minPath.add(doc);
 				sourcePoint = this.name;
+				previousLine = found.getLineId();
+				flag = 0;
 					
-				
-				
 			}
 		}
 	 
@@ -147,7 +166,7 @@ public class GraphDijkstra {
 	            
 	            //preferisco la linea che ho usato per raggiungere il nodo prima
 	            Edge e = mkm.get(u.name, v.name);
-	            if(e.getLineId().equals(previousLine)){
+	            if(e.isMode()!=true && e.getLineId().equals(previousLine)){
 	            	previousLine = e.getLineId();
 	            	q.remove(v);
 	            	v.dist = alternateDist;

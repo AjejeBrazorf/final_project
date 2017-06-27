@@ -27,7 +27,7 @@ public class HibernateUtil {
 					//qua sono da cambiare a seconda se JPA o Hibernate
 					.applySetting(Environment.USER, "postgres")
 			    	.applySetting(Environment.PASS, "ai-user-password")
-			    	.applySetting(Environment.URL,"jdbc:postgresql://"+ ipAddress + "/trasporti")
+			    	.applySetting(Environment.URL,"jdbc:postgresql://"+ ipAddress + ":5432/trasporti")
 					.applySetting(Environment.DIALECT,"org.hibernate.spatial.dialect.postgis.PostgisDialect")
 					.applySetting(Environment.HBM2DDL_AUTO,"validate")
 					.applySetting(Environment.CURRENT_SESSION_CONTEXT_CLASS, "thread")
