@@ -28,7 +28,7 @@ public class SegnalationQuery {
 	
 	//select by Id
 	public Segnalazione getById(String id){
-		return sR.findById(id);
+		return sR.findById(Integer.parseInt(id));
 	}
 	
 	//insert new Segnalation
@@ -38,7 +38,7 @@ public class SegnalationQuery {
 	
 	//change data fine of a segnalation
 	public String  updateSegnalation(Date dataFine, String id){
-		return sR.updateSegnalazione(dataFine, id);
+		return sR.updateSegnalazione(dataFine, Integer.parseInt(id));
 	}
 	
 
@@ -46,7 +46,7 @@ public class SegnalationQuery {
 	//mode : 0  new vote
 	//mode : 1  update of old vote
 	public String updateRate(int mode, double rate, String id){
-		return sR.updateRate(mode, rate, id);
+		return sR.updateRate(mode, rate, Integer.parseInt(id));
 	}
 
 }
