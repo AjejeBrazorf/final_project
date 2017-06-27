@@ -39,7 +39,7 @@ app.controller('SignalsCtrl', ['$scope', 'DataProvider','$routeParams','$timeout
 
 
 
-
+	$scope.yourPositionString="Your position";
 
 	$scope.signal={};
 	$scope.signal.type="inProgress";
@@ -269,6 +269,11 @@ app.controller('SignalsCtrl', ['$scope', 'DataProvider','$routeParams','$timeout
 				connectToAllTopics();
 		}
 
+		console.log($scope.address+" - "+$scope.yourPositionString);
+		if($scope.address==$scope.yourPositionString){
+			//modifica address con lat  e lng della tua posizione
+			$scope.address=$scope.myLat+","+$scope.myLng;
+		}
 		//DataProvider.getPositionFromString($scope.address, $scope.onPositionReady, onError);
 		$scope.inputMess="E' stato inserito un #"+$scope.signal.type+"# nella posizione "+"#"+$scope.address+"# da: "+$("#user")[0].innerText;
 		$scope.addSignalsFromChat(13);
@@ -276,6 +281,7 @@ app.controller('SignalsCtrl', ['$scope', 'DataProvider','$routeParams','$timeout
 		$scope.address = "";
 	}
 
+	//per Chat
 	$scope.onHintClick = function(hint,hinttype){
 		console.log(hinttype);
 
@@ -538,11 +544,14 @@ app.controller('SignalsCtrl', ['$scope', 'DataProvider','$routeParams','$timeout
 	function searchTextChange(text) {
 		$scope.showSpinner=true;
 		$scope.hints = [];
-		if(text.length>0)
+		if(text.length>0 || text)
 			DataProvider.getPositionFromString($scope.address, onPositionAddress, onErrorPositionAddress);
 	}
 
 	function selectedItemChange(item) {
+		if(item=="Your position"){
+			var localPosition=DataProvider.getCurrentPosition(onCurrentPosition);
+		}
 	}
 
 
@@ -577,25 +586,33 @@ app.controller('SignalsCtrl', ['$scope', 'DataProvider','$routeParams','$timeout
 	$scope.infoWindow;
 
 	function onCurrentPosition(position) {
-		if($routeParams.lat!=null && $routeParams.lng!=null ) return;
 		var pos = {
 				lat: position.coords.latitude,
 				lng: position.coords.longitude
 		};  
+		console.log("posizione presa");
 		console.log(pos.lat);
 		$scope.centerLocation.lat=pos.lat;
 		$scope.centerLocation.lng=pos.lng;
+		
+		$scope.myLat=pos.lat;
+		$scope.myLng=pos.lng;
+		
 		$scope.centerLocation.zoom=16;
-		$scope.signalMarkers[0]={
-				lat:  $scope.centerLocation.lat,
-				lng:  $scope.centerLocation.lng,
-				message: "I'm here!"
-		};
+		/*
+		$scope.markers.push({
+			lat:  $scope.centerLocation.lat,
+			lng:  $scope.centerLocation.lng,
+			message: "I'm here!"
+		});
+		*/
+
+		$scope.centerLocation.zoom=16;
 		//updateMap
 		leafletData.getMap("myMap").then(function(map) {});
 	}
 
-	var localPosition=DataProvider.getCurrentPosition(onCurrentPosition);
+//	var localPosition=DataProvider.getCurrentPosition(onCurrentPosition);
 
 	function onPositionAddress(positions) {
 		console.log(positions);
@@ -605,6 +622,8 @@ app.controller('SignalsCtrl', ['$scope', 'DataProvider','$routeParams','$timeout
 		console.log(lng);
 		$scope.centerLocation.lat=lat;
 		$scope.centerLocation.lng=lng;
+		
+		$scope.hints.push($scope.yourPositionString);
 		angular.forEach(positions, function(value, key) {
 			console.log(value.formatted_address);
 			$scope.hints.push(value.formatted_address);
