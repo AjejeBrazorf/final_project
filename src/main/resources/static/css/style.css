@@ -20,6 +20,28 @@ li > .tab{
     padding: 0;
 }
 
+
+md-autocomplete input:not(.md-input) {
+    font-size: 14px;
+    box-sizing: border-box;
+    border: none;
+    box-shadow: none;
+    outline: none;
+    background: #5f5f65 !important;
+    width: 100%;
+    padding: 0 15px;
+    line-height: 40px;
+    height: 40px;
+}
+
+.layout-row {
+    -webkit-box-orient: horizontal;
+    -webkit-flex-direction: row;
+    flex-direction: row;
+    background-color: rgb(95, 95, 101) !important;
+}
+
+
 .thumbnail .caption-full {
     padding: 9px;
     color: #333;
