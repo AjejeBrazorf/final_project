@@ -36,20 +36,19 @@ app.controller('AuthCtrl', ['$scope', '$rootScope',
 			}
 	};
 	$rootScope.authenticated=false;
-
 	$scope.setAuthenticated=function(auth){
 		console.log(auth);
 		$rootScope.authenticated=auth;
 		console.log($rootScope.authenticated);
 		if(auth){
 			$rootScope.img.compressed.dataURL=$('#imgsrc').val();
+			$rootScope.nickname=$('#user').text();
+			console.log("username :" + $rootScope.nickname);
 		}else{
 			console.log("non setto imm");
 		}
 	}
-
-
-
+	
 	$scope.setuserImage=function(){
 		$scope.img.compressed.dataURL=$('#imgsrc').val();
 	}
@@ -147,13 +146,34 @@ app.factory('DataProvider',
 			params: values
 		});
 		promise.then( function(item) {
-			return item.data;
+			//return the average
+			return item;	
 		} , 
 		function error() { }
 		);
 		return promise;
 	};
 
+	
+	DataProvider.deleteSignal= function(item,id) {
+		console.log(item.action);
+		var values={ 'action': item.action}
+		console.log("l'id che invio è" );
+		console.log(id);
+		var promise = $http({
+			url: "../segnalations/"+id,
+			method: "PUT",
+			params: values
+		});
+		promise.then( function(item) {
+			return item.data;
+		} , 
+		function error() { }
+		);
+		return promise;
+	};
+	
+	
 
 
 

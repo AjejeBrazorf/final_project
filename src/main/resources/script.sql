@@ -116,9 +116,6 @@ somma = newcount*newrate;
 newcount = newcount +1;
 somma = somma + new.rate;
 
-new.rate = somma/newcount;
-new.count = newcount;
-
 elseif (new.count = 1) then
 	SELECT count, rate into newcount, newrate
 	from segnalazioni
@@ -126,11 +123,12 @@ elseif (new.count = 1) then
 
 somma = newcount*newrate;
 somma = somma + new.rate;
+	
+end if;
 
 new.rate = somma/newcount;
 new.count = newcount;
-	
-end if;
+
 return new;
 END;
 $emp_stamp$ LANGUAGE plpgsql;

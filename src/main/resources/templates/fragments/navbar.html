@@ -54,7 +54,7 @@
 						alt="User Avatar" />
 				</a></li>
 				<li sec:authorize="isAuthenticated()"><a id="user"
-					sec:authentication="name" th:text="${nickname}" href="/userpage">
+					sec:authentication="name"  ng-model="nickname" th:text="${nickname}" href="/userpage">
 				</a></li>
 				<li sec:authorize="isAuthenticated()"><a th:href="@{/logout}" >
 						Sign out </a></li>
