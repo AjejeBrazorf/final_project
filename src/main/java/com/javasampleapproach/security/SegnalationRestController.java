@@ -86,24 +86,25 @@ public class SegnalationRestController {
 	}
 	
 	@RequestMapping(value="/segnalations/{id}", method=RequestMethod.PUT, produces="application/json")
-	public HttpEntity<?> rateSegnalation(
+	public HttpEntity<Double> rateSegnalation(
 			@PathVariable String id,
 			Principal name,
 			@RequestParam(value = "action", required = true)String action,
 			@RequestParam(value = "rate", required = false, defaultValue = "null")Integer rate){
+		Double newAverage = 0.0;
 		System.out.println("action : " +action);
 		if(action.equals("rate")){
 			Integer oldRate;
 			oldRate = rateService.isPresentUserRate(name.getName(), id);
 			System.out.println("oldrate: " +oldRate);
 			if(oldRate != null){
-				service.updateRate(1, rate-oldRate, id);
+				newAverage = service.updateRate(1, rate-oldRate, id);
 			}
 			else{
 				//aggiungo anche in tabelle di user-voto
 				rateService.insertUserRate(name.getName(), id, rate);
 				System.out.println("action 2: " +action);
-				service.updateRate(0, rate, id);
+				newAverage = service.updateRate(0, rate, id);
 				System.out.println("action 3: " +action);
 			}
 		}
@@ -112,7 +113,7 @@ public class SegnalationRestController {
 		else
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		
-		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		return new ResponseEntity<Double>(newAverage, HttpStatus.ACCEPTED);
 	}
 	
 	@RequestMapping(value="/segnalations", method=RequestMethod.POST, produces="application/json")

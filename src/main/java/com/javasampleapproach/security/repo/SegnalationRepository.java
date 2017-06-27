@@ -31,7 +31,7 @@ public interface SegnalationRepository extends JpaRepository<Segnalazione, Integ
 	String updateSegnalazione(Date DataFine, int id);
 	
 	@Query(value = "UPDATE segnalazioni SET count = ?1, rate = ?2 WHERE id = ?3"
-			+ " RETURNING id", nativeQuery = true)
-	String updateRate(int mode, double rate, int id);
+			+ " RETURNING rate", nativeQuery = true)
+	Double updateRate(int mode, double rate, int id);
 	
 }
