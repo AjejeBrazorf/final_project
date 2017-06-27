@@ -108,7 +108,7 @@ public class SegnalationRestController {
 				rateService.insertUserRate(name.getName(), id, rate);
 				System.out.println("action 2: " +action);
 				newAverage = service.updateRate(0, rate, id);
-				System.out.println("action 3: " +action);
+				System.out.println("action 3: " +newAverage);
 			}
 		}
 		else if(action.equals("cancel"))
