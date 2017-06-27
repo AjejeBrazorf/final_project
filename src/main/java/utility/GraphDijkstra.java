@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.NavigableSet;
 import java.util.TreeSet;
 
@@ -29,7 +30,7 @@ public class GraphDijkstra {
 	   
 	   
 	   public static String sourcePoint = null;
-	   
+	   public static String previousLine = null;
 	 
 	   /** One vertex of the graph, complete with mappings to neighbouring vertices */
 	  public static class Node implements Comparable<Node>{
@@ -62,8 +63,24 @@ public class GraphDijkstra {
 				totCost = this.dist;
 				//minPath.add(this.name);
 				
-					
-				Edge found = mkm.get(sourcePoint, this.name);
+				List<Edge> vicini = new ArrayList<>();
+				
+				//prendo gli edge tra quelle due fermate
+				for(Entry<MultiKey<? extends String>, Edge> m : mkm.entrySet()){
+					if(m.getKey().getKey(0).equals(sourcePoint) && m.getKey().getKey(0).equals(this.name) ||
+					   m.getKey().getKey(0).equals(this.name) && m.getKey().getKey(0).equals(sourcePoint))
+						vicini.add(m.getValue());
+				}
+				
+				Edge found = new Edge();
+				for (Edge e : vicini){
+					if(previousLine!= null && e.getLineId().equals(previousLine)){
+						found = e;
+						break;
+					}
+				}
+				found = vicini.get(0);
+				
 				Document doc = new Document("idSource",found.getIdSource())
 							       .append("idDestination", found.getIdDestination())
 							       .append("mode", found.isMode())
@@ -71,9 +88,8 @@ public class GraphDijkstra {
 							       .append("lineId", found.getLineId());
 				minPath.add(doc);
 				sourcePoint = this.name;
+				previousLine = found.getLineId();
 					
-				
-				
 			}
 		}
 	 
@@ -147,7 +163,7 @@ public class GraphDijkstra {
 	            
 	            //preferisco la linea che ho usato per raggiungere il nodo prima
 	            Edge e = mkm.get(u.name, v.name);
-	            if(e.getLineId().equals(previousLine)){
+	            if(e.isMode()!=true && e.getLineId().equals(previousLine)){
 	            	previousLine = e.getLineId();
 	            	q.remove(v);
 	            	v.dist = alternateDist;
