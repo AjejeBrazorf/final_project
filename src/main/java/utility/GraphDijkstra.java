@@ -67,14 +67,14 @@ public class GraphDijkstra {
 				
 				//prendo gli edge tra quelle due fermate
 				for(Entry<MultiKey<? extends String>, Edge> m : mkm.entrySet()){
-					if(m.getKey().getKey(0).equals(sourcePoint) && m.getKey().getKey(0).equals(this.name) ||
-					   m.getKey().getKey(0).equals(this.name) && m.getKey().getKey(0).equals(sourcePoint))
+					if(m.getKey().getKey(0).equals(sourcePoint) && m.getKey().getKey(1).equals(this.name) ||
+					   m.getKey().getKey(0).equals(this.name) && m.getKey().getKey(1).equals(sourcePoint))
 						vicini.add(m.getValue());
 				}
 				
 				Edge found = new Edge();
 				for (Edge e : vicini){
-					if(previousLine!= null && e.getLineId().equals(previousLine)){
+					if(previousLine!= null && e.getLineId()!=null && e.getLineId().equals(previousLine)){
 						found = e;
 						flag = 1;
 						break;
