@@ -15,8 +15,9 @@ public interface RateUserRepository extends JpaRepository<RateUser, String>{
 			+ " RETURNING rate", nativeQuery = true)
 	void insertUserRate(String username, int idSegnalation, int rate);
 
-	@Query(value = "UPDATE rateUser SET rate = ?1 WHERE username = ?2 AND idsegnalation = ?3", nativeQuery = true)
-	void updateUserRate(int rate, String username, int idSegnalation);
+	@Query(value = "UPDATE rateUser SET rate = ?1 WHERE username = ?2 AND idsegnalation = ?3"
+			+ " RETURNING rate", nativeQuery = true)
+	int updateUserRate(int rate, String username, int idSegnalation);
 	
 	@Query(value = "SELECT rate FROM rateUser WHERE username = ?1 AND idsegnalation = ?2", nativeQuery = true)
 	Integer getUserRate(String username, int idSegnalation);
