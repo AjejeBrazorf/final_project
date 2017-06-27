@@ -90,9 +90,9 @@ public class SegnalationRestController {
 			@PathVariable String id,
 			Principal name,
 			@RequestParam(value = "action", required = true)String action,
-			@RequestParam(value = "rate", required = false, defaultValue = "null")Integer rate){
+			@RequestParam(value = "rate", required = false)Integer rate){
 		Double newAverage = 0.0;
-		System.out.println("action : " +action);
+		System.out.println("action : " +action+"id : "+id);
 		if(action.equals("rate")){
 			Integer oldRate;
 			oldRate = rateService.isPresentUserRate(name.getName(), id);

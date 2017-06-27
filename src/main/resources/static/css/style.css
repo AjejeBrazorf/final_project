@@ -103,8 +103,15 @@ input{
  	border-radius: 2px;
 }
 
+
+
+
 .radiocontainer{
 text-align: center;
+}
+
+.md-menu-showing{
+	 background-color: white !important;
 }
 
 .md-thumb:after, #red-slider .md-track-fill{
