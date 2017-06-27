@@ -3,10 +3,10 @@
 	<div class="col-sm-6 col-md-6 listContainer searchRouteDiv">
 		<div class="row" style="height: 100%; border: solid 15px #37373e;">
 			<div class="row">
-				<div class="col-md-1 col-sm-1" style="height: 72px; padding: 27px;">
-					<span>Da: </span>
+				<div class="col-md-1 col-sm-1 col-xs-1">
+					<span>From: </span>
 				</div>
-				<div layout="column" ng-cloak class="col-md-11 col-sm-11">
+				<div layout="column" ng-cloak class="col-md-11 col-sm-11 col-xs-11">
 					<md-content class="md-padding">
 					<form ng-submit="$event.preventDefault()">
 						<md-autocomplete class="searchBox" md-no-cache="noCache"
@@ -15,10 +15,9 @@
 							md-search-text="from"
 							md-selected-item-change="selectedItemChange(item)"
 							md-items="item in hints" md-item-text="item" md-min-length="0"
-							placeholder="Partenza"> <md-item-template>
+							placeholder="Start point"> <md-item-template>
 						<span md-highlight-text="from" md-highlight-flags="^i">{{item}}</span>
-						</md-item-template> <md-not-found> Nessuna corrispondenza per
-						"{{from}}". </md-not-found> </md-autocomplete>
+						</md-item-template> </md-autocomplete>
 						<div style="text-align: center; color: #a94442;">
 							{{errorSrc}}</div>
 					</form>
@@ -27,10 +26,10 @@
 				<!--<input ng-model="from" placeholder="Partenza"/>-->
 			</div>
 			<div class="row">
-				<div class="col-md-1 col-sm-1 " style="height: 72px; padding: 27px;">
-					<span>A: </span>
+				<div class="col-md-1 col-sm-1 col-xs-1" >
+					<span>To: </span>
 				</div>
-				<div layout="column" ng-cloak class="col-md-11 col-sm-11">
+				<div layout="column" ng-cloak class="col-md-11 col-sm-11 col-xs-11">
 					<md-content class="md-padding">
 					<form ng-submit="$event.preventDefault()">
 						<md-autocomplete class="searchBox" md-no-cache="noCache"
@@ -38,10 +37,10 @@
 							md-search-text-change="searchTextChange(to)" md-search-text="to"
 							md-selected-item-change="selectedItemChange(item)"
 							md-items="item in hints" md-item-text="item" md-min-length="0"
-							placeholder="Arrivo"> <md-item-template>
+							placeholder="Destination"> <md-item-template>
 						<span md-highlight-text="to" md-highlight-flags="^i">{{item}}</span>
-						</md-item-template> <md-not-found> Nessuna corrispondenza per
-						"{{to}}". </md-not-found> </md-autocomplete>
+						</md-item-template> 
+						</md-autocomplete>
 						<div style="text-align: center; color: #a94442;">
 							{{errorDest}}</div>
 					</form>
@@ -51,7 +50,7 @@
 			</div>
 
 			<div class="row">
-				<div class="col-md-12 col-sm-12 "
+				<div class="col-md-12 col-sm-12 col-xs-12"
 					style="height: 72px; padding: 27px;">
 					<ul>
 						<li ng-repeat="fp in fullPath"><i ng-if="fp.type=='foot'">
@@ -61,6 +60,13 @@
 				</div>
 			</div>
 			<div class="row" style="text-align: center; color: #a94442;">{{error}}</div>
+			<div class="row buttonDownPage">
+				<div class="col-md-12 col-sm-12 col-xs-12" >
+					<button ng-click="findPath()" type="submit" class="btn-success red">
+					Find route
+					</button>
+				</div>
+			</div>
 		</div>
 		<!--<li style="padding: 0px; margin: 0;  list-style-type: none; "  ng-repeat="stop in stops">
             <div class="row" style="padding: 0px; margin: 0;">
@@ -76,12 +82,7 @@
 					stroke-linecap="round" cx="33" cy="33" r="30"></circle>
 			</svg>
 		</div>
-		<div class="row buttonDownPage">
-				<div class="col-md-12 col-sm-12" >
-					<button ng-click="findPath()" type="submit" class="btn-success red">Calcola
-						percorso</button>
-				</div>
-			</div>
+		
 	</div>
 
 	<div class="col-sm-6 col-md-6"

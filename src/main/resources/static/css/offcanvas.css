@@ -283,7 +283,6 @@ footer {
   .container{
     width: 100%;
     padding: 0;
-    margin-top: -40px;
   }
 
   .pull-right.visible-xs{
@@ -299,5 +298,10 @@ footer {
     float: left !important;
     left: 10px;
   }
+
+.buttonDownPage {
+
+    width: 98%;
+}
 
 }
