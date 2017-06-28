@@ -7,6 +7,8 @@ import java.security.Principal;
 import java.security.SecureRandom;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
@@ -48,7 +50,12 @@ public class AppController {
 	
 	@Autowired
 	private ActivationQuery aq;
-
+	
+	private static final String EMAIL_PATTERN =
+			"^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+			+ "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+	private Pattern pattern;
+	private Matcher matcher;
 
 	
 	@PostMapping("/addUser")
@@ -57,16 +64,34 @@ public class AppController {
 			@RequestParam(value="nickname", required=true) String nickname,
 			@RequestParam(value="password", required=true) String password) {
 
-		int count = pgq.mailAlreadyPresent(email); //mail già presente
-
+		int count = pgq.mailAlreadyPresent(email); 
+		
+		//controllo se la mail è univoca
 		if(count > 0){
 			model.addAttribute("error", "Sorry, the mail is already present");
 			model.addAttribute("field", "email");	
 			return "registration";
 		}
+		
+		//controllo il formato della mail
+		pattern = Pattern.compile(EMAIL_PATTERN);
+		matcher = pattern.matcher(email);
+		if(!matcher.matches()){
+			model.addAttribute("error", "Sorry, insert a valid email");
+			model.addAttribute("field", "email");	
+			return "registration";
+		}
+		
+		//controllo che la password abbia almeno 8 caratteri
+		if(password.length() <8){
+			model.addAttribute("error", "Sorry, the password must be at least 8 charachters");
+			model.addAttribute("field", "password");	
+			return "registration";
+		}
 
-		count = pgq.nicknameAlreadyPresent(nickname); //nickname già presente
-
+		count = pgq.nicknameAlreadyPresent(nickname); 
+		
+		//controllo che il nickname sia univoco
 		if(count > 0){
 			model.addAttribute("error", "Sorry, the nickname is already present");
 			model.addAttribute("field", "nickname");	
@@ -141,9 +166,16 @@ public class AppController {
 
 
 		String oldpsw = pgq.getPassword(name.getName());
+		//controllo che abbia messo la sua vecchia password
 		if(!oldpsw.equals(oldPassword)){
 			model.addAttribute("error", "Please, insert the old password");
 			model.addAttribute("field", "oldpsw");	//ci dobbiamo metter d'accordo con loro
+			return "userpage";
+		}
+		//controllo che la password abbia almeno 8 caratteri
+		if(newPassword.length() < 8){
+			model.addAttribute("error", "Sorry, the password must be at least 8 charachters");
+			model.addAttribute("field", "newpsw");	
 			return "userpage";
 		}
 
@@ -163,29 +195,53 @@ public class AppController {
 			@RequestParam(value="TypeOfTicket", required=true) String tipoviaggio,
 			@RequestParam(value="photo", required = false) String photo){
 		
-		System.out.println("Istruzione : "+ istruzione);
-//		//dobbiamo settare nel nuovo utente la mail al posto dell'ultimo null
-//		System.out.println(name.getName());
-//		System.out.println(Gender.valueOf(gender));
-//		System.out.println(Istruzione.valueOf(istruzione));
-//		System.out.println(Occupazione.valueOf(occupazione));
-//		System.out.println(Boolean.valueOf(hasCar));
-//		System.out.println(TipoCarburante.valueOf(carburante));
-//		System.out.println(Boolean.valueOf(useCarSharing));
-//		System.out.println(FornitoreCarSharing.valueOf(fcs));
-//		System.out.println(Boolean.valueOf(useBike));
-//		System.out.println(Boolean.valueOf(useBikeSharing));
-//		System.out.println(Boolean.valueOf(useMezzi));
-//		System.out.println(TipoViaggio.valueOf(tipoviaggio));
-//		
+		
+		//controllo che il valore dell'età sia un intero positivo
 		if(eta.equals("") || Integer.parseInt(eta) < 0){
 			model.addAttribute("error", "Please, insert a correct value");
-			model.addAttribute("field", "birthday");	//ci dobbiamo metter d'accordo con loro
+			model.addAttribute("field", "birthday");	
 			return "userpage";
 		}
+		//controllo che l'anno di immatricolazione sia valido
 		if(annoImmatr.equals("") || Integer.parseInt(annoImmatr) < 0){
 			model.addAttribute("error", "Please, insert a correct value");
-			model.addAttribute("field", "carRegistration");	//ci dobbiamo metter d'accordo con loro
+			model.addAttribute("field", "carRegistration");
+			return "userpage";
+		}
+		//controllo che il valore di FornitoreCarSharing sia valido
+		if(FornitoreCarSharing.valueOf(fcs) == null){
+			model.addAttribute("error", "Please, insert a correct value of FornitoreCarSharing");
+			model.addAttribute("field", "CSVendor");	
+			return "userpage";
+		}
+		//controllo che il valore di Gender sia valido
+		if(Gender.valueOf(gender) == null){
+			model.addAttribute("error", "Please, insert a correct value of Gender");
+			model.addAttribute("field", "gender");	
+			return "userpage";
+		}
+		//controllo che il valore di Istruzione sia valido
+		if(Istruzione.valueOf(istruzione) == null){
+			model.addAttribute("error", "Please, insert a correct value of Instruction");
+			model.addAttribute("field", "instruction");	
+			return "userpage";
+		}
+		//controllo che il valore di Occupazione sia valido
+		if(Occupazione.valueOf(occupazione) == null){
+			model.addAttribute("error", "Please, insert a correct value of Job");
+			model.addAttribute("field", "job");	
+			return "userpage";
+		}
+		//controllo che il valore di TipoCarburante sia valido
+		if(TipoCarburante.valueOf(carburante) == null){
+			model.addAttribute("error", "Please, insert a correct value of Fuel");
+			model.addAttribute("field", "fuel");	
+			return "userpage";
+		}
+		//controllo che il valore di TipoViaggio sia valido
+		if(TipoViaggio.valueOf(tipoviaggio) == null){
+			model.addAttribute("error", "Please, insert a correct value of FornitoreCarSharing");
+			model.addAttribute("field", "TypeOfTicket");	
 			return "userpage";
 		}
 	

@@ -1,5 +1,7 @@
-app.controller('RouteCtrl', ['$scope', 'DataProvider','$routeParams','$timeout','$q','leafletData',
-	function ($scope, DataProvider,$routeParams, $timeout, $q, leafletData) {
+app.controller('RouteCtrl', ['$scope', 'DataProvider','$routeParams','$timeout','$q','leafletData','$timeout',
+	function ($scope, DataProvider,$routeParams, $timeout, $q, leafletData, $timeout) {
+
+
 
 	angular.extend($scope, {
 		centerLocation: {
@@ -22,21 +24,21 @@ app.controller('RouteCtrl', ['$scope', 'DataProvider','$routeParams','$timeout',
 				opacity: 1
 			}
 		},
+		markers:{
+			pathPoints:{
+				
+			}
+		},
 		decorations: {
 			byFoot: {
 				coordinates: [],
-				patterns:[
-						{
-							offset: 12,
-							repeat: 25,
-							symbol: L.Symbol.dash({pixelSize: 18, pathOptions: {color: '#f00', weight: 4}})
-						},
-						{
-							offset: '10%',
-							repeat: 25,
-							symbol: L.Symbol.arrowHead({pixelSize: 10, polygon: false, pathOptions: {stroke: true}})
-						}
-						]
+				patterns:  [
+					{
+						offset: 0,
+						repeat: 10,
+						symbol: L.Symbol.dash({pixelSize: 0, color: '#3287d2',weight: 4, opacity: 1})
+					}
+					]
 			},
 			byBus: {
 				coordinates: [],

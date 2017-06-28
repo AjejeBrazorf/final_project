@@ -12,7 +12,13 @@ app.controller('StopsCtrl', ['$scope', 'DataProvider','$routeParams',
 				color: '#800000',
 				opacity: 1
 			}
-
+		},
+		paths: {
+			p1: {
+				color: '#5581ab',
+				weight: 8,
+				latlngs: []
+			}
 		}
 	});
 
@@ -114,8 +120,8 @@ app.controller('StopsCtrl', ['$scope', 'DataProvider','$routeParams',
 		DataProvider.getLines().then(function(response){ 
 			$scope.lines = response; 
 			$scope.showSpinner=false;
+			console.log ($scope.lines);
 		});
-		console.log ($scope.lines);
 	}
 	$scope.showPopUp = function(stopId){
 		if($scope.lastFocused!==-1 && $scope.stopsMarkes[$scope.lastFocused]!=undefined)

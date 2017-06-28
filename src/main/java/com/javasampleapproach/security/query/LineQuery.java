@@ -86,4 +86,11 @@ public class LineQuery {
 		return coordinate;
 	}
 	
+
+	//lat,lng from id
+	public String nameFromStopid(String id){
+		
+		return lR.getStopNameById(id);
+	}
+	
 }
