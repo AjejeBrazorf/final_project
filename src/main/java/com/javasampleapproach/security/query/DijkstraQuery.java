@@ -29,6 +29,7 @@ public class DijkstraQuery {
 	private Session session;
 	private final double costantePiedi = 2;
 	private final double costanteMetro = 0.5;
+	private final double valoreDiPartenza = 500;
 	private final double radius = 250d;
 	private Map<String, List<String>> map = new HashMap<String, List<String>>();
 	
@@ -128,7 +129,7 @@ public class DijkstraQuery {
 		List<Object> listResult = q.list();
 		if(listResult.size()!=1) {
 			tx.commit();
-			session.close();
+			//session.close();
 			return 0d;
 		}
 		
@@ -217,19 +218,36 @@ public class DijkstraQuery {
 				lista.addAll(getNeighboursWalkForStop(startStop));
 				
 				Double distance = 0d;
-				String prevStop = null;
+				String prevNode = startStop;
 				for(int j=(i+1); j<value.size(); j++){
 					String nextStop = value.get(j);
 					Edge edge = new Edge();
 					edge.setIdSource(startStop);
 					edge.setIdDestination(nextStop);
 					
+					//se nodo subito adiacente inizializzo con il valore di partenza
 					if(j == (i+1)){
-						distance += getDistance(startStop, nextStop);
+						//distance = getDistance(startStop, nextStop);
+						distance = valoreDiPartenza;
+						if(linea.equals("METRO"))
+							distance*=costanteMetro;
+							
 						edge.setCost(distance.intValue());
+					}else{
+						distance--;
 					}
-					distance += getDistance(prevStop, nextStop);
-					edge.setCost(distance.intValue()/(j-i));
+					
+					//se passo dal capolinea incremento il costo
+					if(prevNode.equals(nextStop)){
+						if(linea.equals("METRO"))
+							distance += (500 * costanteMetro);
+						else
+							distance += 500;
+					}
+					
+					
+					prevNode = nextStop;
+					edge.setCost(distance.intValue());
 					/*if(!nextStop.equals(startStop))
 						distance= getDistance(startStop, nextStop);
 					//if line METRO set a lower cost

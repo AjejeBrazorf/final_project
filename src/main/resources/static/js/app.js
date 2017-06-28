@@ -117,6 +117,16 @@ app.factory('DataProvider',
 			return response;
 		});
 	};
+	
+	DataProvider.getMyInfo= function(nickname) {
+		return readJson('../'+nickname+'/myInfo').then( function (response){ 
+			console.log(response);
+			return response;
+		});
+	};
+	
+	
+	
 	 
 	DataProvider.addSignalToServer= function(item) {
 		var values= {'lat': item.lat, 'lng': item.lng, 'type': item.type, 'address':item.address};

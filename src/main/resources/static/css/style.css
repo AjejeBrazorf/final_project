@@ -21,6 +21,11 @@ li > .tab{
 }
 
 
+md-autocomplete-wrap.layout-row.md-whiteframe-z1, md-menu-showing {
+    background-color: #5f5f65 !important;
+}
+
+
 md-autocomplete input:not(.md-input) {
     font-size: 14px;
     box-sizing: border-box;

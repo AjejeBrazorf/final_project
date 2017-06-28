@@ -5,8 +5,11 @@ app.controller('userCtrl', ['$scope', '$rootScope', 'DataProvider','$routeParams
 				dataURL:""
 			}
 	};
-    
+	$scope.nickname={};
+	$scope.user={};
 	
+
+
 	$scope.saveImgOnServer=function(){
 		console.log("salvo img su server");
 		console.log($scope.img);	
@@ -22,7 +25,7 @@ app.controller('userCtrl', ['$scope', '$rootScope', 'DataProvider','$routeParams
 	$scope.openFileReader=function(){
 		$(this).find('#inp:hidden').click();
 		$('input:file')[0].click();
-		
+
 	}
 
 	document.getElementById("inp").addEventListener("change", $scope.readFile);
@@ -30,6 +33,25 @@ app.controller('userCtrl', ['$scope', '$rootScope', 'DataProvider','$routeParams
 		$(this).find('#inp:hidden').click();
 		$('input:file')[0].click();
 	});
+
+
+
+
+	$scope.getUserInfo=function(){
+		$rootScope.nickname=$('#user').text();
+		console.log("username :" + $rootScope.nickname);
+		DataProvider.getMyInfo($rootScope.nickname).then(function(response){
+			$scope.user=response;
+			$scope.$apply();
+		});
+	}
+
+	
+	$scope.update=function(){
+		$scope.$applay();
+	}
+
+
 
 }]);
 

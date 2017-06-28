@@ -85,7 +85,7 @@ app.controller('RouteCtrl', ['$scope', 'DataProvider','$routeParams','$timeout',
 		return results;
 	}
 
-
+   //request to google  when the user type the address
 	function searchTextChange(text) {
 		console.log('Text changed to ' + text);
 
@@ -98,6 +98,7 @@ app.controller('RouteCtrl', ['$scope', 'DataProvider','$routeParams','$timeout',
 		}
 	}
 
+	//request to google  when the user wants to use his own position
 	function selectedItemChange(item) {
 		if(item==$scope.yourPosition){
 			var localPosition=DataProvider.getCurrentPosition(onCurrentPosition);
@@ -147,6 +148,7 @@ app.controller('RouteCtrl', ['$scope', 'DataProvider','$routeParams','$timeout',
 	/*$scope.from = DataProvider.points.from;
         $scope.to =  DataProvider.points.to;*/
 
+	//find the path from/to
 	$scope.findPath = function(){
 		var flagFrom = false, flagTo = false;
 		console.log("entro in funzione");
@@ -154,8 +156,9 @@ app.controller('RouteCtrl', ['$scope', 'DataProvider','$routeParams','$timeout',
 		if($scope.from==$scope.yourPosition)
 			$scope.from=$scope.myLat+","+$scope.myLng;
 		console.log($scope.from+" == "+ $scope.yourPosition);
-			
+		
 		var lat1, lng1, lat2, lng2;
+		//request to google for the starting position
 		DataProvider.getPositionFromString($scope.from, function(positions){
 			flagFrom = true;
 			lat1=positions[0].geometry.location.lat();
@@ -175,6 +178,7 @@ app.controller('RouteCtrl', ['$scope', 'DataProvider','$routeParams','$timeout',
 			$scope.to=$scope.myLat+","+$scope.myLng;
 		console.log($scope.to+" == "+ $scope.yourPosition);
 		
+		//request to google for the target position
 		DataProvider.getPositionFromString($scope.to, function(positions){
 			flagTo = true;
 			lat2=positions[0].geometry.location.lat();
@@ -189,7 +193,7 @@ app.controller('RouteCtrl', ['$scope', 'DataProvider','$routeParams','$timeout',
 
 		}, onErrorPositionAddress);
 	}
-
+	
 	$scope.getPointNameStart= function(text,iPath){
 		$showSpinner=true;
 		console.log("waiting for nr "+iPath);
@@ -199,7 +203,7 @@ app.controller('RouteCtrl', ['$scope', 'DataProvider','$routeParams','$timeout',
 			$scope.checkSpinner();
 		}, onErrorPositionAddress);
 	}
-	
+
 	$scope.getPointNameEnd= function(text,iPath){
 		$showSpinner=true;
 		console.log("waiting for nr "+iPath);

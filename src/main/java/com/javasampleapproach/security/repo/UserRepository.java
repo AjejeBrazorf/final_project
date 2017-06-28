@@ -13,6 +13,9 @@ public interface UserRepository extends JpaRepository<User, String>{
 	@Query(value = "SELECT * FROM dettagliouser u WHERE u.email = ?1", nativeQuery = true)
 	User findByemail(String email);
 	
+	@Query(value = "SELECT * FROM dettagliouser u WHERE u.nickname = ?1", nativeQuery = true)
+	User findByNickname(String nickaname);
+	
 	@Query(value = "SELECT nickname FROM dettagliouser u WHERE u.email = ?1", nativeQuery = true)
 	String findnicknameByemail(String mail);
 	

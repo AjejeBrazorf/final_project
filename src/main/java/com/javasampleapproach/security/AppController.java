@@ -163,7 +163,7 @@ public class AppController {
 			@RequestParam(value="TypeOfTicket", required=true) String tipoviaggio,
 			@RequestParam(value="photo", required = false) String photo){
 		
-		
+		System.out.println("Istruzione : "+ istruzione);
 //		//dobbiamo settare nel nuovo utente la mail al posto dell'ultimo null
 //		System.out.println(name.getName());
 //		System.out.println(Gender.valueOf(gender));
@@ -199,10 +199,9 @@ public class AppController {
 	public String userpageController(Model model, Principal name){
 		System.out.println(name.getName());
 
-		User user = pgq.getUserbyUsername(name.getName());
-		model.addAttribute("user",user);
 		model.addAttribute("image", pgq.getImage(name.getName()));
 		model.addAttribute("nickname", pgq.getUsernameByMail(name.getName()));
+		
 		return "userpage";
 	}
 
