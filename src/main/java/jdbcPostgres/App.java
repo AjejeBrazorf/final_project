@@ -1,8 +1,11 @@
 package jdbcPostgres;
 
+import java.io.BufferedReader;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -35,7 +38,7 @@ public class App
 		//creation Db tables 
 		try {
 			Class.forName("org.postgresql.Driver"); 
-			c = DriverManager.getConnection("jdbc:postgresql://" + ipAddress + ":5432/trasporti", "postgres", "ai-user-password");
+			c = DriverManager.getConnection("jdbc:postgresql://" + ipAddress + ":5432/trasporti?useUnicode=true&characterEncoding=UTF-8", "postgres", "ai-user-password");
 			
 			JSONParser parser = new JSONParser();
 
@@ -44,7 +47,7 @@ public class App
 			String queryLineStop = "INSERT INTO BusLineStop (stopId, lineId, sequenceNumber) VALUES (?, ?, ?)";
 			ps = c.prepareStatement(queryLine);
 
-			Object obj = parser.parse(new FileReader( "linee.json"));
+			Object obj = parser.parse(new BufferedReader(new InputStreamReader(new FileInputStream("linee.json"), "iso-8859-1")));
 
 			JSONObject jsonObject = (JSONObject) obj;
 

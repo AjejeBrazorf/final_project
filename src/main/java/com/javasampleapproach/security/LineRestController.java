@@ -30,7 +30,7 @@ public class LineRestController {
 		LinesResource lR = new LinesResource();
 		
 		lR.setLines(lq.getLines());
-	
+		System.out.println("Linea db :"+lq.getLines().get(6).getDescription());
 		//self link
 		Link selfLink = linkTo(LineRestController.class).slash("lines").withSelfRel();
 		lR.add(selfLink);
