@@ -255,11 +255,9 @@ public class AppController {
 	public String userpageController(Model model, Principal name){
 		System.out.println(name.getName());
 
-		User user = pgq.getUserbyUsername(name.getName());
-		
-		model.addAttribute("user",user);
 		model.addAttribute("image", pgq.getImage(name.getName()));
 		model.addAttribute("nickname", pgq.getUsernameByMail(name.getName()));
+		
 		return "userpage";
 	}
 

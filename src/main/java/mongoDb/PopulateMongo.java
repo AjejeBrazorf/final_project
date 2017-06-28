@@ -24,11 +24,12 @@ import com.javasampleapproach.security.model.Edge;
 import com.javasampleapproach.security.query.DijkstraQuery;
 
 //db.paths_list.createIndex( { idSource: 1, idDestination: 1} )
+//db.paths_list.find({$and:[{idSource:{$eq:'100'}} , {idDestination:{$eq:'10'}}]})
 
 public class PopulateMongo {
 	private static List<String> nodes ;
 	private static MultiKeyMap<String,Edge> edges;
-    private static final String ipAddress = "192.168.99.100";
+    private static final String ipAddress = "localhost";
     
 	public static void main(String[] args) {
 		String myUserName = "user_ai";
@@ -42,7 +43,7 @@ public class PopulateMongo {
             edges = new MultiKeyMap<String,Edge>();
             dq = new DijkstraQuery();
             Iterator<BusStop> it = dq.getStops().iterator();
-            while (it.hasNext()) {
+            /*while (it.hasNext()) {
             	BusStop stop = it.next();
                 nodes.add(stop.getId());
                 
@@ -59,7 +60,17 @@ public class PopulateMongo {
                 }
                 //edges.addAll(dq.getNeighboursForStop(stop.getId()));
                 System.out.println("Added edges for node "+stop.getName());
-            }
+            }*/
+            
+            while (it.hasNext()) {
+				BusStop stop = it.next();
+				nodes.add(stop.getId());
+			}
+
+			//then by bus 
+			for(Edge e :dq.getNeighboursForLines()){
+				edges.put(e.getIdSource(), e.getIdDestination(), e);
+			}
             
 			mongo = new MongoClient(ipAddress, 27017);
 			
@@ -100,8 +111,9 @@ public class PopulateMongo {
 		    } catch (Exception e) {
 		    	e.printStackTrace();
 		    }finally{
-		    	mongo.close();
+		    	mongo.close();   
 		    }
+			return;
 	
 
 	}

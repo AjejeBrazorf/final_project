@@ -43,6 +43,13 @@ public class UsersQuery{
 		return n;
 	}
 	
+	//utente da mail
+	public User getUserbyNickname(String s){
+		User n = uR.findByNickname(s);
+
+		return n;
+	}
+	
 	public String getUsernameByMail(String email){
 		String s = uR.findnicknameByemail(email);
 		

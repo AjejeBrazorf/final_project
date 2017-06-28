@@ -1,8 +1,15 @@
 app.controller('navCtrl', ['$scope', '$rootScope',
 	function ($scope, $rootScope) {
+	$scope.nickname={};
+	
+	$scope.setNickname=function(){
+		$rootScope.nickname=$scope.nickname;
+	}
+	
 	$rootScope.$on("$routeChangeSuccess", function (event, current, previous, rejection) {
 		$scope.userImage=$rootScope.rootUserImage;
 		console.log("success on "+current.$$route.originalPath);
+		//set the color of the navbar tab depending on the page i am
 		$("li>a").each(function () {
 			var href=this.href.split("/")[this.href.split("/").length-1];
 			var last=document.URL.split("/")[document.URL.split("/").length-1];
