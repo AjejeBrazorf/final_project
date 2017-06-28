@@ -1,13 +1,16 @@
 package mongoDb;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.apache.commons.collections4.map.MultiKeyMap;
 import org.bson.Document;
 
+import com.mongodb.BasicDBObject;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientOptions;
 import com.mongodb.MongoException;
@@ -84,6 +87,12 @@ public class PopulateMongo {
 				List<Document> minPaths = graph.printAllPaths(id);
 				collection.insertMany(minPaths);
 			}
+			
+			Map<String, Integer> index = new HashMap<>();
+			index.put("idSource", 1);
+			index.put("idDestination", 1);
+			
+			collection.createIndex(new BasicDBObject(index));
 			
 			System.out.println("Documents inserted successfully");
 		    } catch (MongoException e) {
