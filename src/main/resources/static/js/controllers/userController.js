@@ -42,13 +42,14 @@ app.controller('userCtrl', ['$scope', '$rootScope', 'DataProvider','$routeParams
 		console.log("username :" + $rootScope.nickname);
 		DataProvider.getMyInfo($rootScope.nickname).then(function(response){
 			$scope.user=response;
+			console.log(response);
 			$scope.$apply();
 		});
 	}
 
 	
 	$scope.update=function(){
-		$scope.$applay();
+		$scope.$apply();
 	}
 
 

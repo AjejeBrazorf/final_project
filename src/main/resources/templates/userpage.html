@@ -21,7 +21,7 @@
 	media="all" />
 <title>UserPage</title>
 </head>
-<body ng-app="App" ng-init="getUserInfo();" ng-controller="userCtrl">
+<body ng-app="App" ng-init="getUserInfo();" ng-cloak="" ng-controller="userCtrl">
 	<div th:replace="fragments/navbar :: navbar"></div>
 	<div class="row" style="text-align: center; height: 75%;">
 		<div class="col-md-12" style="padding-top: 10%;">
@@ -131,16 +131,17 @@
 					<h4>Car</h4>
 				</div>
 				<div class="col-md-2">
-					<select name="hascar" onchange="update()" class="searchBox"  ng-model="user.hascar">
+				{{user.hascar}} {{user.hascar==true}}
+					<select name="hascar" class="searchBox"  ng-model="user.hascar">
 						<option class="searchBox" ng-selected="user.hascar==true" value="true">Yes</option>
 						<option class="searchBox" ng-selected="user.hascar==false" value="false">No</option>
 					</select>
 				</div>
-				<div class="col-md-1" ng-show="user.hascar==true">
-					<h4>Fuel</h4>
+				<div class="col-md-1" >
+					<h4 ng-show="user.hascar=='true'">Fuel</h4>
 				</div>
-				<div class="col-md-2" ng-show="user.hascar==true">
-					<select name="fuel" class="searchBox" >
+				<div class="col-md-2">
+					<select  ng-show="user.hascar=='true'" name="fuel" class="searchBox" ng-model="user.tipocarburante" >
 						<option class="searchBox" value="diesel">diesel</option>
 						<option class="searchBox" value="benzina">benzina</option>
 						<option class="searchBox" value="gpl">gpl</option>
@@ -148,11 +149,11 @@
 						<option class="searchBox" value="elettrica">elettrica</option>
 					</select>
 				</div>
-				<div class="col-md-2" ng-show="user.hascar==true">
-					<h4>Registration</h4>
+				<div class="col-md-2" >
+					<h4 ng-show="user.hascar=='true'">Registration</h4>
 				</div>
-				<div class="col-md-2" ng-show="user.hascar==true">
-					<input class="searchBox" ng-value="user.annoimmatricolazione" ng-model="user.annoimmatricolazione" type="number" name="carRegistration" />
+				<div class="col-md-2" >
+					<input ng-show="user.hascar=='true'" class="searchBox" ng-value="user.annoimmatricolazione" ng-model="user.annoimmatricolazione" type="number" name="carRegistration" />
 				</div>
 			</div>
 			<div class="row" style="margin-top: 20px">
@@ -162,14 +163,14 @@
 				<div class="col-md-2" >
 					<select name="usecarsharing" class="searchBox" ng-model="user.usecarsharing" >
 						<option class="searchBox" ng-selected="user.usecarsharing==true"  value="true">Yes</option>
-						<option class="searchBox" ng-selected="user.usecarsharing==true"  value="false">No</option>
+						<option class="searchBox" ng-selected="user.usecarsharing==false"  value="false">No</option>
 					</select>
 				</div>
 				<div class="col-md-1" >
-					<h4>Vendor</h4>
+					<h4 ng-show="user.usecarsharing=='true'">Vendor</h4>
 				</div>
-				<div class="col-md-2" >
-					<select name="CSVendor" class="searchBox" ng-model="user.fornitorecarsharing">
+				<div class="col-md-2"  >
+					<select ng-show="user.usecarsharing=='true'" name="CSVendor" class="searchBox" ng-model="user.fornitorecarsharing">
 						<option class="searchBox" value="enjoy">enjoy</option>
 						<option class="searchBox" value="cartogo">cartogo</option>
 					</select>
@@ -186,10 +187,10 @@
 					</select>
 				</div>
 				<div class="col-md-1" >
-					<h4>Bike Sharing</h4>
+					<h4 ng-show="user.usebike=='true'">Bike Sharing</h4>
 				</div>
 				<div class="col-md-2" >
-					<select class="searchBox" name="usebikesharing" ng-model="user.usebikesharing">
+					<select ng-show="user.usebike=='true'" class="searchBox" name="usebikesharing" ng-model="user.usebikesharing">
 						<option class="searchBox" ng-selected="user.usebikesharing==true" value="true">Yes</option>
 						<option class="searchBox" ng-selected="user.usebikesharing==false" value="false">No</option>
 					</select>
@@ -206,10 +207,10 @@
 			</div>
 			<div class="row" style="margin-top: 20px">
 				<div class="col-md-2" >
-					<h4>Ticket type</h4>
+					<h4 ng-show="user.usemezzipubblici=='true'">Ticket type</h4>
 				</div>
 				<div class="col-md-2">
-					<select class="searchBox" name="TypeOfTicket" ng-model="user.tipoviaggio">
+					<select ng-show="user.usemezzipubblici=='true'" class="searchBox" name="TypeOfTicket" ng-model="user.tipoviaggio">
 						<option class="searchBox" value="singolo">singolo</option>
 						<option class="searchBox" value="giornaliero">giornaliero</option>
 						<option class="searchBox" value="mensile">mensile</option>
