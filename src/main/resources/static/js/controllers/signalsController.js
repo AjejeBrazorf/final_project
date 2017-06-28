@@ -666,4 +666,3 @@ app.controller('SignalsCtrl', ['$scope', 'DataProvider','$routeParams','$timeout
 
 }
 ]);
-
