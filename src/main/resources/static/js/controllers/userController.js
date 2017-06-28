@@ -1,5 +1,5 @@
-app.controller('userCtrl', ['$scope', '$rootScope', 'DataProvider','$routeParams',
-	function ($scope, $rootScope, DataProvider,$routeParams) {
+app.controller('userCtrl', ['$scope', '$rootScope', 'DataProvider','$routeParams','$http',
+	function ($scope, $rootScope, DataProvider,$routeParams, $http) {
 	$scope.img={
 			compressed:{
 				dataURL:""
@@ -49,6 +49,22 @@ app.controller('userCtrl', ['$scope', '$rootScope', 'DataProvider','$routeParams
 		});
 	}
 
+	$scope.checkIfValid=function(isValid,$event){
+		console.log(isValid);
+		var data={'oldpsw':$scope.oldpsw,'newpsw':$scope.newpsw};
+		console.log(data);
+		if(!isValid){
+			$event.preventDefault();
+			/*
+			 $http
+			.post("/changePassword",data)
+			.then(()=>{
+				console.log("uttapposto");
+			})
+			*/
+		//	/changePassword
+		}
+	}
 	
 	$scope.update=function(){
 		$scope.$apply();
