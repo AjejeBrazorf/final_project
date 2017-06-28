@@ -522,3 +522,11 @@ input:-webkit-autofill {
 	padding-left: 15px;
 	padding-right: 15px;
 }
+
+.centeredDiv{
+	height: 25%;
+position: absolute;
+width: 100%;
+top: 25%;
+	
+}
