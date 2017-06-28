@@ -109,10 +109,27 @@ app.controller('SignalsCtrl', ['$scope', 'DataProvider','$routeParams','$timeout
 	$scope.selectedItemChange = selectedItemChange;
 	$scope.searchTextChange = searchTextChange;
 
+	
+	
+	//get User Info 
+
+	$scope.getUserInfo=function(){
+		$rootScope.nickname=$('#user').text();
+		console.log("username :" + $rootScope.nickname);
+		console.log("loggato? :" + $rootScope.auth);
+		DataProvider.getMyInfo($rootScope.nickname).then(function(response){
+			$scope.user=response;
+			console.log(response);
+		});
+	}
+	
+	$scope.getUserInfo();
 
 	// ******************************
 	// Internal methods
-	// ******************************
+	// ******************
+	
+	
 
 
 	$scope.signalsType = {
@@ -450,10 +467,10 @@ app.controller('SignalsCtrl', ['$scope', 'DataProvider','$routeParams','$timeout
 		console.log(item);
 		item.segnalazione.action=item.voto;
 		marker=item.segnalazione;
-		$scope.yourVote=3;
 		console.log(marker);
 		console.log($scope.icons[marker.tipo]);
 		console.log("auth??????"+$rootScope.authenticated);
+		console.log($rootScope.nickname);
 		marker.icon = $scope.icons[marker.tipo];
 		marker.dataInizio = $filter('date')(marker.dataInizio, "MM/dd/yyyy  h:mma");
 		var s='<h1 class="typesignal">'+marker.tipo+'</h1>'+
@@ -461,8 +478,8 @@ app.controller('SignalsCtrl', ['$scope', 'DataProvider','$routeParams','$timeout
 		'<div><h2 class="time"> from '+marker.dataInizio+'</h2></div>'+
 		'<div ng-cloak="" class="sliderdemoBasicUsage">'+
 		'<md-content style="margin: 16px; padding:16px">'+
-		'<h5 ng-show="signalMarkers['+ marker.id+'].nickname!=nickname" style="text-align: center;">Your rate</h5><br>'+
-		'<div ng-show="signalMarkers['+ marker.id+'].nickname!=nickname"layout="">'+
+		'<h5 ng-show="signalMarkers['+ marker.id+'].nickname!=nickname && authenticated" style="text-align: center;">Your rate</h5><br>'+
+		'<div ng-show="signalMarkers['+ marker.id+'].nickname!=nickname && authenticated" layout="">'+
 			'<md-slider flex="" class="md-warn" md-discrete="" ng-mouseup="updateSignalRate('+ marker.id+')" ng-disabled="'+!$rootScope.authenticated+'" ng-model="yourVote" step="1" min="1" max="5" aria-label="rating"></md-slider><br>'+
 			'<h3 style="padding-left: 25px; margin-top: 10px;">{{yourVote}}</h3><br>'+
 		'</div>'+
@@ -666,3 +683,4 @@ app.controller('SignalsCtrl', ['$scope', 'DataProvider','$routeParams','$timeout
 
 }
 ]);
+

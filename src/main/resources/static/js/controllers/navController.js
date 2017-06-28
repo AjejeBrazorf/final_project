@@ -3,7 +3,9 @@ app.controller('navCtrl', ['$scope', '$rootScope',
 	$scope.nickname={};
 	
 	$scope.setNickname=function(){
+		console.log("setto nickname")
 		$rootScope.nickname=$scope.nickname;
+		console.log("nickanem" + $rootScope.nickname);
 	}
 	
 	$rootScope.$on("$routeChangeSuccess", function (event, current, previous, rejection) {

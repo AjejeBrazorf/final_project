@@ -38,13 +38,9 @@ app.controller('userCtrl', ['$scope', '$rootScope', 'DataProvider','$routeParams
 
 
 	$scope.getUserInfo=function(){
-		$rootScope.nickname=$('#user').text();
-		console.log("username :" + $rootScope.nickname);
-		DataProvider.getMyInfo($rootScope.nickname).then(function(response){
-			$scope.user=response;
-			console.log(response);
-			$scope.$apply();
-		});
+		console.log(" nickname"+$rootScope.nickname);
+		console.log(" auth"+$rootScope.auth);
+		
 	}
 
 	
