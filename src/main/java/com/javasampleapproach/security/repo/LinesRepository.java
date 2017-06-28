@@ -36,6 +36,11 @@ public interface LinesRepository extends JpaRepository<BusLine, String>{
 			+ " WHERE id = ?1", nativeQuery = true)
 	List<Object[]> getStopById(String stopId);
 	
+	@Query(value = "SELECT name"
+			+ " FROM BusStop b"
+			+ " WHERE id = ?1", nativeQuery = true)
+	String getStopNameById(String stopId);
+	
 	
 }
 

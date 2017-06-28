@@ -3,10 +3,10 @@
 	<div class="col-sm-6 col-md-6 listContainer searchRouteDiv">
 		<div class="row" style="height: 100%; border: solid 15px #37373e;">
 			<div class="row">
-				<div class="col-md-1 col-sm-1 col-xs-1">
-					<span>From: </span>
+				<div class="col-md-2 col-sm-2 col-xs-2 labelRouteParent">
+					<span class="labelRoute" >From: </span>
 				</div>
-				<div layout="column" ng-cloak class="col-md-11 col-sm-11 col-xs-11">
+				<div layout="column" ng-cloak class="col-md-10 col-sm-10 col-xs-10">
 					<md-content class="md-padding">
 					<form ng-submit="$event.preventDefault()">
 						<md-autocomplete class="searchBox" md-no-cache="noCache"
@@ -26,10 +26,10 @@
 				<!--<input ng-model="from" placeholder="Partenza"/>-->
 			</div>
 			<div class="row">
-				<div class="col-md-1 col-sm-1 col-xs-1" >
-					<span>To: </span>
+				<div class="col-md-2 col-sm-2 col-xs-2 labelRouteParent">
+					<span class="labelRoute" >To: </span>
 				</div>
-				<div layout="column" ng-cloak class="col-md-11 col-sm-11 col-xs-11">
+				<div layout="column" ng-cloak class="col-md-10 col-sm-10 col-xs-10">
 					<md-content class="md-padding">
 					<form ng-submit="$event.preventDefault()">
 						<md-autocomplete class="searchBox" md-no-cache="noCache"
@@ -51,18 +51,19 @@
 
 			<div class="row">
 				<div class="col-md-12 col-sm-12 col-xs-12"
-					style="height: 72px; padding: 27px;">
-					<ul>
-						<li ng-repeat="fp in fullPath"><i ng-if="fp.type=='foot'">
-								Walk </i> <i ng-if="fp.type=='bus'"> Take the bus</i> from
-							{{fp.start}} to {{fp.end}}</li>
+					style="height: 72px;">
+					<ul class="listPathContainer">
+						<li ng-repeat="fp in fullPath" ng-click="showPopUp('Marker'+$index)">
+						<i ng-if="fp.type=='foot'"> <img src="images/walk.png" class="walk" />Walk </i> 
+						<i ng-if="fp.type=='bus'"><i class="fa fa-bus" aria-hidden="true"></i> Take the {{fp.lineId}}</i>
+						from {{fp.start}} to {{fp.end}}</li>
 					</ul>
 				</div>
 			</div>
 			<div class="row" style="text-align: center; color: #a94442;">{{error}}</div>
 			<div class="row buttonDownPage">
 				<div class="col-md-12 col-sm-12 col-xs-12" >
-					<button ng-click="findPath()" type="submit" class="btn-success red">
+					<button ng-click="findPath()" type="submit" class="btn-success red"  ng-disabled="from==to || from.length==0 || to.length==0 " ng-class="{disabled: from==to || from.length==0 || to.length==0 }" >
 					Find route
 					</button>
 				</div>

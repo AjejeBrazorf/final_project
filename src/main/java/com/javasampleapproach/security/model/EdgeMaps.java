@@ -8,6 +8,8 @@ public class EdgeMaps extends Edge{
 	private Double lng;
 	private Double lat2;
 	private Double lng2;
+	private String nameFrom;
+	private String nameTo;
 	
 	public EdgeMaps(Point<G2D> p1, Point<G2D> p2){
 		this(p1.getPosition().getLat(),
@@ -38,16 +40,32 @@ public class EdgeMaps extends Edge{
 	}
 	
 	public Double getLat2() {
-		return lat;
+		return lat2;
 	}
 	public void setLat2(Double lat) {
-		this.lat = lat;
+		this.lat2 = lat;
 	}
 	public Double getLng2() {
-		return lng;
+		return lng2;
 	}
 	public void setLng2(Double lng) {
-		this.lng = lng;
+		this.lng2 = lng;
+	}
+	
+	public String getNameFrom() {
+		return nameFrom;
+	}
+
+	public void setNameFrom(String nameFrom) {
+		this.nameFrom = nameFrom;
+	}
+
+	public String getNameTo() {
+		return nameTo;
+	}
+
+	public void setNameTo(String nameTo) {
+		this.nameTo = nameTo;
 	}
 	
 	

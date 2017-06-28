@@ -1,9 +1,20 @@
-input
-{
+input {
 	color: #f2f0f0;
 }
 
-.md-autocomplete-suggestions>li{
-	    background: #5f5f65 !important;
-	    color: white;
+.md-autocomplete-suggestions>li {
+	background: #5f5f65 !important;
+	color: white;
+}
+
+.labelRoute {
+	height: 88px;
+	position: relative;
+	top: 50%;
+	margin-left: 10px;
+	float: right;
+}
+
+.labelRouteParent {
+	height: 79px;
 }

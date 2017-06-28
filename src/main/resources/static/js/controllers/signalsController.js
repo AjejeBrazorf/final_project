@@ -258,6 +258,8 @@ app.controller('SignalsCtrl', ['$scope', 'DataProvider','$routeParams','$timeout
 	//add signal to map
 
 	$scope.addSignals = function() {
+		if($scope.address.legnth==0) return;
+		
 		console.log("entro in funzione");
 		$scope.showSpinner=true;
 

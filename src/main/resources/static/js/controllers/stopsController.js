@@ -12,7 +12,13 @@ app.controller('StopsCtrl', ['$scope', 'DataProvider','$routeParams',
 				color: '#800000',
 				opacity: 1
 			}
-
+		},
+		paths: {
+			p1: {
+				color: '#5581ab',
+				weight: 8,
+				latlngs: []
+			}
 		}
 	});
 
