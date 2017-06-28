@@ -7,7 +7,7 @@ app.controller('userCtrl', ['$scope', '$rootScope', 'DataProvider','$routeParams
 	};
 	$scope.nickname={};
 	$scope.user={};
-	
+
 
 
 	$scope.saveImgOnServer=function(){
@@ -38,11 +38,13 @@ app.controller('userCtrl', ['$scope', '$rootScope', 'DataProvider','$routeParams
 
 
 	$scope.getUserInfo=function(){
+		$scope.showSpinner=true;
 		$rootScope.nickname=$('#user').text();
 		console.log("username :" + $rootScope.nickname);
 		DataProvider.getMyInfo($rootScope.nickname).then(function(response){
 			$scope.user=response;
 			console.log(response);
+			$scope.showSpinner=false;
 			$scope.$apply();
 		});
 	}
