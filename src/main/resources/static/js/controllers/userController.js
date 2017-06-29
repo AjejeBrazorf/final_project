@@ -7,9 +7,9 @@ app.controller('userCtrl', ['$scope', '$rootScope', 'DataProvider','$routeParams
 	};
 	$scope.nickname={};
 	$scope.user={};
-	$scope.newpsw="";
-	$scope.oldpsw="";
 
+	$scope.newpswError=false;
+	$scope.oldpswError=false;
 
 	$scope.saveImgOnServer=function(){
 		console.log("salvo img su server");
@@ -54,18 +54,21 @@ app.controller('userCtrl', ['$scope', '$rootScope', 'DataProvider','$routeParams
 		console.log(isValid);
 		var data={'oldpsw':$scope.oldpsw,'newpsw':$scope.newpsw};
 		console.log(data);
+		$scope.newpswError=false;
+		$scope.oldpswError=false;
+
 		if(!isValid){
 			$event.preventDefault();
 			$scope.error="";
-			if($scope.oldpsw.length==0)
+			if($scope.oldpsw==undefined){
 				$scope.error+="The old password can not be empty <br />";
-			if($scope.newpsw.length==0)
-				$scope.error+="The new password can not be empty <br />";
-			if($scope.newpsw.length>0 && $scope.newpsw.length<8 )
-				$scope.error+="The new password has to be at least 8 characters";
+				$scope.oldpswError=true;
+			}
+			if($scope.newpsw==undefined){
+				$scope.error+="The new password can not be empty  or less than 8 characters <br />";
+				$scope.newpswError=true;
+			}
 			$scope.error=$sce.trustAsHtml($scope.error);
-			
-
 		}
 	}
 	

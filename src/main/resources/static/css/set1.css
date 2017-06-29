@@ -111,6 +111,12 @@
 	transition: transform 0.3s;
 }
 
+.error.input__label--yoko::after {
+	background: #a94442;;
+}
+
+
+
 .input__label-content--yoko {
 	padding: 0.75em 0;
 }
