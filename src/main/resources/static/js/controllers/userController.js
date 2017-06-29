@@ -1,5 +1,5 @@
-app.controller('userCtrl', ['$scope', '$rootScope', 'DataProvider','$routeParams','$http',
-	function ($scope, $rootScope, DataProvider,$routeParams, $http) {
+app.controller('userCtrl', ['$scope', '$rootScope', 'DataProvider','$routeParams','$http','$sce',
+	function ($scope, $rootScope, DataProvider,$routeParams, $http,$sce) {
 	$scope.img={
 			compressed:{
 				dataURL:""
@@ -7,7 +7,8 @@ app.controller('userCtrl', ['$scope', '$rootScope', 'DataProvider','$routeParams
 	};
 	$scope.nickname={};
 	$scope.user={};
-
+	$scope.newpsw="";
+	$scope.oldpsw="";
 
 
 	$scope.saveImgOnServer=function(){
@@ -55,14 +56,16 @@ app.controller('userCtrl', ['$scope', '$rootScope', 'DataProvider','$routeParams
 		console.log(data);
 		if(!isValid){
 			$event.preventDefault();
-			/*
-			 $http
-			.post("/changePassword",data)
-			.then(()=>{
-				console.log("uttapposto");
-			})
-			*/
-		//	/changePassword
+			$scope.error="";
+			if($scope.oldpsw.length==0)
+				$scope.error+="The old password can not be empty <br />";
+			if($scope.newpsw.length==0)
+				$scope.error+="The new password can not be empty <br />";
+			if($scope.newpsw.length>0 && $scope.newpsw.length<8 )
+				$scope.error+="The new password has to be at least 8 characters";
+			$scope.error=$sce.trustAsHtml($scope.error);
+			
+
 		}
 	}
 	

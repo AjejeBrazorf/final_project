@@ -52,7 +52,10 @@
 	<div class="row imgcontainer"
 		style="border-bottom: 1px solid #9d9d9d !important;">
 		
-		<h th:text="${error}"  style="text-align: center; color: #a94442;"></h>
+		<h th:text="${error}"  style="text-align: center; color: #a94442;">
+		</h>
+		<h ng-bind-html="error" style="text-align: center; color: #a94442;">
+		</h>
 		<form th:action="@{/changePassword}" name="passwordForm" ng-submit="checkIfValid(passwordForm.$valid,$event)" novalidate="true" method="post">
 			<div class="col-md-4" style="padding-top: 60px">
 				<section class="content bgcolor-5">
@@ -133,7 +136,6 @@
 					<h4>Car</h4>
 				</div>
 				<div class="col-md-2">
-				{{user.hascar}} {{user.hascar=='true'}}
 					<select name="hascar" class="searchBox"  ng-model="user.hascar">
 						<option class="searchBox" ng-selected="user.hascar==true" value="true">Yes</option>
 						<option class="searchBox" ng-selected="user.hascar==false" value="false">No</option>
@@ -152,7 +154,7 @@
 					</select>
 				</div>
 				<div class="col-md-2" >
-					<h4 ng-show="user.hascar=='true' || user.hascar==true" >Registration</h4>
+					<h4 ng-show="user.hascar=='true' || user.hascar==true" >Year of registration</h4>
 				</div>
 				<div class="col-md-2" >
 					<input ng-show="user.hascar=='true' || user.hascar==true"  class="searchBox" ng-value="user.annoimmatricolazione" ng-model="user.annoimmatricolazione" type="number" name="carRegistration" />
@@ -197,18 +199,19 @@
 						<option class="searchBox" ng-selected="user.usebikesharing==false" value="false">No</option>
 					</select>
 				</div>
-				<div class="col-md-2">
+
+			</div>
+			<div class="row" style="margin-top: 20px">
+			<div class="col-md-2">
 					<h4>transport</h4>
 				</div>
-				<div class="col-md-1">
+				<div class="col-md-2">
 					<select class="searchBox" name="usemezzipubblici" ng-model="user.usemezzipubblici">
 						<option class="searchBox" ng-selected="user.usemezzipubblici==true" value="true">Yes</option>
 						<option class="searchBox" ng-selected="user.usemezzipubblici==false" value="false">No</option>
 					</select>
 				</div>
-			</div>
-			<div class="row" style="margin-top: 20px">
-				<div class="col-md-2" >
+				<div class="col-md-1" >
 					<h4 ng-show="user.usemezzipubblici=='true' || user.usemezzipubblici==true">Ticket type</h4>
 				</div>
 				<div class="col-md-2">
