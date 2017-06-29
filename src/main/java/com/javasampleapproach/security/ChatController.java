@@ -19,6 +19,8 @@ import org.springframework.web.socket.messaging.SessionDisconnectEvent;
 import com.javasampleapproach.security.model.Message;
 import com.javasampleapproach.security.model.User;
 import com.javasampleapproach.security.query.ActivationQuery;
+import com.javasampleapproach.security.query.MessageQuery;
+import com.javasampleapproach.security.query.UserQuery;
 
 import chat.ReceivedMessage;
 import chat.SentMessage;
@@ -27,7 +29,10 @@ import chat.SentMessage;
 public class ChatController implements ApplicationListener<ApplicationEvent>{
 	
 	@Autowired
-	private ActivationQuery aq;
+	private UserQuery userService;
+	
+	@Autowired
+	private MessageQuery messageService;
 
 	
 	public void join(MessageHeaders hs) {
@@ -40,7 +45,7 @@ public class ChatController implements ApplicationListener<ApplicationEvent>{
     @SendTo("/topic/bus")
     public ReceivedMessage sendMessageBus(SentMessage message, Principal name) throws Exception {
 		
-		String nickname = aq.insertNewMessage(name.getName(), message.getText(), "bus");
+		String nickname = messageService.insertNewMessage(name.getName(), message.getText(), "bus");
 		//String nickname = aq.getUsernameByMail(name.getName());
 		
 		//aq.insertMessage(new Date(), message.getText(), nickname, "bus");
@@ -51,7 +56,7 @@ public class ChatController implements ApplicationListener<ApplicationEvent>{
     @SendTo("/topic/traffic")
     public ReceivedMessage sendMessageTraffic(SentMessage message, Principal name) throws Exception {
 		
-		String nickname = aq.insertNewMessage(name.getName(), message.getText(), "traffic");
+		String nickname = messageService.insertNewMessage(name.getName(), message.getText(), "traffic");
 		//String nickname = pgq.getUsernameByMail(name.getName());
 		//pgq.insertMessage(new Date(), message.getText(), nickname, "traffic");
         return new ReceivedMessage(nickname, message.getText(), new Date());
@@ -61,7 +66,7 @@ public class ChatController implements ApplicationListener<ApplicationEvent>{
     @SendTo("/topic/bike")
     public ReceivedMessage sendMessageBike(SentMessage message, Principal name) throws Exception {
 		
-		String nickname = aq.insertNewMessage(name.getName(), message.getText(), "bike");
+		String nickname = messageService.insertNewMessage(name.getName(), message.getText(), "bike");
 		//String nickname = pgq.getUsernameByMail(name.getName());
 		//pgq.insertMessage(new Date(), message.getText(), nickname, "bike");
         return new ReceivedMessage(nickname, message.getText(), new Date());
@@ -78,37 +83,37 @@ public class ChatController implements ApplicationListener<ApplicationEvent>{
 
 	@RequestMapping("/biketopic")
 	public String uploadMessagesBike(Model model, Principal name) {
-		List<Message> m = aq.getMessagebyTopic("bike");
+		List<Message> m = messageService.getMessagebyTopic("bike");
 		Collections.reverse(m);
-		User user = aq.getUserbyUsername(name.getName());
+		User user = userService.getUserbyUsername(name.getName());
 		model.addAttribute("messages", m);
 		model.addAttribute("user",user);
-		model.addAttribute("image", aq.getImage(name.getName()));
+		model.addAttribute("image", userService.getImage(name.getName()));
 		return "biketopic";
 		
 	}
 	
 	@RequestMapping("/transporttopic")
 	public String uploadMessagesTransport(Model model, Principal name) {
-		List<Message> m = aq.getMessagebyTopic("bus");
+		List<Message> m = messageService.getMessagebyTopic("bus");
 		Collections.reverse(m);
-		User user = aq.getUserbyUsername(name.getName());
+		User user = userService.getUserbyUsername(name.getName());
 		model.addAttribute("messages", m);
 		model.addAttribute("user",user);
-		model.addAttribute("image", aq.getImage(name.getName()));
+		model.addAttribute("image", userService.getImage(name.getName()));
 		return "transporttopic";
 		
 	}
 	
 	@RequestMapping("/cartopic")
 	public String uploadMessagesCar(Model model, Principal name) {
-		List<Message> m = aq.getMessagebyTopic("traffic");
+		List<Message> m = messageService.getMessagebyTopic("traffic");
 		Collections.reverse(m);
-		User user = aq.getUserbyUsername(name.getName());
+		User user = userService.getUserbyUsername(name.getName());
 		model.addAttribute("messages", m);
 		model.addAttribute("user",user);
-		model.addAttribute("image", aq.getImage(name.getName()));
-		model.addAttribute("nickname", aq.getUsernameByMail(name.getName()));
+		model.addAttribute("image", userService.getImage(name.getName()));
+		model.addAttribute("nickname", userService.getUsernameByMail(name.getName()));
 		return "cartopic";
 	}
 	

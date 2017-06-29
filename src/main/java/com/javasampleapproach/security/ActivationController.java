@@ -7,12 +7,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.javasampleapproach.security.query.ActivationQuery;
+import com.javasampleapproach.security.query.UserQuery;
 
 @Controller
 public class ActivationController {
 	
-	//@Autowired
-	//private  UsersQuery uq;
+	@Autowired
+	private  UserQuery uq;
+	
 	@Autowired
 	private  ActivationQuery aq;
 
@@ -22,7 +24,7 @@ public class ActivationController {
 		String username = aq.getUsernameByCode(code);
 		//System.out.println("username "+username);
 		if(username != null){
-			aq.validateUser(username);
+			uq.validateUser(username);
 			//
 			//uq.enableUser(username);
 			//aq.deleteCode(username);

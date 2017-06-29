@@ -31,6 +31,7 @@ import com.javasampleapproach.security.model.TipoCarburante;
 import com.javasampleapproach.security.model.TipoViaggio;
 import com.javasampleapproach.security.model.User;
 import com.javasampleapproach.security.query.ActivationQuery;
+import com.javasampleapproach.security.query.UserQuery;
 
 import freemarker.template.Configuration;
 import freemarker.template.Template;
@@ -39,7 +40,7 @@ import freemarker.template.Template;
 public class AppController {
 
 	//@Autowired
-	//private  UsersQuery pgq;
+	private  UserQuery userService;
 
 	@Autowired
 	private JavaMailSender sender;
@@ -63,7 +64,7 @@ public class AppController {
 			@RequestParam(value="nickname", required=true) String nickname,
 			@RequestParam(value="password", required=true) String password) {
 
-		int count = aq.mailAlreadyPresent(email); 
+		int count = userService.mailAlreadyPresent(email); 
 		
 		//controllo se la mail è univoca
 		if(count > 0){
@@ -88,7 +89,7 @@ public class AppController {
 			return "registration";
 		}
 
-		count = aq.nicknameAlreadyPresent(nickname); 
+		count = userService.nicknameAlreadyPresent(nickname); 
 		
 		//controllo che il nickname sia univoco
 		if(count > 0){
@@ -106,7 +107,7 @@ public class AppController {
 				otp = generateRandomSequence();
 			}
 			
-			aq.insertNewUser(email, otp, nickname, password, false, "ROLE_USER");
+			userService.insertNewUser(email, otp, nickname, password, false, "ROLE_USER");
 			//aq.insertCode(email, otp);
 			sendEmail(email, getURLBase(request), otp);
 		} catch (Exception e) {
@@ -166,7 +167,7 @@ public class AppController {
 			@RequestParam(value="newpsw", required=true) String newPassword, Principal name) {
 
 
-		String oldpsw = aq.getPassword(name.getName());
+		String oldpsw = userService.getPassword(name.getName());
 		//controllo che abbia messo la sua vecchia password
 		if(!oldpsw.equals(oldPassword)){
 			model.addAttribute("error", "Please, insert the old password");
@@ -180,7 +181,7 @@ public class AppController {
 			return "userpage";
 		}
 
-		aq.updateUserCred(name.getName(), newPassword);
+		userService.updateUserCred(name.getName(), newPassword);
 
 		return "index";
 	}
@@ -246,7 +247,7 @@ public class AppController {
 			return "userpage";
 		}
 	
-		aq.updateUser(name.getName(), Gender.valueOf(gender), Integer.parseInt(eta) , Istruzione.valueOf(istruzione), Occupazione.valueOf(occupazione), Boolean.valueOf(hasCar), Integer.parseInt(annoImmatr), TipoCarburante.valueOf(carburante), Boolean.valueOf(useCarSharing), FornitoreCarSharing.valueOf(fcs), Boolean.valueOf(useBike), Boolean.valueOf(useBikeSharing), Boolean.valueOf(useMezzi), TipoViaggio.valueOf(tipoviaggio), photo);
+		userService.updateUser(name.getName(), Gender.valueOf(gender), Integer.parseInt(eta) , Istruzione.valueOf(istruzione), Occupazione.valueOf(occupazione), Boolean.valueOf(hasCar), Integer.parseInt(annoImmatr), TipoCarburante.valueOf(carburante), Boolean.valueOf(useCarSharing), FornitoreCarSharing.valueOf(fcs), Boolean.valueOf(useBike), Boolean.valueOf(useBikeSharing), Boolean.valueOf(useMezzi), TipoViaggio.valueOf(tipoviaggio), photo);
 		
 		return "index";
 		
@@ -256,11 +257,11 @@ public class AppController {
 	public String userpageController(Model model, Principal name){
 		//System.out.println(name.getName());
 
-		User user = aq.getUserbyUsername(name.getName());
+		User user = userService.getUserbyUsername(name.getName());
 		
 		model.addAttribute("user",user);
-		model.addAttribute("image", aq.getImage(name.getName()));
-		model.addAttribute("nickname", aq.getUsernameByMail(name.getName()));
+		model.addAttribute("image",userService.getImage(name.getName()));
+		model.addAttribute("nickname", userService.getUsernameByMail(name.getName()));
 		return "userpage";
 	}
 	

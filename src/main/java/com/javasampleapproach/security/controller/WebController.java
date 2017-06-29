@@ -6,22 +6,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.javasampleapproach.security.query.ActivationQuery;
+import com.javasampleapproach.security.query.UserQuery;
 @Controller
 public class WebController {
    
-	//@Autowired
-	//private  UsersQuery uq;
 	@Autowired
-	private ActivationQuery aq;
+	private  UserQuery uq;
 	
 	@RequestMapping(value={"/"})
 	public String home(Model model, Principal name){
 		if(name!= null){
-			model.addAttribute("image", aq.getImage(name.getName()));
-			model.addAttribute("nickname", aq.getUsernameByMail(name.getName()));
+			model.addAttribute("image", uq.getImage(name.getName()));
+			model.addAttribute("nickname", uq.getUsernameByMail(name.getName()));
 		}
 		return "index";
 	}

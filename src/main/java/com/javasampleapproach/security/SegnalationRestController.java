@@ -1,16 +1,10 @@
 package com.javasampleapproach.security;
 
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
-
-import java.net.URI;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.hateoas.Link;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,27 +13,22 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.javasampleapproach.security.model.SegnalationForClient;
 import com.javasampleapproach.security.model.Segnalazione;
 import com.javasampleapproach.security.model.TipoSegnalazione;
-import com.javasampleapproach.security.query.ActivationQuery;
+import com.javasampleapproach.security.query.SegnalationQuery;
 
-import rest.ArgumentsResource;
 
 @RestController
 public class SegnalationRestController {
 	
 	//@Autowired
-	//private SegnalationQuery service;
+	private SegnalationQuery service;
 	//@Autowired
 	//private UsersQuery userService;
 	//@Autowired
 	//private RateUserQuery rateService;
-	@Autowired
-	private ActivationQuery aq;
-	
 	
 	
 	@RequestMapping(value="/segnalations", method=RequestMethod.GET, produces="application/json")
@@ -52,15 +41,15 @@ public class SegnalationRestController {
 		int voto;
 		
 		if(type == null){
-			list = aq.getAll();
+			list = service.getAll();
 		}else{
 			int intType = (TipoSegnalazione.valueOf(type)).ordinal();
-			list = aq.getAllforType(intType);
+			list = service.getAllforType(intType);
 		}
 		for(Segnalazione s:list){
 			SegnalationForClient sfc = new SegnalationForClient();
 			if(name != null){
-				voto = aq.isPresentUserRate(name.getName(), s.getId());
+				voto = service.isPresentUserRate(name.getName(), s.getId());
 				sfc.setVoto(voto);
 			}
 			sfc.setSegnalazione(s);
@@ -76,9 +65,9 @@ public class SegnalationRestController {
 			@PathVariable String id){
 		SegnalationForClient sfc = new SegnalationForClient();
 		int voto;
-		Segnalazione s = aq.getById(id);
+		Segnalazione s = service.getById(id);
 		if(name != null){
-			voto = aq.isPresentUserRate(name.getName(), s.getId());
+			voto = service.isPresentUserRate(name.getName(), s.getId());
 			sfc.setVoto(voto);
 		}
 		sfc.setSegnalazione(s);
@@ -95,7 +84,7 @@ public class SegnalationRestController {
 		Double newAverage = 0.0;
 		//System.out.println("action : " +action+"id : "+id);
 		if(action.equals("rate")){
-			newAverage = aq.segnalationVote(name.getName(), id, rate);
+			newAverage = service.segnalationVote(name.getName(), id, rate);
 //			Integer oldRate;
 //			oldRate = rateService.isPresentUserRate(name.getName(), id);
 //			System.out.println("oldrate: " +oldRate);
@@ -114,7 +103,7 @@ public class SegnalationRestController {
 //			}
 		}
 		else if(action.equals("cancel"))
-			aq.updateSegnalation(new Date(), id);
+			service.updateSegnalation(new Date(), id);
 		else
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		
@@ -131,7 +120,7 @@ public class SegnalationRestController {
 		
 		//System.out.println("type : "+ tipo);
 		Date date = new Date();
-		Segnalazione s = aq.insertNewSegnalation(name.getName(), lat, lng, date, indirizzo, tipo);
+		Segnalazione s = service.insertNewSegnalation(name.getName(), lat, lng, date, indirizzo, tipo);
 		
 		//String nickname = userService.getUsernameByMail(name.getName());
 		//String id = service.insertSegnalation(nickname, lat, lng, date, indirizzo, t);

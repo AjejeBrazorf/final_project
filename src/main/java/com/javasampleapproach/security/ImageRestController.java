@@ -22,12 +22,14 @@ import com.javasampleapproach.security.model.Occupazione;
 import com.javasampleapproach.security.model.TipoCarburante;
 import com.javasampleapproach.security.model.TipoViaggio;
 import com.javasampleapproach.security.query.ActivationQuery;
+import com.javasampleapproach.security.query.UserQuery;
 import com.mongodb.util.JSON;
 
 @RestController
 public class ImageRestController {
+	
 	@Autowired
-	private  ActivationQuery aq;
+	private  UserQuery uq;
 
 	
 	@RequestMapping(value="/image", method=RequestMethod.PUT, produces="application/json")
@@ -35,7 +37,7 @@ public class ImageRestController {
 			Principal name, 
 			@RequestParam(value = "image", required = true, defaultValue = "null")String image){
 		//System.out.println(image);
-		aq.updateImageUser(image, name.getName());	
+		uq.updateImageUser(image, name.getName());	
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 	
@@ -44,7 +46,7 @@ public class ImageRestController {
 	public HttpEntity<?> getUserImage(
 			Principal name, 
 			@RequestParam(value = "username", required = true, defaultValue = "null")String user){
-			String img=aq.getImageByNickname(user);
+			String img=uq.getImageByNickname(user);
 			HttpEntity<?> r = new ResponseEntity<String>(img, HttpStatus.OK);
 			//System.out.println(r);
 		return r;

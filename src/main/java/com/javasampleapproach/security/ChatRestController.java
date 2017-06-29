@@ -20,6 +20,8 @@ import com.javasampleapproach.security.model.AnonymousUser;
 import com.javasampleapproach.security.model.Message;
 import com.javasampleapproach.security.model.User;
 import com.javasampleapproach.security.query.ActivationQuery;
+import com.javasampleapproach.security.query.MessageQuery;
+import com.javasampleapproach.security.query.UserQuery;
 
 import chat.ReceivedMessage;
 import rest.ArgumentsResource;
@@ -32,6 +34,12 @@ public class ChatRestController {
 	@Autowired
 	private ActivationQuery aq;
 	
+	@Autowired
+	private MessageQuery messageService;
+	
+	@Autowired
+	private UserQuery uq;
+	
 	private final int pagination = 5;
 	private final String paginationString = "5";
 
@@ -41,7 +49,7 @@ public class ChatRestController {
 			@RequestParam(value = "limit", required = false, defaultValue = paginationString)int limit){
 		
 		//chiamo servizio in cui da User passo a AnonymouUser e mi ritorna lista, cioè PersonResource
-		List<User> list = aq.getUsers(limit, offset);
+		List<User> list = uq.getUsers(limit, offset);
 		List<AnonymousUser> usersList = new ArrayList<>();
 		for(User user:list)
 			usersList.add(new AnonymousUser(user));
@@ -114,7 +122,7 @@ public class ChatRestController {
 			@RequestParam(value = "offset", required = false, defaultValue = "0")int offset, 
 			@RequestParam(value = "limit", required = false, defaultValue = paginationString)int limit){
 		
-		List<Message> messages = aq.getMessages(offset, limit, id);
+		List<Message> messages = messageService.getMessages(offset, limit, id);
 		List<ReceivedMessage> messagesList = new ArrayList<>();
 		for(Message message:messages)
 			messagesList.add(new ReceivedMessage(message));
