@@ -1,5 +1,5 @@
-app.controller('userCtrl', ['$scope', '$rootScope', 'DataProvider','$routeParams',
-	function ($scope, $rootScope, DataProvider,$routeParams) {
+app.controller('userCtrl', ['$scope', '$rootScope', 'DataProvider','$routeParams','$http',
+	function ($scope, $rootScope, DataProvider,$routeParams, $http) {
 	$scope.img={
 			compressed:{
 				dataURL:""
@@ -7,7 +7,7 @@ app.controller('userCtrl', ['$scope', '$rootScope', 'DataProvider','$routeParams
 	};
 	$scope.nickname={};
 	$scope.user={};
-	
+
 
 
 	$scope.saveImgOnServer=function(){
@@ -38,11 +38,33 @@ app.controller('userCtrl', ['$scope', '$rootScope', 'DataProvider','$routeParams
 
 
 	$scope.getUserInfo=function(){
-		console.log(" nickname"+$rootScope.nickname);
-		console.log(" auth"+$rootScope.auth);
-		
+		$scope.showSpinner=true;
+		$rootScope.nickname=$('#user').text();
+		console.log("username :" + $rootScope.nickname);
+		DataProvider.getMyInfo($rootScope.nickname).then(function(response){
+			$scope.user=response;
+			console.log(response);
+			$scope.showSpinner=false;
+			$scope.$apply();
+		});
 	}
 
+	$scope.checkIfValid=function(isValid,$event){
+		console.log(isValid);
+		var data={'oldpsw':$scope.oldpsw,'newpsw':$scope.newpsw};
+		console.log(data);
+		if(!isValid){
+			$event.preventDefault();
+			/*
+			 $http
+			.post("/changePassword",data)
+			.then(()=>{
+				console.log("uttapposto");
+			})
+			*/
+		//	/changePassword
+		}
+	}
 	
 	$scope.update=function(){
 		$scope.$apply();

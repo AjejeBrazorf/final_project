@@ -163,8 +163,7 @@ public class AppController {
 	@PostMapping("/changePassword")
 	public String goToHomePage(Model model, @RequestParam(value="oldpsw", required=true) String oldPassword,
 			@RequestParam(value="newpsw", required=true) String newPassword, Principal name) {
-
-
+		System.out.println(newPassword+"-"+oldPassword);
 		String oldpsw = pgq.getPassword(name.getName());
 		//controllo che abbia messo la sua vecchia password
 		if(!oldpsw.equals(oldPassword)){

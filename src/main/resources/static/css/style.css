@@ -289,6 +289,7 @@ a.active {
 .spinner {
   -webkit-animation: rotator 1.4s linear infinite;
           animation: rotator 1.4s linear infinite;
+          z-index: 99999999999;
 }
 
 @-webkit-keyframes rotator {
@@ -520,4 +521,12 @@ input:-webkit-autofill {
 	padding: 11px;
 	padding-left: 15px;
 	padding-right: 15px;
+}
+
+.centeredDiv{
+	height: 25%;
+position: absolute;
+width: 100%;
+top: 25%;
+	
 }
