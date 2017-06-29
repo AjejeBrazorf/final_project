@@ -8,19 +8,20 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.javasampleapproach.security.query.UsersQuery;
-
+import com.javasampleapproach.security.query.ActivationQuery;
 @Controller
 public class WebController {
    
+	//@Autowired
+	//private  UsersQuery uq;
 	@Autowired
-	private  UsersQuery uq;
+	private ActivationQuery aq;
 	
 	@RequestMapping(value={"/"})
 	public String home(Model model, Principal name){
 		if(name!= null){
-			model.addAttribute("image", uq.getImage(name.getName()));
-			model.addAttribute("nickname", uq.getUsernameByMail(name.getName()));
+			model.addAttribute("image", aq.getImage(name.getName()));
+			model.addAttribute("nickname", aq.getUsernameByMail(name.getName()));
 		}
 		return "index";
 	}

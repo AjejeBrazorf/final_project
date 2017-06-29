@@ -24,21 +24,22 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.javasampleapproach.security.model.SegnalationForClient;
 import com.javasampleapproach.security.model.Segnalazione;
 import com.javasampleapproach.security.model.TipoSegnalazione;
-import com.javasampleapproach.security.query.RateUserQuery;
-import com.javasampleapproach.security.query.SegnalationQuery;
-import com.javasampleapproach.security.query.UsersQuery;
+import com.javasampleapproach.security.query.ActivationQuery;
 
 import rest.ArgumentsResource;
 
 @RestController
 public class SegnalationRestController {
 	
+	//@Autowired
+	//private SegnalationQuery service;
+	//@Autowired
+	//private UsersQuery userService;
+	//@Autowired
+	//private RateUserQuery rateService;
 	@Autowired
-	private SegnalationQuery service;
-	@Autowired
-	private UsersQuery userService;
-	@Autowired
-	private RateUserQuery rateService;
+	private ActivationQuery aq;
+	
 	
 	
 	@RequestMapping(value="/segnalations", method=RequestMethod.GET, produces="application/json")
@@ -51,15 +52,15 @@ public class SegnalationRestController {
 		int voto;
 		
 		if(type == null){
-			list = service.getAll();
+			list = aq.getAll();
 		}else{
 			int intType = (TipoSegnalazione.valueOf(type)).ordinal();
-			list = service.getAllforType(intType);
+			list = aq.getAllforType(intType);
 		}
 		for(Segnalazione s:list){
 			SegnalationForClient sfc = new SegnalationForClient();
 			if(name != null){
-				voto = rateService.isPresentUserRate(name.getName(), s.getId());
+				voto = aq.isPresentUserRate(name.getName(), s.getId());
 				sfc.setVoto(voto);
 			}
 			sfc.setSegnalazione(s);
@@ -75,9 +76,9 @@ public class SegnalationRestController {
 			@PathVariable String id){
 		SegnalationForClient sfc = new SegnalationForClient();
 		int voto;
-		Segnalazione s = service.getById(id);
+		Segnalazione s = aq.getById(id);
 		if(name != null){
-			voto = rateService.isPresentUserRate(name.getName(), s.getId());
+			voto = aq.isPresentUserRate(name.getName(), s.getId());
 			sfc.setVoto(voto);
 		}
 		sfc.setSegnalazione(s);
@@ -92,27 +93,28 @@ public class SegnalationRestController {
 			@RequestParam(value = "action", required = true)String action,
 			@RequestParam(value = "rate", required = false)Integer rate){
 		Double newAverage = 0.0;
-		System.out.println("action : " +action+"id : "+id);
+		//System.out.println("action : " +action+"id : "+id);
 		if(action.equals("rate")){
-			Integer oldRate;
-			oldRate = rateService.isPresentUserRate(name.getName(), id);
-			System.out.println("oldrate: " +oldRate);
-			if(oldRate != null){
-				newAverage = service.updateRate(1, rate-oldRate, id);
-				System.out.println("Ho aggiornato la media");
-				rateService.updateUserRate(name.getName(), id, rate);
-				System.out.println("Ho aggiornato il voto dello user");
-			}
-			else{
-				//aggiungo anche in tabelle di user-voto
-				rateService.insertUserRate(name.getName(), id, rate);
-				System.out.println("action 2: " +action);
-				newAverage = service.updateRate(0, rate, id);
-				System.out.println("action 3: " +newAverage);
-			}
+			newAverage = aq.segnalationVote(name.getName(), id, rate);
+//			Integer oldRate;
+//			oldRate = rateService.isPresentUserRate(name.getName(), id);
+//			System.out.println("oldrate: " +oldRate);
+//			if(oldRate != null){
+//				newAverage = service.updateRate(1, rate-oldRate, id);
+//				System.out.println("Ho aggiornato la media");
+//				rateService.updateUserRate(name.getName(), id, rate);
+//				System.out.println("Ho aggiornato il voto dello user");
+//			}
+//			else{
+//				//aggiungo anche in tabelle di user-voto
+//				rateService.insertUserRate(name.getName(), id, rate);
+//				System.out.println("action 2: " +action);
+//				newAverage = service.updateRate(0, rate, id);
+//				System.out.println("action 3: " +newAverage);
+//			}
 		}
 		else if(action.equals("cancel"))
-			service.updateSegnalation(new Date(), id);
+			aq.updateSegnalation(new Date(), id);
 		else
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		
@@ -127,15 +129,15 @@ public class SegnalationRestController {
 			@RequestParam(value = "address", required = true)String indirizzo,
 			@RequestParam(value = "type", required = true)String tipo){
 		
-		System.out.println("type : "+ tipo);
-		
-		int t = TipoSegnalazione.valueOf(tipo).ordinal();
-		String nickname = userService.getUsernameByMail(name.getName());
+		//System.out.println("type : "+ tipo);
 		Date date = new Date();
-		String id = service.insertSegnalation(nickname, lat, lng, date, indirizzo, t);
+		Segnalazione s = aq.insertNewSegnalation(name.getName(), lat, lng, date, indirizzo, tipo);
 		
-		Segnalazione s = new Segnalazione(nickname, lat, lng, date, null, indirizzo, TipoSegnalazione.valueOf(tipo), 0d, 0);
-		s.setId(Integer.parseInt(id));
+		//String nickname = userService.getUsernameByMail(name.getName());
+		//String id = service.insertSegnalation(nickname, lat, lng, date, indirizzo, t);
+		
+		//Segnalazione s = new Segnalazione(nickname, lat, lng, date, null, indirizzo, TipoSegnalazione.valueOf(tipo), 0d, 0);
+		//s.setId(Integer.parseInt(id));
 		System.out.println("Segnalazione creata");
 		return new ResponseEntity<Segnalazione>(s, HttpStatus.CREATED);
 		

@@ -7,13 +7,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.javasampleapproach.security.query.ActivationQuery;
-import com.javasampleapproach.security.query.UsersQuery;
 
 @Controller
 public class ActivationController {
 	
-	@Autowired
-	private  UsersQuery uq;
+	//@Autowired
+	//private  UsersQuery uq;
 	@Autowired
 	private  ActivationQuery aq;
 
@@ -21,10 +20,12 @@ public class ActivationController {
 	public String goToUserpage( @RequestParam(value="otp", required=true) String code) {
 		
 		String username = aq.getUsernameByCode(code);
-		System.out.println("username "+username);
+		//System.out.println("username "+username);
 		if(username != null){
-			uq.enableUser(username);
-			aq.deleteCode(username);
+			aq.validateUser(username);
+			//
+			//uq.enableUser(username);
+			//aq.deleteCode(username);
 		}
 		
 		return "index";
