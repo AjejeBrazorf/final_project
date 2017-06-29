@@ -36,7 +36,7 @@
 	<div class="container">
 		<div id="chatview" class="p1" style="display: block;">
 			<div id="profile" class="animate">
-				<span id="topic">traffic</span>
+				<span id="topic">Bike</span>
 				<div ng-controller="AuthCtrl" ng-init="setAuthenticated(true)"
 					sec:authorize="isAuthenticated()">
 					<input id="imgsrc" th:value="${image}" ng-init="setuserImage()"
@@ -149,7 +149,6 @@
 $( document ).ready(function() {
 	var topic="bike";
 	connectToTopic(topic); 
-	bike
 });
 </script>
 
