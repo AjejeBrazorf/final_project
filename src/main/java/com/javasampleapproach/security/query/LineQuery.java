@@ -98,7 +98,7 @@ public class LineQuery {
 			}
 		}else if(seqsFrom.size() == 2 && seqsTo.size() == 1){
 			seqNumberTo = seqsTo.get(0);
-			for(int i = seqsFrom.size(); i > 0 ; i--){
+			for(int i = seqsFrom.size()-1; i > 0 ; i--){
 				if( seqsFrom.get(i) < seqNumberTo){
 					seqNumberFrom = seqsFrom.get(i);
 				}
