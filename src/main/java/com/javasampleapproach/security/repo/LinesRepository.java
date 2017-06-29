@@ -2,13 +2,10 @@ package com.javasampleapproach.security.repo;
 
 import java.util.List;
 
-import org.geolatte.geom.G2D;
-import org.geolatte.geom.Point;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import com.javasampleapproach.security.model.BusLine;
-import com.javasampleapproach.security.model.BusStop;
 
 public interface LinesRepository extends JpaRepository<BusLine, String>{
 
