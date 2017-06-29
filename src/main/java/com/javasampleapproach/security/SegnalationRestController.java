@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +24,7 @@ import com.javasampleapproach.security.query.SegnalationQuery;
 @RestController
 public class SegnalationRestController {
 	
-	//@Autowired
+	@Autowired
 	private SegnalationQuery service;
 	//@Autowired
 	//private UsersQuery userService;

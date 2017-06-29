@@ -39,7 +39,7 @@ import freemarker.template.Template;
 @Controller
 public class AppController {
 
-	//@Autowired
+	@Autowired
 	private  UserQuery userService;
 
 	@Autowired
