@@ -21,20 +21,22 @@ import com.javasampleapproach.security.model.Istruzione;
 import com.javasampleapproach.security.model.Occupazione;
 import com.javasampleapproach.security.model.TipoCarburante;
 import com.javasampleapproach.security.model.TipoViaggio;
-import com.javasampleapproach.security.query.UsersQuery;
+import com.javasampleapproach.security.query.ActivationQuery;
+import com.javasampleapproach.security.query.UserQuery;
 import com.mongodb.util.JSON;
 
 @RestController
 public class ImageRestController {
+	
 	@Autowired
-	private  UsersQuery uq;
+	private  UserQuery uq;
 
 	
 	@RequestMapping(value="/image", method=RequestMethod.PUT, produces="application/json")
 	public HttpEntity<?> rateSegnalation(
 			Principal name, 
 			@RequestParam(value = "image", required = true, defaultValue = "null")String image){
-		System.out.println(image);
+		//System.out.println(image);
 		uq.updateImageUser(image, name.getName());	
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}

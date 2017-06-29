@@ -7,7 +7,6 @@ import org.springframework.web.socket.config.annotation.AbstractWebSocketMessage
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 
-import chat.UserDirectory;
 
 @Configuration
 @EnableWebSocketMessageBroker
@@ -28,10 +27,5 @@ public class WebSocketConfig extends AbstractWebSocketMessageBrokerConfigurer {
 		config.setApplicationDestinationPrefixes("/app");
 	}
 	
-	@Bean
-	public UserDirectory userDirectory(){
-		return new UserDirectory();
-	}
-
 
 }

@@ -31,7 +31,7 @@ import com.javasampleapproach.security.model.TipoCarburante;
 import com.javasampleapproach.security.model.TipoViaggio;
 import com.javasampleapproach.security.model.User;
 import com.javasampleapproach.security.query.ActivationQuery;
-import com.javasampleapproach.security.query.UsersQuery;
+import com.javasampleapproach.security.query.UserQuery;
 
 import freemarker.template.Configuration;
 import freemarker.template.Template;
@@ -39,8 +39,8 @@ import freemarker.template.Template;
 @Controller
 public class AppController {
 
-	@Autowired
-	private  UsersQuery pgq;
+	//@Autowired
+	private  UserQuery userService;
 
 	@Autowired
 	private JavaMailSender sender;
@@ -64,7 +64,7 @@ public class AppController {
 			@RequestParam(value="nickname", required=true) String nickname,
 			@RequestParam(value="password", required=true) String password) {
 
-		int count = pgq.mailAlreadyPresent(email); 
+		int count = userService.mailAlreadyPresent(email); 
 		
 		//controllo se la mail è univoca
 		if(count > 0){
@@ -89,7 +89,7 @@ public class AppController {
 			return "registration";
 		}
 
-		count = pgq.nicknameAlreadyPresent(nickname); 
+		count = userService.nicknameAlreadyPresent(nickname); 
 		
 		//controllo che il nickname sia univoco
 		if(count > 0){
@@ -106,7 +106,9 @@ public class AppController {
 			while(aq.getUsernameByCode(otp) != null){
 				otp = generateRandomSequence();
 			}
-			aq.insertCode(email, otp);
+			
+			userService.insertNewUser(email, otp, nickname, password, false, "ROLE_USER");
+			//aq.insertCode(email, otp);
 			sendEmail(email, getURLBase(request), otp);
 		} catch (Exception e) {
 			model.addAttribute("error", "Sorry, unable to send the email for confirmation, please try again. ");
@@ -114,11 +116,11 @@ public class AppController {
 			return "registration";
 		}
 
-		pgq.insertCredentials(email, password, false);
-		pgq.insertUser(nickname, email);
+		//pgq.insertCredentials(email, password, false);
+		//pgq.insertUser(nickname, email);
 
 		//bisogna aggiungere anche il ruolo
-		pgq.insertRole(email, "ROLE_USER");
+		//pgq.insertRole(email, "ROLE_USER");
 
 		return "login";
 
@@ -163,8 +165,9 @@ public class AppController {
 	@PostMapping("/changePassword")
 	public String goToHomePage(Model model, @RequestParam(value="oldpsw", required=true) String oldPassword,
 			@RequestParam(value="newpsw", required=true) String newPassword, Principal name) {
-		System.out.println(newPassword+"-"+oldPassword);
-		String oldpsw = pgq.getPassword(name.getName());
+
+
+		String oldpsw = userService.getPassword(name.getName());
 		//controllo che abbia messo la sua vecchia password
 		if(!oldpsw.equals(oldPassword)){
 			model.addAttribute("error", "Please, insert the old password");
@@ -178,7 +181,7 @@ public class AppController {
 			return "userpage";
 		}
 
-		pgq.updateUserCred(name.getName(), newPassword);
+		userService.updateUserCred(name.getName(), newPassword);
 
 		return "index";
 	}
@@ -244,7 +247,7 @@ public class AppController {
 			return "userpage";
 		}
 	
-		pgq.updateUser(name.getName(), Gender.valueOf(gender), Integer.parseInt(eta) , Istruzione.valueOf(istruzione), Occupazione.valueOf(occupazione), Boolean.valueOf(hasCar), Integer.parseInt(annoImmatr), TipoCarburante.valueOf(carburante), Boolean.valueOf(useCarSharing), FornitoreCarSharing.valueOf(fcs), Boolean.valueOf(useBike), Boolean.valueOf(useBikeSharing), Boolean.valueOf(useMezzi), TipoViaggio.valueOf(tipoviaggio), photo);
+		userService.updateUser(name.getName(), Gender.valueOf(gender), Integer.parseInt(eta) , Istruzione.valueOf(istruzione), Occupazione.valueOf(occupazione), Boolean.valueOf(hasCar), Integer.parseInt(annoImmatr), TipoCarburante.valueOf(carburante), Boolean.valueOf(useCarSharing), FornitoreCarSharing.valueOf(fcs), Boolean.valueOf(useBike), Boolean.valueOf(useBikeSharing), Boolean.valueOf(useMezzi), TipoViaggio.valueOf(tipoviaggio), photo);
 		
 		return "index";
 		
@@ -252,17 +255,15 @@ public class AppController {
 
 	@RequestMapping("/userpage")
 	public String userpageController(Model model, Principal name){
-		System.out.println(name.getName());
-		User user = pgq.getUserbyUsername(name.getName());
-		model.addAttribute("user",user);
-		model.addAttribute("image", pgq.getImage(name.getName()));
-		model.addAttribute("nickname", pgq.getUsernameByMail(name.getName()));
+		//System.out.println(name.getName());
+
+		User user = userService.getUserbyUsername(name.getName());
 		
+		model.addAttribute("user",user);
+		model.addAttribute("image",userService.getImage(name.getName()));
+		model.addAttribute("nickname", userService.getUsernameByMail(name.getName()));
 		return "userpage";
 	}
-
-	
-
 	
 	@RequestMapping("/logout")
 	public String logout(Model model) {
