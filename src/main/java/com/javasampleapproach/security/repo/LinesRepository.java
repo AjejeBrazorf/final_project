@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import com.javasampleapproach.security.model.BusLine;
+import com.javasampleapproach.security.model.BusStop;
 
 public interface LinesRepository extends JpaRepository<BusLine, String>{
 
@@ -40,6 +41,21 @@ public interface LinesRepository extends JpaRepository<BusLine, String>{
 			+ " FROM BusStop b"
 			+ " WHERE id = ?1", nativeQuery = true)
 	String getStopNameById(String stopId);
+	
+	@Query(value = "SELECT id, name, lat, lng"
+			+ " FROM BusStop b"
+			+ " WHERE id = ?1", nativeQuery = true)
+	List<Object[]> getBusStopById(String stopId);
+	
+	@Query(value = "SELECT stopid"
+			+ " FROM BusLineStop"
+			+ " WHERE lineid = ?1 and sequencenumber > ?2 and sequencenumber < ?3", nativeQuery = true)
+	List<String> getIntermediateStops(String lineId, int stopFrom, int stopTo);
+	
+	@Query(value = "SELECT sequencenumber"
+			+ " FROM BusLineStop"
+			+ " WHERE lineid = ?1 and stopId = ?2 ", nativeQuery = true)
+	List<Short> getSequenceNumber(String lineId, String stopId);
 	
 	
 }

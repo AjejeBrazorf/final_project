@@ -28,7 +28,7 @@ public class DijkstraQuery {
 	private SessionFactory sf = HibernateUtil.getSessionFactory();
 	private Session session;
 	private final double costantePiedi = 2;
-	private final double costanteMetro = 0.5;
+	private final double costanteMetro = 0.8;
 	private final double valoreDiPartenza = 500;
 	private final double radius = 250d;
 	private Map<String, List<String>> map = new HashMap<String, List<String>>();

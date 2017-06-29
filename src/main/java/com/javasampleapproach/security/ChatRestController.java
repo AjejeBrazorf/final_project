@@ -32,9 +32,6 @@ import rest.PersonsResource;
 public class ChatRestController {
 	
 	@Autowired
-	private ActivationQuery aq;
-	
-	@Autowired
 	private MessageQuery messageService;
 	
 	@Autowired

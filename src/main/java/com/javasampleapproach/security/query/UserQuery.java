@@ -142,4 +142,11 @@ public class UserQuery {
 	public int mailAlreadyPresent(String email) {
 		return aR.findMail(email);
 	}
+
+	//utente da mail
+	public User getUserbyNickname(String s){
+		User n = uR.findByNickname(s);
+
+		return n;
+	}
 }
