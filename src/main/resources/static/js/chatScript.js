@@ -1,7 +1,9 @@
 var stompClient = null;
 var usersWhichWrote=[];
+var c="";
 
 function connectToTopic(topic) {
+	rootTopic=topic;
 	console.log('try to connect: ');
     var socket = new SockJS('/chat');
     stompClient = Stomp.over(socket);
@@ -26,8 +28,7 @@ function disconnect() {
 function sendMessage(text) {
 	var topic;
     $("#spinner").show();
-	if(window.location.pathname=="/cartopic") topic="traffic";
-	sendMessageWithTopic(text,topic);
+	sendMessageWithTopic(text,rootTopic);
     
 }
 

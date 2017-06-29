@@ -89,6 +89,7 @@ public class ChatController implements ApplicationListener<ApplicationEvent>{
 		model.addAttribute("messages", m);
 		model.addAttribute("user",user);
 		model.addAttribute("image", userService.getImage(name.getName()));
+		model.addAttribute("nickname", userService.getUsernameByMail(name.getName()));
 		return "biketopic";
 		
 	}
@@ -101,6 +102,7 @@ public class ChatController implements ApplicationListener<ApplicationEvent>{
 		model.addAttribute("messages", m);
 		model.addAttribute("user",user);
 		model.addAttribute("image", userService.getImage(name.getName()));
+		model.addAttribute("nickname", userService.getUsernameByMail(name.getName()));
 		return "transporttopic";
 		
 	}
