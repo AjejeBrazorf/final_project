@@ -14,7 +14,7 @@
 						md-selected-item-change="selectedItemChange(item)"
 						md-items="item in querySearch(address)" md-item-text="item"
 						md-min-length="0" placeholder="Address"> <md-item-template>
-					<span md-highlight-text="from" md-highlight-flags="^i">{{item}}</span>
+					<span md-highlight-text="address" md-highlight-flags="^i">{{item}}</span>
 					</md-item-template> <md-not-found> No Address found </md-not-found> </md-autocomplete>
 					<div style="text-align: center; color: #a94442;">
 						{{errorAddress}}</div>

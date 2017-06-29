@@ -429,7 +429,7 @@ app.controller('SignalsCtrl', ['$scope', 'DataProvider','$routeParams','$timeout
 	}
 	
 	
-	//send new rate to server
+	//delete signal
 	$scope.deleteSignal=function(id){
 		let action=$scope.signalMarkers[id].action;	
 		let item={
@@ -577,7 +577,6 @@ app.controller('SignalsCtrl', ['$scope', 'DataProvider','$routeParams','$timeout
 
 	function searchTextChange(text) {
 		$scope.showSpinner=true;
-		$scope.hints = [];
 		if(text.length>0 || text)
 			DataProvider.getPositionFromString($scope.address, onPositionAddress, onErrorPositionAddress);
 	}
@@ -656,25 +655,27 @@ app.controller('SignalsCtrl', ['$scope', 'DataProvider','$routeParams','$timeout
 		console.log(lng);
 		$scope.centerLocation.lat=lat;
 		$scope.centerLocation.lng=lng;
-		
+		$scope.hints.length=0;
 		$scope.hints.push($scope.yourPositionString);
 		angular.forEach(positions, function(value, key) {
 			console.log(value.formatted_address);
 			$scope.hints.push(value.formatted_address);
 		});
 		$scope.showSpinner=false;
+		console.log($scope.hints);
 	}
 
-
+	//for chat hints
 	function onPositionHintsAddress(positions) {
+		
 		$scope.addresshints={};
 		$scope.addresshints["show"]=false;
-
 		angular.forEach(positions, function(value, key) {
 			console.log(value.formatted_address);
 			$scope.addresshints[value.formatted_address]=value.formatted_address;
 			$scope.addresshints["show"]=true;
 		});
+		console.log($scope.addresshint);
 	}
 
 	function onErrorPositionAddress(status) {
