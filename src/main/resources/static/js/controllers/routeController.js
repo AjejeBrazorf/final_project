@@ -30,31 +30,29 @@ app.controller('RouteCtrl', ['$scope', 'DataProvider','$routeParams','$timeout',
 			}
 		},
 		decorations: {
-			byFoot: {
-				coordinates: [],
-				patterns:  [
-					{
-						offset: 0,
-						repeat: 10,
-						symbol: L.Symbol.dash({pixelSize: 0, color: '#3287d2',weight: 4, opacity: 1})
-					}
-					]
-			},
-			byBus: {
-				coordinates: [],
-				patterns:[
-
-					{
-						offset: 0,
-						repeat: 25,
-						symbol: L.Symbol.arrowHead({pixelSize: 10, polygon: false, pathOptions: {color: '#ea4335',stroke: true, opacity: 1}})
-					}
-					]
-			}
+			
 		}
 	});
 
+	
+	$scope.patternsFoot=  [
+		{
+			offset: 0,
+			repeat: 10,
+			symbol: L.Symbol.dash({pixelSize: 0, color: '#3287d2',weight: 4, opacity: 1})
+		}
+		];
+	$scope.patternsBus=[
+
+		{
+			offset: 0,
+			repeat: 25,
+			symbol: L.Symbol.arrowHead({pixelSize: 10, polygon: false, pathOptions: {color: '#ea4335',stroke: true, opacity: 1}})
+		}
+		];	
 	$scope.yourPosition="Your position";
+	$scope.yourPositionRequestInProgress=false;
+	$scope.pathRequestInProgress=false;
 	$scope.errorDest="";
 	$scope.errorSrc="";
 	$scope.markers=[];
@@ -103,6 +101,7 @@ app.controller('RouteCtrl', ['$scope', 'DataProvider','$routeParams','$timeout',
 
 	function selectedItemChange(item) {
 		if(item==$scope.yourPosition){
+			$scope.yourPositionRequestInProgress=true;
 			var localPosition=DataProvider.getCurrentPosition(onCurrentPosition);
 		}
 	}
@@ -156,6 +155,12 @@ app.controller('RouteCtrl', ['$scope', 'DataProvider','$routeParams','$timeout',
         $scope.to =  DataProvider.points.to;*/
 
 	$scope.findPath = function(){
+		
+		$scope.pathRequestInProgress=true;
+		
+		if($scope.yourPositionRequestInProgress==true)
+			return;
+		
 		var flagFrom = false, flagTo = false;
 		console.log("entro in funzione");
 		console.log($scope.from+" == "+ $scope.yourPosition);
@@ -227,15 +232,17 @@ app.controller('RouteCtrl', ['$scope', 'DataProvider','$routeParams','$timeout',
 	}
 
 	$scope.makePathRequest = function(lat1, lng1, lat2, lng2){
+
 		$scope.error="";
 		$scope.showSpinner=true;
 		$scope.$apply();
 		DataProvider.findPath(lat1, lng1, lat2, lng2).then(function(positions){	
-			if(positions.length==0){
+			if(positions.length==0||positions==undefined){
 				$scope.error="No route found";
 				$scope.showSpinner=false;
 				return;
 			}
+			$scope.decorations={};
 			$scope.countStartEndPointReceived=0;
 			$scope.byFoot={};
 			let countFoot=0;
@@ -288,7 +295,7 @@ app.controller('RouteCtrl', ['$scope', 'DataProvider','$routeParams','$timeout',
 							patterns:[],
 							coordinates:[]
 					};
-					$scope.byFoot[countFoot].patterns=$scope.decorations.byFoot.patterns;
+					$scope.byFoot[countFoot].patterns=$scope.patternsFoot;
 					$scope.byFoot[countFoot].coordinates.push(start);
 					$scope.byFoot[countFoot].coordinates.push(end);
 					countFoot++;
@@ -297,7 +304,7 @@ app.controller('RouteCtrl', ['$scope', 'DataProvider','$routeParams','$timeout',
 							patterns:[],
 							coordinates:[]
 					};
-					$scope.byBus[countBus].patterns=$scope.decorations.byBus.patterns;
+					$scope.byBus[countBus].patterns=$scope.patternsBus;
 					$scope.byBus[countBus].coordinates.push(start);
 					$scope.byBus[countBus].coordinates.push(end);
 					countBus++;
@@ -315,7 +322,7 @@ app.controller('RouteCtrl', ['$scope', 'DataProvider','$routeParams','$timeout',
 					startPath=start;
 					
 					console.log(countFullPath+"-"+positions.length+"-"+	countAllPasses);
-					if(countFullPath!=0 && countAllPasses!=positions.length){
+					if(countFullPath!=0){
 						$scope.fullPath[countFullPath].start=lastNameFrom;
 						$scope.fullPath[countFullPath].end=nameTo;
 					}else{
@@ -323,9 +330,6 @@ app.controller('RouteCtrl', ['$scope', 'DataProvider','$routeParams','$timeout',
 							$scope.fullPath[countFullPath].start=$scope.from;
 							$scope.fullPath[countFullPath].end=nameTo;
 
-						}else{
-							$scope.fullPath[countFullPath].start=lastNameFrom;
-							$scope.fullPath[countFullPath].end=$scope.to;							
 						}
 					}
 					if(lastMode==false){
@@ -342,6 +346,8 @@ app.controller('RouteCtrl', ['$scope', 'DataProvider','$routeParams','$timeout',
 						draggable: false,
 						icon: ""
 					};
+					
+					
 					console.log($scope.markers);
 					console.log(value);
 					console.log($scope.fullPath[countFullPath]);
@@ -351,9 +357,33 @@ app.controller('RouteCtrl', ['$scope', 'DataProvider','$routeParams','$timeout',
 					//$scope.getPointNameStart(path[0][0]+","+path[0][1],countFullPath);
 					//$scope.getPointNameEnd(lastPoint[0]+","+lastPoint[1],countFullPath);
 					countFullPath++;
+					$scope.fullPath[countFullPath]={
+							start:"",
+							end:"",
+							type:""
+					};
+					if(value.mode==false){
+						$scope.fullPath[countFullPath].type="bus";
+						$scope.fullPath[countFullPath].lineId=lineId;
+					}else{
+						$scope.fullPath[countFullPath].type="foot";
+					}
+					$scope.markersPath["Marker"+countFullPath]={
+						lat: startPath[0], 
+						lng: startPath[1],
+						message: lastNameFrom,
+						focus: false,
+						draggable: false,
+						icon: ""
+					};
+					if(countAllPasses==positions.length-1){
+						
+						$scope.fullPath[countFullPath].start=lastNameFrom;
+						$scope.fullPath[countFullPath].end=$scope.to;							
+						
+					}
 				}
 				lastMode=value.mode;
-
 			});
 
 
@@ -418,6 +448,7 @@ app.controller('RouteCtrl', ['$scope', 'DataProvider','$routeParams','$timeout',
 	$scope.infoWindow;
 
 	function onCurrentPosition(position) {
+		$scope.yourPositionRequestInProgress=false;
 		var pos = {
 				lat: position.coords.latitude,
 				lng: position.coords.longitude
@@ -442,6 +473,8 @@ app.controller('RouteCtrl', ['$scope', 'DataProvider','$routeParams','$timeout',
 		$scope.centerLocation.zoom=16;
 		//updateMap
 		leafletData.getMap("idRoute").then(function(map) {});
+		if($scope.pathRequestInProgress==true)
+			$scope.findPath();
 	}
 
 	//var localPosition=DataProvider.getCurrentPosition(onCurrentPosition);
