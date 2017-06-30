@@ -112,6 +112,15 @@ public class MongoQuery {
 							emLast.setNameTo(lq.nameFromStopid(e.getIdDestination()));
 							emLast.setLineId(e.getLineId());
 							edges.add(emLast);
+						}else{
+							EdgeMaps em = new EdgeMaps(pCoord.get(0), pCoord.get(1), coord.get(0), coord.get(1));
+							em.setIdSource(e.getIdSource());
+							em.setIdDestination(e.getIdDestination());
+							em.setMode(e.isMode());
+							em.setNameFrom(lq.nameFromStopid(e.getIdSource()));
+							em.setNameTo(lq.nameFromStopid(e.getIdDestination()));
+							em.setLineId(e.getLineId());
+							edges.add(em);
 						}
 					}else{					
 						EdgeMaps em = new EdgeMaps(pCoord.get(0), pCoord.get(1), coord.get(0), coord.get(1));
