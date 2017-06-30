@@ -23,7 +23,7 @@ public class MongoQuery {
 	@Autowired
 	LineQuery lq;
 	@Autowired
-	PathRepository pR;
+	PathQuery pathService;
 	
 	public List<EdgeMaps> getMinPathRoute(double lat1, double lng1, double lat2, double lng2){
 
@@ -35,7 +35,7 @@ public class MongoQuery {
 		for (String s1 : stopsStart.keySet()){
 			for (String s2 : stopsStart2.keySet()){
 				System.out.println("From: " + s1 + " To: " + s2);
-				MinPath m = getPath(s1, s2);
+				MinPath m = pathService.getPath(s1, s2);
 				if(m != null){
 					System.out.println("idDest: " + m.getIdDestination() + " idSource: " + m.getIdSource());
 					m.setTotalCost((int)(m.getTotalCost() + stopsStart.get(s1) + stopsStart2.get(s2)));
@@ -140,7 +140,7 @@ public class MongoQuery {
 	}
 	
 	//minPath between source and dest
-	public MinPath getPath(String idSource, String idDest){
+	/*public MinPath getPath(String idSource, String idDest){
 		return pR.findPathbyIds(idSource, idDest);
-	}
+	}*/
 }
