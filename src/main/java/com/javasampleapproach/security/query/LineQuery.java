@@ -91,14 +91,14 @@ public class LineQuery {
 			seqNumberTo = seqsTo.get(0);
 		}else if(seqsFrom.size() == 1 && seqsTo.size() == 2){
 			seqNumberFrom = seqsFrom.get(0);
-			for(int j = seqsTo.size(); j > 0 ; j--){
+			for(int j = seqsTo.size()-1; j >= 0 ; j--){
 				if( seqNumberFrom < seqsTo.get(j)){
 					seqNumberTo = seqsTo.get(j);
 				}
 			}
 		}else if(seqsFrom.size() == 2 && seqsTo.size() == 1){
 			seqNumberTo = seqsTo.get(0);
-			for(int i = seqsFrom.size()-1; i > 0 ; i--){
+			for(int i = seqsFrom.size()-1; i >= 0 ; i--){
 				if( seqsFrom.get(i) < seqNumberTo){
 					seqNumberFrom = seqsFrom.get(i);
 				}
