@@ -56,7 +56,7 @@ app.controller('AuthCtrl', ['$scope', '$rootScope',
 }]);
 
 app.factory('DataProvider', 
-		function($http){
+		function($http, $rootScope){
 	var DataProvider = {};
 	var lines = [];
 	var stops = [];
@@ -112,10 +112,18 @@ app.factory('DataProvider',
 	};
 
 	DataProvider.getSignals= function() {
-		return readJson('../segnalations').then( function (response){ 
-			console.log(response);
-			return response;
-		});
+		console.log($rootScope.nickname);
+		if($rootScope.nickname==undefined || $rootScope.nickname==null || $rootScope.nickname.length==0){
+			return readJson('../segnalations').then( function (response){ 
+				console.log(response);
+				return response;
+			});
+		}else{
+			return readJson('../segnalations?name='+$rootScope.nickname).then( function (response){ 
+				console.log(response);
+				return response;
+			});
+		}
 	};
 	
 	DataProvider.getMyInfo= function(nickname) {
@@ -128,10 +136,10 @@ app.factory('DataProvider',
 	
 	
 	 
-	DataProvider.addSignalToServer= function(item) {
+	DataProvider.addSignalToServer= function(item,nickname) {
 		var values= {'lat': item.lat, 'lng': item.lng, 'type': item.type, 'address':item.address};
 		var promise = $http({
-			url: "../segnalations",
+			url: "../"+nickname+"/segnalations",
 			method: "POST",
 			params: values
 		});
@@ -145,13 +153,13 @@ app.factory('DataProvider',
 		return promise;
 	};
 
-	DataProvider.updateSignalRate= function(item,id) {
+	DataProvider.updateSignalRate= function(item,id,nickname) {
 		var values={
 				'action': item.action,
 				'rate':item.rate
 		}
 		var promise = $http({
-			url: "../segnalations/"+id,
+			url: "../"+nickname+"/segnalations/"+id,
 			method: "PUT",
 			params: values
 		});

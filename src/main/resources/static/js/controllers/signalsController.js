@@ -388,7 +388,7 @@ app.controller('SignalsCtrl', ['$scope', 'DataProvider','$routeParams','$timeout
 		$scope.signalshints={};
 		$scope.addresshints["show"]=false;	
 		$scope.signalshints["show"]=false;
-		return DataProvider.addSignalToServer(segnalation).then( function(signal){
+		return DataProvider.addSignalToServer(segnalation,$rootScope.nickname).then( function(signal){
 			console.log("segnale aggiunto:");
 			console.log(signal);
 			var item={
@@ -421,7 +421,7 @@ app.controller('SignalsCtrl', ['$scope', 'DataProvider','$routeParams','$timeout
 				"action":'rate',
 				"rate": $scope.yourVote
 		};
-		DataProvider.updateSignalRate(item,id).then(function(item){
+		DataProvider.updateSignalRate(item,id,$rootScope.nickname).then(function(item){
 			//update signal's rate average
 			let rate=item.config.params.rate;
 			$scope.signalMarkers[id].rate=rate;
