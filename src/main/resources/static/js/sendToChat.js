@@ -1,5 +1,5 @@
 var stompClients = [];
-var topics=["traffic","bike","transport"];
+var topics=["traffic","bike","bus"];
 var sockets=[];
 
 function connectToAllTopics() {
