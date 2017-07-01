@@ -237,9 +237,11 @@ app.controller('RouteCtrl', ['$scope', 'DataProvider','$routeParams','$timeout',
 		$scope.showSpinner=true;
 		$scope.$apply();
 		DataProvider.findPath(lat1, lng1, lat2, lng2).then(function(positions){	
-			if(positions.length==0||positions==undefined){
+			if(positions==undefined || positions.length==0){
 				$scope.error="No route found";
+				$scope.fullPath=[];
 				$scope.showSpinner=false;
+				
 				return;
 			}
 			
