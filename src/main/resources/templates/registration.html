@@ -27,7 +27,7 @@
                     Registration
 					</h2>
 					<div th:if="${error}">
-			            Invalid username and/or password.
+			            ${error}
 			        </div>
 			        <div th:if="${param.logout}">
 			            You have been logged out.
