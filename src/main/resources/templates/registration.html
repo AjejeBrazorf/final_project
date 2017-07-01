@@ -26,8 +26,8 @@
                     <h2 style="color:white; padding-bottom:30px">
                     Registration
 					</h2>
-					<div th:if="${error}">
-			            Invalid username and/or password.
+					<div>
+			            <h th:text="${error}"  style="text-align: center; color: #a94442;">
 			        </div>
 			        <div th:if="${param.logout}">
 			            You have been logged out.
