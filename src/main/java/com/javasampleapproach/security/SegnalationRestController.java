@@ -34,7 +34,7 @@ public class SegnalationRestController {
 	
 	@RequestMapping(value="/segnalations", method=RequestMethod.GET, produces="application/json")
 	public HttpEntity<List<SegnalationForClient>> getSegnalations(
-			Principal name,
+			@RequestParam(value = "name", required = false)String name,
 			@RequestParam(value = "type", required = false)String type){
 		
 		List<Segnalazione> list;
@@ -50,7 +50,7 @@ public class SegnalationRestController {
 		for(Segnalazione s:list){
 			SegnalationForClient sfc = new SegnalationForClient();
 			if(name != null){
-				voto = service.isPresentUserRate(name.getName(), s.getId());
+				voto = service.isPresentUserRate(name, s.getId());
 				sfc.setVoto(voto);
 			}
 			sfc.setSegnalazione(s);
@@ -62,13 +62,13 @@ public class SegnalationRestController {
 	
 	@RequestMapping(value="/segnalations/{id}", method=RequestMethod.GET, produces="application/json")
 	public HttpEntity<SegnalationForClient> getSegnalation(
-			Principal name,
+			@RequestParam(value = "name", required = false)String name,
 			@PathVariable String id){
 		SegnalationForClient sfc = new SegnalationForClient();
 		int voto;
 		Segnalazione s = service.getById(id);
 		if(name != null){
-			voto = service.isPresentUserRate(name.getName(), s.getId());
+			voto = service.isPresentUserRate(name, s.getId());
 			sfc.setVoto(voto);
 		}
 		sfc.setSegnalazione(s);
@@ -76,16 +76,16 @@ public class SegnalationRestController {
 		return new ResponseEntity<SegnalationForClient>(sfc, HttpStatus.OK);
 	}
 	
-	@RequestMapping(value="/segnalations/{id}", method=RequestMethod.PUT, produces="application/json")
+	@RequestMapping(value="/{name}/segnalations/{id}", method=RequestMethod.PUT, produces="application/json")
 	public HttpEntity<Double> rateSegnalation(
+			@PathVariable String name,
 			@PathVariable String id,
-			Principal name,
 			@RequestParam(value = "action", required = true)String action,
 			@RequestParam(value = "rate", required = false)Integer rate){
 		Double newAverage = 0.0;
 		//System.out.println("action : " +action+"id : "+id);
 		if(action.equals("rate")){
-			newAverage = service.segnalationVote(name.getName(), id, rate);
+			newAverage = service.segnalationVote(name, id, rate);
 //			Integer oldRate;
 //			oldRate = rateService.isPresentUserRate(name.getName(), id);
 //			System.out.println("oldrate: " +oldRate);
@@ -111,9 +111,9 @@ public class SegnalationRestController {
 		return new ResponseEntity<Double>(newAverage, HttpStatus.ACCEPTED);
 	}
 	
-	@RequestMapping(value="/segnalations", method=RequestMethod.POST, produces="application/json")
+	@RequestMapping(value="/{name}/segnalations", method=RequestMethod.POST, produces="application/json")
 	public HttpEntity<Segnalazione> insertSegnalation(
-			Principal name, 
+			@PathVariable String name,
 			@RequestParam(value = "lat", required = true)Double lat,
 			@RequestParam(value = "lng", required = true)Double lng,
 			@RequestParam(value = "address", required = true)String indirizzo,
@@ -121,7 +121,7 @@ public class SegnalationRestController {
 		
 		//System.out.println("type : "+ tipo);
 		Date date = new Date();
-		Segnalazione s = service.insertNewSegnalation(name.getName(), lat, lng, date, indirizzo, tipo);
+		Segnalazione s = service.insertNewSegnalation(name, lat, lng, date, indirizzo, tipo);
 		
 		//String nickname = userService.getUsernameByMail(name.getName());
 		//String id = service.insertSegnalation(nickname, lat, lng, date, indirizzo, t);

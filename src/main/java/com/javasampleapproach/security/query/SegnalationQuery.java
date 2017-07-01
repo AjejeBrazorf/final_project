@@ -26,7 +26,6 @@ public class SegnalationQuery {
 	RateUserRepository ruR;
 
 	public Double segnalationVote(String name, String id, Integer rate) {
-		// TODO Auto-generated method stub
 		Double newAverage;
 		Integer oldRate;
 
@@ -93,18 +92,18 @@ public class SegnalationQuery {
 	}
 
 	//insert UserRate
-	public void insertUserRate(String username, String idSegnalation, int rate){
-		ruR.insertUserRate(username, Integer.parseInt(idSegnalation), rate);
+	public void insertUserRate(String nickname, String idSegnalation, int rate){
+		ruR.insertUserRate(nickname, Integer.parseInt(idSegnalation), rate);
 	}
 
 	//update UserRate
-	public void updateUserRate(String username, String idSegnalation, int rate){
-		ruR.updateUserRate(rate, username, Integer.parseInt(idSegnalation));
+	public void updateUserRate(String nickname, String idSegnalation, int rate){
+		ruR.updateUserRate(rate, nickname, Integer.parseInt(idSegnalation));
 	}
 
 	//get vote of User for that segnalation
-	public Integer isPresentUserRate(String username, int idSegnalation){
-		return ruR.getUserRate(username, idSegnalation);
+	public Integer isPresentUserRate(String nickname, int idSegnalation){
+		return ruR.getUserRate(nickname, idSegnalation);
 	}
 
 

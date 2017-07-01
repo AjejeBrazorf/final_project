@@ -57,11 +57,11 @@ CREATE TABLE IF NOT EXISTS activationCode (
 );
 
 CREATE TABLE IF NOT EXISTS rateUser (
-  username varchar(255) NOT NULL,
+  nickname varchar(255) NOT NULL,
   idsegnalation integer NOT NULL,
   rate int NOT NULL,
-  primary key(username, idsegnalation),
-  foreign key (username) references dettaglioUser(email),
+  primary key(nickname, idsegnalation),
+  foreign key (nickname) references dettaglioUser(nickname),
   foreign key (idsegnalation) references segnalazioni(id)
 );
   
