@@ -423,7 +423,7 @@ app.controller('SignalsCtrl', ['$scope', 'DataProvider','$routeParams','$timeout
 		};
 		DataProvider.updateSignalRate(item,id,$rootScope.nickname).then(function(item){
 			//update signal's rate average
-			let rate=item.config.params.rate;
+			let rate=item.data;
 			$scope.signalMarkers[id].rate=rate;
 		});
 	}
