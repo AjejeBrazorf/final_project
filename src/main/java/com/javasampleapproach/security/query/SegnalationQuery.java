@@ -31,7 +31,7 @@ public class SegnalationQuery {
 
 		oldRate = isPresentUserRate(name, Integer.parseInt(id));
 		//System.out.println("oldrate: " +oldRate);
-		if(oldRate == 0 ){
+		if(oldRate !=0 ){
 			newAverage = updateRate(1, rate-oldRate, id);
 			//System.out.println("Ho aggiornato la media");
 			updateUserRate(name, id, rate);
