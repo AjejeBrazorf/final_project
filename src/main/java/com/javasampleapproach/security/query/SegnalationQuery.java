@@ -48,8 +48,7 @@ public class SegnalationQuery {
 		return newAverage;
 	}
 
-	public Segnalazione insertNewSegnalation(String name, Double lat, Double lng, Date date, String indirizzo, String tipo) {
-		String nickname = userService.getUsernameByMail(name);
+	public Segnalazione insertNewSegnalation(String nickname, Double lat, Double lng, Date date, String indirizzo, String tipo) {
 		int t = TipoSegnalazione.valueOf(tipo).ordinal();
 
 		String id = insertSegnalation(nickname, lat, lng, date, indirizzo, t);
@@ -102,8 +101,12 @@ public class SegnalationQuery {
 	}
 
 	//get vote of User for that segnalation
-	public Integer isPresentUserRate(String nickname, int idSegnalation){
-		return ruR.getUserRate(nickname, idSegnalation);
+	public int isPresentUserRate(String nickname, int idSegnalation){
+		Integer rate = ruR.getUserRate(nickname, idSegnalation);
+		if(rate == null)
+			return 0;
+		else
+			return rate;
 	}
 
 

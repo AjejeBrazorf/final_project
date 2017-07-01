@@ -50,6 +50,7 @@ public class SegnalationRestController {
 		for(Segnalazione s:list){
 			SegnalationForClient sfc = new SegnalationForClient();
 			if(name != null){
+				System.out.println("Name :"+name+" id: "+s.getId());
 				voto = service.isPresentUserRate(name, s.getId());
 				sfc.setVoto(voto);
 			}
