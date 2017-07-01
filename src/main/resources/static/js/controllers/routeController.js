@@ -232,7 +232,7 @@ app.controller('RouteCtrl', ['$scope', 'DataProvider','$routeParams','$timeout',
 	}
 
 	$scope.makePathRequest = function(lat1, lng1, lat2, lng2){
-
+		
 		$scope.error="";
 		$scope.showSpinner=true;
 		$scope.$apply();
@@ -242,6 +242,7 @@ app.controller('RouteCtrl', ['$scope', 'DataProvider','$routeParams','$timeout',
 				$scope.showSpinner=false;
 				return;
 			}
+			
 			$scope.decorations={};
 			$scope.countStartEndPointReceived=0;
 			$scope.byFoot={};
@@ -318,18 +319,26 @@ app.controller('RouteCtrl', ['$scope', 'DataProvider','$routeParams','$timeout',
 							type:""
 					};
 					
-					nameTo=value.nameFrom;
+					if(value.nameFrom!=null){
+						nameTo=value.nameFrom;
+					}else{
+						nameTo=positions[countAllPasses-2].nameTo;
+					}
 					startPath=start;
 					
 					console.log(countFullPath+"-"+positions.length+"-"+	countAllPasses);
 					if(countFullPath!=0){
-						$scope.fullPath[countFullPath].start=lastNameFrom;
+						if(lastNameFrom.length==0){
+							$scope.fullPath[countFullPath].start=$scope.fullPath[countFullPath-1].end;
+						}else{
+							$scope.fullPath[countFullPath].start=lastNameFrom;
+						}
 						$scope.fullPath[countFullPath].end=nameTo;
+						
 					}else{
 						if(countFullPath==0) {
 							$scope.fullPath[countFullPath].start=$scope.from;
 							$scope.fullPath[countFullPath].end=nameTo;
-
 						}
 					}
 					if(lastMode==false){
@@ -357,6 +366,7 @@ app.controller('RouteCtrl', ['$scope', 'DataProvider','$routeParams','$timeout',
 					//$scope.getPointNameStart(path[0][0]+","+path[0][1],countFullPath);
 					//$scope.getPointNameEnd(lastPoint[0]+","+lastPoint[1],countFullPath);
 					countFullPath++;
+					
 					$scope.fullPath[countFullPath]={
 							start:"",
 							end:"",
@@ -376,9 +386,13 @@ app.controller('RouteCtrl', ['$scope', 'DataProvider','$routeParams','$timeout',
 						draggable: false,
 						icon: ""
 					};
-					if(countAllPasses==positions.length-1){
-						
-						$scope.fullPath[countFullPath].start=lastNameFrom;
+					console.log(countAllPasses+" == "+positions.length+"  "+lastNameFrom);
+					if(countAllPasses==positions.length){
+						if(lastNameFrom==null){
+							$scope.fullPath[countFullPath].start=$scope.fullPath[countFullPath-1].end;
+						}else{
+							$scope.fullPath[countFullPath].start=lastNameFrom;
+						}
 						$scope.fullPath[countFullPath].end=$scope.to;							
 						
 					}
@@ -387,12 +401,20 @@ app.controller('RouteCtrl', ['$scope', 'DataProvider','$routeParams','$timeout',
 			});
 
 
-			
-			$scope.centerLocation={
+			console.log($scope.centerLocation.zoom);
+			if($scope.centerLocation.zoom!=15){
+				$scope.centerLocation={
 					lat: (minLat+maxLat)/2,
 					lng: (minLng+maxLng)/2,
 					zoom: 20
-			};
+				};
+			}else{
+				$scope.centerLocation={
+						lat: (minLat+maxLat)/2,
+						lng: (minLng+maxLng)/2,
+						zoom: $scope.centerLocation.zoom
+					};
+			}
 			console.log($scope.centerLocation);
 
 			angular.forEach($scope.byFoot, function (value,key){
@@ -404,14 +426,13 @@ app.controller('RouteCtrl', ['$scope', 'DataProvider','$routeParams','$timeout',
 
 			console.log($scope.decorations);
 
-
 			leafletData.getMap("idRoute").then(function(map) {});
-
-			$timeout(()=>{
-				$scope.centerLocation.zoom=15;
-				leafletData.getMap("idRoute").then(function(map) {});
-			},0.5);
-			
+			if($scope.centerLocation.zoom!=15){
+				$timeout(()=>{
+					$scope.centerLocation.zoom=15;
+					leafletData.getMap("idRoute").then(function(map) {});
+				},0.1);
+			}
 			$scope.showSpinner=false;
 		});
 	};
