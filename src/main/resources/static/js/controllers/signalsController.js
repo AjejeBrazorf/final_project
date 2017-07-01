@@ -410,7 +410,7 @@ app.controller('SignalsCtrl', ['$scope', 'DataProvider','$routeParams','$timeout
 	
 	//send new rate to server
 	$scope.updateSignalRate=function(id){
-		console.log("nuovo voto al marker "+id+" di" + $scope.yourVote) ;
+		console.log("nuovo voto al marker "+id+" di" + $scope.signalMarkers[marker.id].usersvote) ;
 
 		//update Rate
 		//mode : 0  new vote
@@ -419,7 +419,7 @@ app.controller('SignalsCtrl', ['$scope', 'DataProvider','$routeParams','$timeout
 			
 		let item={
 				"action":'rate',
-				"rate": $scope.yourVote
+				"rate": $scope.signalMarkers[marker.id].usersvote
 		};
 		DataProvider.updateSignalRate(item,id,$rootScope.nickname).then(function(item){
 			//update signal's rate average
@@ -480,8 +480,8 @@ app.controller('SignalsCtrl', ['$scope', 'DataProvider','$routeParams','$timeout
 		'<md-content style="margin: 16px; padding:16px">'+
 		'<h5 ng-show="signalMarkers['+ marker.id+'].nickname!=nickname && authenticated" style="text-align: center;">Your rate</h5><br>'+
 		'<div ng-show="signalMarkers['+ marker.id+'].nickname!=nickname && authenticated" layout="">'+
-			'<md-slider flex="" class="md-warn" md-discrete="" ng-mouseup="updateSignalRate('+ marker.id+')" ng-disabled="'+!$rootScope.authenticated+'" ng-model="yourVote" step="1" min="1" max="5" aria-label="rating"></md-slider><br>'+
-			'<h3 style="padding-left: 25px; margin-top: 10px;">{{yourVote}}</h3><br>'+
+			'<md-slider flex="" class="md-warn" md-discrete="" ng-mouseup="updateSignalRate('+ marker.id+')" ng-disabled="'+!$rootScope.authenticated+'" ng-model="signalMarkers['+ marker.id+'].usersvote" step="1" min="1" max="5" aria-label="rating"></md-slider><br>'+
+			'<h3 style="padding-left: 25px; margin-top: 10px;">{{signalMarkers['+ marker.id+'].usersvote}}</h3><br>'+
 		'</div>'+
 		'<h5 style="text-align: center;">Average rate</h5><br>'+
 		'<div layout="">'+
@@ -527,6 +527,7 @@ app.controller('SignalsCtrl', ['$scope', 'DataProvider','$routeParams','$timeout
 		}	
 		console.log($scope.signalMarkers[ marker.id]);
 		$scope.signalMarkers[ marker.id].message=$scope.ppContainer;
+		$scope.signalMarkers[marker.id].usersvote=item.voto;
 
 		//updateMap
 		leafletData.getMap("myMap").then(function(map) {});
