@@ -465,7 +465,8 @@ app.controller('SignalsCtrl', ['$scope', 'DataProvider','$routeParams','$timeout
 	$scope.onSignalsFromServer=function(item) {
 		console.log("received ");
 		console.log(item);
-		item.segnalazione.action=item.voto;
+		item.segnalazione.rate=item.voto;
+		$scope.rate=item.voto;
 		marker=item.segnalazione;
 		console.log(marker);
 		console.log($scope.icons[marker.tipo]);
@@ -480,8 +481,8 @@ app.controller('SignalsCtrl', ['$scope', 'DataProvider','$routeParams','$timeout
 		'<md-content style="margin: 16px; padding:16px">'+
 		'<h5 ng-show="signalMarkers['+ marker.id+'].nickname!=nickname && authenticated" style="text-align: center;">Your rate</h5><br>'+
 		'<div ng-show="signalMarkers['+ marker.id+'].nickname!=nickname && authenticated" layout="">'+
-			'<md-slider flex="" class="md-warn" md-discrete="" ng-mouseup="updateSignalRate('+ marker.id+')" ng-disabled="'+!$rootScope.authenticated+'" ng-model="yourVote" step="1" min="1" max="5" aria-label="rating"></md-slider><br>'+
-			'<h3 style="padding-left: 25px; margin-top: 10px;">{{yourVote}}</h3><br>'+
+			'<md-slider flex="" class="md-warn" md-discrete="" ng-mouseup="updateSignalRate('+ marker.id+')" ng-disabled="'+!$rootScope.authenticated+'" ng-model="rate" step="1" min="1" max="5" aria-label="rating"></md-slider><br>'+
+			'<h3 style="padding-left: 25px; margin-top: 10px;">{{rate}}</h3><br>'+
 		'</div>'+
 		'<h5 style="text-align: center;">Average rate</h5><br>'+
 		'<div layout="">'+
