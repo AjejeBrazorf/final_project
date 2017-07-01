@@ -27,11 +27,11 @@ public class SegnalationQuery {
 
 	public Double segnalationVote(String name, String id, Integer rate) {
 		Double newAverage;
-		Integer oldRate;
+		int oldRate;
 
 		oldRate = isPresentUserRate(name, Integer.parseInt(id));
 		//System.out.println("oldrate: " +oldRate);
-		if(oldRate != null){
+		if(oldRate == 0 ){
 			newAverage = updateRate(1, rate-oldRate, id);
 			//System.out.println("Ho aggiornato la media");
 			updateUserRate(name, id, rate);
