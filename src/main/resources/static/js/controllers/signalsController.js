@@ -1,7 +1,6 @@
 app.controller('SignalsCtrl', ['$scope', 'DataProvider','$routeParams','$timeout','$q','leafletData', "leafletMarkerEvents", "leafletLogger",'$filter','$compile','$rootScope', '$routeParams',
 	function ($scope, DataProvider,$routeParams, $timeout, $q, leafletData, leafletMarkerEvents, leafletLogger,$filter, $compile,$rootScope,$routeParams) {
-
-	console.log("Signals");
+    //initialize map
 	angular.extend($scope, {
 		centerLocation: {
 			lat: 45.07,
@@ -37,10 +36,7 @@ app.controller('SignalsCtrl', ['$scope', 'DataProvider','$routeParams','$timeout
 	});
 
 
-
-
 	$scope.yourPositionString="Your position";
-
 	$scope.signal={};
 	$scope.signal.type="inProgress";
 	$scope.signal.currentIcon=$scope.inProgressIcon;
@@ -76,19 +72,10 @@ app.controller('SignalsCtrl', ['$scope', 'DataProvider','$routeParams','$timeout
 	var markerEvents = leafletMarkerEvents.getAvailableEvents();
 	for (var k in markerEvents){
 		var eventName = 'leafletDirectiveMarker.myMap.' + markerEvents[k];
-		$scope.$on(eventName, function(event, args){
-			//console.log(event);            	
+		$scope.$on(eventName, function(event, args){            	
 			if(event.name=="leafletDirectiveMarker.myMap.click"){
-				//is this m89arker readOnly???
-				//$scope.signalMarkers[args.model.id].rating=3;
-				console.log(args);
-				$scope.signalMarkers[args.model.id].rate=$scope.signalMarkers[args.model.id].rate
-
-				console.log($scope.signalMarkers[args.model.id]);       
-				console.log($scope.signalMarkers[args.model.id].rate);
-
+				$scope.signalMarkers[args.model.id].rate=$scope.signalMarkers[args.model.id].rate;
 				var markerDiv = (angular.element(document.getElementById('Marker'+args.model.id)));
-				//               markerDiv.append(s);
 				$compile(markerDiv)($scope);
 
 			}
@@ -115,11 +102,8 @@ app.controller('SignalsCtrl', ['$scope', 'DataProvider','$routeParams','$timeout
 
 	$scope.getUserInfo=function(){
 		$rootScope.nickname=$('#user').text();
-		console.log("username :" + $rootScope.nickname);
-		console.log("loggato? :" + $rootScope.auth);
 		DataProvider.getMyInfo($rootScope.nickname).then(function(response){
 			$scope.user=response;
-			console.log(response);
 		});
 	}
 	
@@ -146,7 +130,6 @@ app.controller('SignalsCtrl', ['$scope', 'DataProvider','$routeParams','$timeout
 
 
 	function setSelectionRange(input, selectionStart, selectionEnd) {
-		console.log("dentro selection range");
 		if (input.setSelectionRange) {
 			input.focus();
 			input.setSelectionRange(selectionStart, selectionEnd);
@@ -161,7 +144,6 @@ app.controller('SignalsCtrl', ['$scope', 'DataProvider','$routeParams','$timeout
 
 	function setCaretToPos(input, pos) {
 		setSelectionRange(input, pos, pos);
-		console.log("dentro set caret");
 	}
 
 
@@ -182,14 +164,9 @@ app.controller('SignalsCtrl', ['$scope', 'DataProvider','$routeParams','$timeout
 		if(keyCode == 222){ 
 			$scope.tagPressed=true;
 			$scope.inputMess+="#";
-			console.log("chiamo setcaret");
 			var pos=$scope.inputMess.length-1;
-			//setCaretToPos(document.getElementById("btn-input"), $scope.inputMess.length-2);
 			document.getElementById("btn-input").selectionStart = pos;
 			document.getElementById("btn-input").selectionEnd = pos;
-			console.log("pos" + pos);
-			console.log(document.getElementById("btn-input").selectionStart);
-			console.log(document.getElementById("btn-input").selectionEnd);
 		}
 
 		$scope.chatSignalType=null;
@@ -200,8 +177,6 @@ app.controller('SignalsCtrl', ['$scope', 'DataProvider','$routeParams','$timeout
 		var index=$scope.inputMess.search("#");
 		var i=1;
 		while(i<n.length){
-			console.log(n[i]);
-			console.log(i+"-"+n.length);
 			n[i]=n[i].toLowerCase();
 			//setto $scope.signalType
 			if($scope.signalsType[n[i]]!=null){
@@ -219,7 +194,6 @@ app.controller('SignalsCtrl', ['$scope', 'DataProvider','$routeParams','$timeout
 			if(i==n.length) textIfSent+=n[i-1];
 		}
 
-		console.log($scope.address+" - "+$scope.chatSignalType);
 		DataProvider.getPositionFromString($scope.address, onPositionHintsAddress, onErrorPositionAddress);
 		//invio
 		if(keyCode != 13){
@@ -231,9 +205,7 @@ app.controller('SignalsCtrl', ['$scope', 'DataProvider','$routeParams','$timeout
 						var k=key.toLowerCase();
 						var indexOfType=k.indexOf($scope.chatSignalTypeTemp);
 						if(indexOfType!=-1){
-							console.log("ho trovato "+$scope.chatSignalTypeTemp+" in "+k);
 							$scope.signalshints[key]=k;
-
 							$scope.signalshints["show"]=true;
 						}		
 					});
@@ -250,8 +222,7 @@ app.controller('SignalsCtrl', ['$scope', 'DataProvider','$routeParams','$timeout
 
 
 		if($scope.address!=null && $scope.chatSignalType!=null){
-			//invia api a google e aggiungi eventualmente il marker
-			console.log("addSignals");
+			//invia api a google e aggiungi eventualmente il marker;
 			$scope.inputMess=textIfSent;
 			$scope.message= $scope.inputMess;
 			DataProvider.getPositionFromString($scope.address, $scope.onPositionReadyForChat, onError)
@@ -276,8 +247,6 @@ app.controller('SignalsCtrl', ['$scope', 'DataProvider','$routeParams','$timeout
 
 	$scope.addSignals = function() {
 		if($scope.address.legnth==0) return;
-		
-		console.log("entro in funzione");
 		$scope.showSpinner=true;
 
 		if(!stompClients[0])
@@ -287,8 +256,6 @@ app.controller('SignalsCtrl', ['$scope', 'DataProvider','$routeParams','$timeout
 			if(stompClients[0].connected==false)
 				connectToAllTopics();
 		}
-
-		console.log($scope.address+" - "+$scope.yourPositionString);
 		if($scope.address==$scope.yourPositionString){
 			//modifica address con lat  e lng della tua posizione
 			$scope.address=$scope.myLat+","+$scope.myLng;
@@ -302,15 +269,11 @@ app.controller('SignalsCtrl', ['$scope', 'DataProvider','$routeParams','$timeout
 
 	//per Chat
 	$scope.onHintClick = function(hint,hinttype){
-		console.log(hinttype);
-
 		var n = $scope.inputMess.split("#");
 		var index=$scope.inputMess.search("#");
 		var i=1;
 		var finalText="";
 		while(i<n.length){
-			console.log(n[i]);
-			console.log(i+"-"+n.length);
 			n[i]=n[i].toLowerCase();
 			if(hinttype=="address"){
 				if(n[i]==$scope.address){
@@ -331,13 +294,10 @@ app.controller('SignalsCtrl', ['$scope', 'DataProvider','$routeParams','$timeout
 		$scope.addresshints["show"]=false;	
 		$scope.signalshints["show"]=false;
 		$scope.inputMess=finalText;
-		console.log($scope.inputMess);
-		console.log(hint);
 	}
 
 
 	$scope.filterSignals=function(signaltype){
-		console.log("filtro segnali" );
 		switch(signaltype){
 		case  "inProgress"  : 
 			if($scope.signalToShow.inProgress==false)  $scope.removeMarkerOnMap( $scope.inProgressList );
@@ -373,7 +333,6 @@ app.controller('SignalsCtrl', ['$scope', 'DataProvider','$routeParams','$timeout
 
 
 	$scope.onPositionReadyForChat=function(positions) {
-		console.log(positions);
 		$scope.centerLocation.lat=positions[0].geometry.location.lat();
 		$scope.centerLocation.lng=positions[0].geometry.location.lng();
 
@@ -383,14 +342,11 @@ app.controller('SignalsCtrl', ['$scope', 'DataProvider','$routeParams','$timeout
 		segnalation.lng = $scope.centerLocation.lng;
 		segnalation.type = $scope.signal.type;
 		segnalation.address = positions[0].formatted_address;
-		console.log(segnalation);
 		$scope.addresshints={};	
 		$scope.signalshints={};
 		$scope.addresshints["show"]=false;	
 		$scope.signalshints["show"]=false;
-		return DataProvider.addSignalToServer(segnalation,$rootScope.nickname).then( function(signal){
-			console.log("segnale aggiunto:");
-			console.log(signal);
+		return DataProvider.addSignalToServer(segnalation,$rootScope.nickname).then( function(signal){		
 			var item={
 					segnalazione:signal.data,
 			}
@@ -410,8 +366,6 @@ app.controller('SignalsCtrl', ['$scope', 'DataProvider','$routeParams','$timeout
 	
 	//send new rate to server
 	$scope.updateSignalRate=function(id){
-		console.log("nuovo voto al marker "+id+" di" + $scope.signalMarkers[marker.id].usersvote) ;
-
 		//update Rate
 		//mode : 0  new vote
 		//mode : 1  update of old vote
@@ -442,7 +396,6 @@ app.controller('SignalsCtrl', ['$scope', 'DataProvider','$routeParams','$timeout
 	
 
 	$scope.onPositionReady=function(positions) {
-		console.log(positions);
 		$scope.centerLocation.lat=positions[0].geometry.location.lat();
 		$scope.centerLocation.lng=positions[0].geometry.location.lng();
 
@@ -452,9 +405,7 @@ app.controller('SignalsCtrl', ['$scope', 'DataProvider','$routeParams','$timeout
 		segnalation.lng = $scope.centerLocation.lng;
 		segnalation.type = $scope.signal.type;
 		segnalation.address = positions[0].formatted_address;
-		console.log(segnalation);
 		DataProvider.addSignalToServer(segnalation).then( function(signal){
-			console.log("segnale aggiunto:"+signal);
 			$scope.onSignalsFromServer(signal.data);
 			$scope.showSpinner=false;
 
@@ -463,14 +414,8 @@ app.controller('SignalsCtrl', ['$scope', 'DataProvider','$routeParams','$timeout
 	};
 
 	$scope.onSignalsFromServer=function(item) {
-		console.log("received ");
-		console.log(item);
 		item.segnalazione.action=item.voto;
 		marker=item.segnalazione;
-		console.log(marker);
-		console.log($scope.icons[marker.tipo]);
-		console.log("auth??????"+$rootScope.authenticated);
-		console.log($rootScope.nickname);
 		marker.icon = $scope.icons[marker.tipo];
 		marker.dataInizio = $filter('date')(marker.dataInizio, "MM/dd/yyyy  h:mma");
 		var s='<h1 class="typesignal">'+marker.tipo+'</h1>'+
@@ -493,15 +438,11 @@ app.controller('SignalsCtrl', ['$scope', 'DataProvider','$routeParams','$timeout
 		'</div>';
 
 		$scope.ppContainer='<div id="Marker'+ marker.id+'">'+s+'</div>';
-
-		console.log("idMarker="+ marker.id);
-
 		switch($scope.signal.type){
 		case "inProgress": 
 			$scope.inProgressList[ marker.id]=marker;
 			if($scope.signalToShow.inProgress==true){
 				$scope.signalMarkers[ marker.id]=marker;
-				console.log($scope.signalMarkers[ marker.id]);
 			}
 			break;
 		case "speedCamera": 
@@ -525,7 +466,6 @@ app.controller('SignalsCtrl', ['$scope', 'DataProvider','$routeParams','$timeout
 			}
 			break;
 		}	
-		console.log($scope.signalMarkers[ marker.id]);
 		$scope.signalMarkers[ marker.id].message=$scope.ppContainer;
 		$scope.signalMarkers[marker.id].usersvote=item.voto;
 
@@ -536,19 +476,13 @@ app.controller('SignalsCtrl', ['$scope', 'DataProvider','$routeParams','$timeout
 
 	//request to server for filling marker arrays
 	DataProvider.getSignals().then(function(signals){
-		console.log(signals);
 		angular.forEach(signals, function(value, key) {
 			$scope.onSignalsFromServer(value);
 		});
 
 		if($routeParams.lat!=null && $routeParams.lng!=null ){
-			console.log($scope.centerLocation);
-			console.log($scope.centerLocation.lat);
 			$scope.centerLocation.lat= Number($routeParams.lat);
 			$scope.centerLocation.lng= Number($routeParams.lng);
-			console.log($scope.centerLocation);
-			console.log($routeParams.lat);
-
 			leafletData.getMap("myMap").then(function(map) {});
 		}
 
@@ -624,23 +558,11 @@ app.controller('SignalsCtrl', ['$scope', 'DataProvider','$routeParams','$timeout
 				lat: position.coords.latitude,
 				lng: position.coords.longitude
 		};  
-		console.log("posizione presa");
-		console.log(pos.lat);
 		$scope.centerLocation.lat=pos.lat;
 		$scope.centerLocation.lng=pos.lng;
-		
 		$scope.myLat=pos.lat;
 		$scope.myLng=pos.lng;
-		
 		$scope.centerLocation.zoom=16;
-		/*
-		$scope.markers.push({
-			lat:  $scope.centerLocation.lat,
-			lng:  $scope.centerLocation.lng,
-			message: "I'm here!"
-		});
-		*/
-
 		$scope.centerLocation.zoom=16;
 		//updateMap
 		leafletData.getMap("myMap").then(function(map) {});
@@ -649,21 +571,16 @@ app.controller('SignalsCtrl', ['$scope', 'DataProvider','$routeParams','$timeout
 //	var localPosition=DataProvider.getCurrentPosition(onCurrentPosition);
 
 	function onPositionAddress(positions) {
-		console.log(positions);
 		var lat=positions[0].geometry.location.lat();
 		var lng=positions[0].geometry.location.lng();
-		console.log(lat);
-		console.log(lng);
 		$scope.centerLocation.lat=lat;
 		$scope.centerLocation.lng=lng;
 		$scope.hints.length=0;
 		$scope.hints.push($scope.yourPositionString);
 		angular.forEach(positions, function(value, key) {
-			console.log(value.formatted_address);
 			$scope.hints.push(value.formatted_address);
 		});
 		$scope.showSpinner=false;
-		console.log($scope.hints);
 	}
 
 	//for chat hints
@@ -672,11 +589,9 @@ app.controller('SignalsCtrl', ['$scope', 'DataProvider','$routeParams','$timeout
 		$scope.addresshints={};
 		$scope.addresshints["show"]=false;
 		angular.forEach(positions, function(value, key) {
-			console.log(value.formatted_address);
 			$scope.addresshints[value.formatted_address]=value.formatted_address;
 			$scope.addresshints["show"]=true;
 		});
-		console.log($scope.addresshint);
 	}
 
 	function onErrorPositionAddress(status) {

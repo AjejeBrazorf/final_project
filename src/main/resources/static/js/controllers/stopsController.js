@@ -81,7 +81,6 @@ app.controller('StopsCtrl', ['$scope', 'DataProvider','$routeParams',
 			markers: $scope.stopsMarkes,
 			torino: $scope.center
 		});
-		// $scope.latlngs
 
 	};
 	$scope.percorsi=[];
@@ -105,30 +104,23 @@ app.controller('StopsCtrl', ['$scope', 'DataProvider','$routeParams',
 		}
 
 
-		// console.log($scope.stops);
+	
 
 		DataProvider.getPaths($scope.lineToShow).then(function(stops){
 			$scope.percorsi = stops;
-			console.log($scope.percorsi);
 			$scope.showPath($scope.percorsi[0]);
 			$scope.showSpinner=false;
 		});
-		// $scope.percorsi[0]=$scope.stops.slice(0,$scope.stops.length/2);
-		// $scope.percorsi[1]=$scope.stops.slice($scope.stops.length/2,$scope.stops.length-1);
-		// console.log($scope.percorsi);
 	}else {
 		DataProvider.getLines().then(function(response){ 
 			$scope.lines = response; 
 			$scope.showSpinner=false;
-			console.log ($scope.lines);
 		});
 	}
 	$scope.showPopUp = function(stopId){
 		if($scope.lastFocused!==-1 && $scope.stopsMarkes[$scope.lastFocused]!=undefined)
 			$scope.stopsMarkes[$scope.lastFocused].focus=false;
-		$scope.lastFocused=stopId;
-		console.log("showPopUp "+stopId);
-		console.log($scope.stopsMarkes);            
+		$scope.lastFocused=stopId;         
 		$scope.stopsMarkes[stopId].focus=true;
 		angular.extend($scope, {
 			markers: $scope.stopsMarkes
