@@ -82,6 +82,13 @@ public class AppController {
 			return "registration";
 		}
 		
+		//controllo che il nickname abbia almeno 1 carattere
+		if(nickname.length() <1){
+			model.addAttribute("error", "Sorry, insert a valid nickname");
+			model.addAttribute("field", "nickname");	
+			return "registration";
+		}
+
 		//controllo che la password abbia almeno 8 caratteri
 		if(password.length() <8){
 			model.addAttribute("error", "Sorry, the password must be at least 8 charachters");
