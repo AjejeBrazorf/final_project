@@ -23,7 +23,7 @@ public class App
 	{
 		Connection c = null;
 		PreparedStatement ps = null;
-		final String ipAddress = "localhost";
+		final String ipAddress = "192.168.99.100";
 		
 		try {
 

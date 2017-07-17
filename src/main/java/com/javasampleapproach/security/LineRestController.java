@@ -30,7 +30,7 @@ public class LineRestController {
 		LinesResource lR = new LinesResource();
 		
 		lR.setLines(lq.getLines());
-		System.out.println("Linea db :"+lq.getLines().get(6).getDescription());
+		//System.out.println("Linea db :"+lq.getLines().get(6).getDescription());
 		//self link
 		Link selfLink = linkTo(LineRestController.class).slash("lines").withSelfRel();
 		lR.add(selfLink);
@@ -42,7 +42,7 @@ public class LineRestController {
 	public HttpEntity<StopsResource> getStops(@PathVariable String id){
 		StopsResource sR = new StopsResource();
 		sR.setStops(lq.getStopsForLine(id));
-		System.out.println(lq.getStopsForLine(id).size());
+		//System.out.println(lq.getStopsForLine(id).size());
 		
 		//self link
 		Link selfLink = linkTo(LineRestController.class).slash("lines").withSelfRel();

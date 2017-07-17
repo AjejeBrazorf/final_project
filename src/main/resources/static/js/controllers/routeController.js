@@ -2,7 +2,7 @@ app.controller('RouteCtrl', ['$scope', 'DataProvider','$routeParams','$timeout',
 	function ($scope, DataProvider,$routeParams, $timeout, $q, leafletData, $timeout) {
 
 
-
+	// initialize map
 	angular.extend($scope, {
 		centerLocation: {
 			lat: 45.07,
@@ -34,7 +34,7 @@ app.controller('RouteCtrl', ['$scope', 'DataProvider','$routeParams','$timeout',
 		}
 	});
 
-	
+	//inizialize path on the map
 	$scope.patternsFoot=  [
 		{
 			offset: 0,
@@ -71,34 +71,26 @@ app.controller('RouteCtrl', ['$scope', 'DataProvider','$routeParams','$timeout',
 	$scope.querySearch   = querySearch;
 	$scope.selectedItemChange = selectedItemChange;
 	$scope.searchTextChange   = searchTextChange;
+	
 	// ******************************
 	// Internal methods
 	// ******************************
 
-	/**
-	 * Search for stops... use $timeout to simulate
-	 * remote dataservice call.
-	 */
+	
 	function querySearch (query) {
-		console.log("quesry searc -> "+query+"\n hints");
-		console.log($scope.hints);
 		var results = $scope.hints;
 		return results;
 	}
 
-
+	 
 	function searchTextChange(text) {
-		console.log('Text changed to ' + text);
-
 		if(text.length>0){
-			console.log("hints");
-			console.log($scope.hints);
 			DataProvider.getPositionFromString(text, $scope.onPositionAddress, onErrorPositionAddress);
 		}else{
 			$scope.hints=[];
 		}
 	}
-
+	 
 	function selectedItemChange(item) {
 		if(item==$scope.yourPosition){
 			$scope.yourPositionRequestInProgress=true;
@@ -111,7 +103,6 @@ app.controller('RouteCtrl', ['$scope', 'DataProvider','$routeParams','$timeout',
 	 */
 	function loadAll() {
 		var stops = DataProvider.getNameStops();
-		console.log(stops.length);
 
 		return  stops.map( function (stop) {
 			return {
@@ -126,7 +117,6 @@ app.controller('RouteCtrl', ['$scope', 'DataProvider','$routeParams','$timeout',
 	 */
 	function createFilterFor(query) {
 		var lowercaseQuery = angular.lowercase(query);
-		console.log("createefilterfor");
 		return function filterFn(lowercaseQuery) {
 			return ($scope.hints.indexOf(lowercaseQuery) != -1);
 		};
@@ -135,7 +125,6 @@ app.controller('RouteCtrl', ['$scope', 'DataProvider','$routeParams','$timeout',
 
 	function createFilterExistance(query) {
 		var lowercaseQuery = angular.lowercase(query);
-		console.log("createefilterexistance");
 
 		return function filterFn(lowercaseQuery) {
 			return ($scope.hints.value === lowercaseQuery);
@@ -146,13 +135,11 @@ app.controller('RouteCtrl', ['$scope', 'DataProvider','$routeParams','$timeout',
 
 	$scope.from = "";
 	$scope.to = "";
-	console.log($routeParams.from+" - "+ $routeParams.to);
 	if($routeParams.from!=null && $routeParams.to!=null ){
 		$scope.from=$routeParams.from;
 		$scope.to= $routeParams.to;
 	}
-	/*$scope.from = DataProvider.points.from;
-        $scope.to =  DataProvider.points.to;*/
+	
 
 	$scope.findPath = function(){
 		
@@ -162,19 +149,14 @@ app.controller('RouteCtrl', ['$scope', 'DataProvider','$routeParams','$timeout',
 			return;
 		
 		var flagFrom = false, flagTo = false;
-		console.log("entro in funzione");
-		console.log($scope.from+" == "+ $scope.yourPosition);
 		if($scope.from==$scope.yourPosition)
 			$scope.from=$scope.myLat+","+$scope.myLng;
-		console.log($scope.from+" == "+ $scope.yourPosition);
-
+		
 		var lat1, lng1, lat2, lng2;
 		DataProvider.getPositionFromString($scope.from, function(positions){
 			flagFrom = true;
 			lat1=positions[0].geometry.location.lat();
 			lng1=positions[0].geometry.location.lng();
-			console.log(lat1);
-			console.log(lng1);
 
 			if(flagTo == true){
 				// fai richiesta al server
@@ -183,17 +165,12 @@ app.controller('RouteCtrl', ['$scope', 'DataProvider','$routeParams','$timeout',
 
 		}, onErrorPositionAddress);
 
-		console.log($scope.to+" == "+ $scope.yourPosition);
 		if($scope.to==$scope.yourPosition)
 			$scope.to=$scope.myLat+","+$scope.myLng;
-		console.log($scope.to+" == "+ $scope.yourPosition);
-
 		DataProvider.getPositionFromString($scope.to, function(positions){
 			flagTo = true;
 			lat2=positions[0].geometry.location.lat();
 			lng2=positions[0].geometry.location.lng();
-			console.log(lat2);
-			console.log(lng2);
 
 			if(flagFrom == true){
 				// fai richiesta al server
@@ -205,9 +182,7 @@ app.controller('RouteCtrl', ['$scope', 'DataProvider','$routeParams','$timeout',
 
 	$scope.getPointNameStart= function(text,iPath){
 		$showSpinner=true;
-		console.log("waiting for nr "+iPath);
 		DataProvider.getPositionFromString(text, function(position){
-			console.log(position[0].formatted_address);
 			$scope.fullPath[iPath].start=position[0].formatted_address;
 			$scope.checkSpinner();
 		}, onErrorPositionAddress);
@@ -215,9 +190,7 @@ app.controller('RouteCtrl', ['$scope', 'DataProvider','$routeParams','$timeout',
 
 	$scope.getPointNameEnd= function(text,iPath){
 		$showSpinner=true;
-		console.log("waiting for nr "+iPath);
 		DataProvider.getPositionFromString(text, function(position){
-			console.log(position[0].formatted_address);
 			$scope.fullPath[iPath].end=position[0].formatted_address;
 			$scope.checkSpinner();
 		}, onErrorPositionAddress);
@@ -227,7 +200,6 @@ app.controller('RouteCtrl', ['$scope', 'DataProvider','$routeParams','$timeout',
 		$scope.countStartEndPointReceived++;
 		if($scope.countStartEndPointReceived==$scope.fullPath.length-1){
 			$scope.showSpinner=false;
-			console.log($scope.fullPath);
 		}
 	}
 
@@ -328,7 +300,6 @@ app.controller('RouteCtrl', ['$scope', 'DataProvider','$routeParams','$timeout',
 					}
 					startPath=start;
 					
-					console.log(countFullPath+"-"+positions.length+"-"+	countAllPasses);
 					if(countFullPath!=0){
 						if(lastNameFrom.length==0){
 							$scope.fullPath[countFullPath].start=$scope.fullPath[countFullPath-1].end;
@@ -359,14 +330,9 @@ app.controller('RouteCtrl', ['$scope', 'DataProvider','$routeParams','$timeout',
 					};
 					
 					
-					console.log($scope.markers);
-					console.log(value);
-					console.log($scope.fullPath[countFullPath]);
 					lastNameFrom=value.nameFrom;
 					startPath=end;
 					lineId=value.lineId;
-					//$scope.getPointNameStart(path[0][0]+","+path[0][1],countFullPath);
-					//$scope.getPointNameEnd(lastPoint[0]+","+lastPoint[1],countFullPath);
 					countFullPath++;
 					
 					$scope.fullPath[countFullPath]={
@@ -388,7 +354,7 @@ app.controller('RouteCtrl', ['$scope', 'DataProvider','$routeParams','$timeout',
 						draggable: false,
 						icon: ""
 					};
-					console.log(countAllPasses+" == "+positions.length+"  "+lastNameFrom);
+
 					if(countAllPasses==positions.length){
 						if(lastNameFrom==null){
 							$scope.fullPath[countFullPath].start=$scope.fullPath[countFullPath-1].end;
@@ -403,7 +369,6 @@ app.controller('RouteCtrl', ['$scope', 'DataProvider','$routeParams','$timeout',
 			});
 
 
-			console.log($scope.centerLocation.zoom);
 			if($scope.centerLocation.zoom!=15){
 				$scope.centerLocation={
 					lat: (minLat+maxLat)/2,
@@ -417,7 +382,6 @@ app.controller('RouteCtrl', ['$scope', 'DataProvider','$routeParams','$timeout',
 						zoom: $scope.centerLocation.zoom
 					};
 			}
-			console.log($scope.centerLocation);
 
 			angular.forEach($scope.byFoot, function (value,key){
 				$scope.decorations["foot"+key]=value;
@@ -426,7 +390,6 @@ app.controller('RouteCtrl', ['$scope', 'DataProvider','$routeParams','$timeout',
 				$scope.decorations["bus"+key]=value;
 			});
 
-			console.log($scope.decorations);
 
 			leafletData.getMap("idRoute").then(function(map) {});
 			if($scope.centerLocation.zoom!=15){
@@ -441,7 +404,6 @@ app.controller('RouteCtrl', ['$scope', 'DataProvider','$routeParams','$timeout',
 
 	function findPathToServer(lat1, lng1, lat2, lng2){
 		DataProvider.findPath(lat1, lng1, lat2, lng2).then(function(edges){
-			console.log(edges);
 
 			//da visualizzare a schermo
 		});
@@ -452,7 +414,6 @@ app.controller('RouteCtrl', ['$scope', 'DataProvider','$routeParams','$timeout',
 		if($scope.lastFocused!==-1 && $scope.markersPath[$scope.lastFocused]!=undefined)
 			$scope.markersPath[$scope.lastFocused].focus=false;
 		$scope.lastFocused=markerId;
-		console.log("center on "+markerId);
 		$scope.markersPath[markerId].focus=true;
 		
 		$scope.centerLocation={
@@ -461,23 +422,19 @@ app.controller('RouteCtrl', ['$scope', 'DataProvider','$routeParams','$timeout',
 				zoom: 20
 		};
 		
-		/*angular.extend($scope, {
-			markers: $scope.markers
-		});*/
 	};
 	
 	//--------geolocation google
 	$scope.map;
 	$scope.infoWindow;
-
+  
+	//--------user Position
 	function onCurrentPosition(position) {
 		$scope.yourPositionRequestInProgress=false;
 		var pos = {
 				lat: position.coords.latitude,
 				lng: position.coords.longitude
 		};  
-		console.log("posizione presa");
-		console.log(pos.lat);
 		$scope.centerLocation.lat=pos.lat;
 		$scope.centerLocation.lng=pos.lng;
 
@@ -485,49 +442,28 @@ app.controller('RouteCtrl', ['$scope', 'DataProvider','$routeParams','$timeout',
 		$scope.myLng=pos.lng;
 
 		$scope.centerLocation.zoom=10;
-		/*
-		$scope.markers.push({
-			lat:  $scope.centerLocation.lat,
-			lng:  $scope.centerLocation.lng,
-			message: "I'm here!"
-		});
-		 */
-
+		
 		$scope.centerLocation.zoom=16;
+		
 		//updateMap
 		leafletData.getMap("idRoute").then(function(map) {});
 		if($scope.pathRequestInProgress==true)
 			$scope.findPath();
 	}
 
-	//var localPosition=DataProvider.getCurrentPosition(onCurrentPosition);
-
+	//callback after positions from google received
 	$scope.onPositionAddress=function (positions) {
-		console.log(positions);
 		var lat=positions[0].geometry.location.lat();
 		var lng=positions[0].geometry.location.lng();
-		console.log(lat);
-		console.log(lng);
 		$scope.centerLocation.lat=lat;
 		$scope.centerLocation.lng=lng;
 		$scope.centerLocation.zoom=16;
 		leafletData.getMap("idRoute").then(function(map) {});
-
-		console.log("in position address hints");
-		console.log($scope.hints);
 		$scope.hints=[];
 		$scope.hints.push($scope.yourPosition);
 		angular.forEach(positions, function(value, key) {
 			$scope.hints.push(value.formatted_address);
 		});
-
-		console.log($scope.hints);
-
-//		map.setCenter(positions[0].geometry.location);
-//		var marker = new google.maps.Marker({
-//		map: map,
-//		position: positions[0].geometry.location
-//		});
 	}
 
 	function onErrorPositionAddress(status) {

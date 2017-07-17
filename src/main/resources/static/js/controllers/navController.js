@@ -2,12 +2,12 @@ app.controller('navCtrl', ['$scope', '$rootScope',
 	function ($scope, $rootScope) {
 	$scope.nickname={};
 	
+	//set nickname user on the rootscope
 	$scope.setNickname=function(){
-		console.log("setto nickname")
 		$rootScope.nickname=$scope.nickname;
-		console.log("nickanem" + $rootScope.nickname);
 	}
-	
+	 
+	//set the color of the navbar tab depending on the page you are 
 	$rootScope.$on("$routeChangeSuccess", function (event, current, previous, rejection) {
 		$scope.userImage=$rootScope.rootUserImage;
 		console.log("success on "+current.$$route.originalPath);
