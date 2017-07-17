@@ -50,7 +50,7 @@ public class SegnalationRestController {
 		for(Segnalazione s:list){
 			SegnalationForClient sfc = new SegnalationForClient();
 			if(name != null){
-				System.out.println("Name :"+name+" id: "+s.getId());
+				//System.out.println("Name :"+name+" id: "+s.getId());
 				voto = service.isPresentUserRate(name, s.getId());
 				sfc.setVoto(voto);
 			}
@@ -129,7 +129,7 @@ public class SegnalationRestController {
 		
 		//Segnalazione s = new Segnalazione(nickname, lat, lng, date, null, indirizzo, TipoSegnalazione.valueOf(tipo), 0d, 0);
 		//s.setId(Integer.parseInt(id));
-		System.out.println("Segnalazione creata");
+		//System.out.println("Segnalazione creata");
 		return new ResponseEntity<Segnalazione>(s, HttpStatus.CREATED);
 		
 	}

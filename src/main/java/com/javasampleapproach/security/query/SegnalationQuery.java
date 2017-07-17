@@ -30,7 +30,6 @@ public class SegnalationQuery {
 		int oldRate;
 
 		oldRate = isPresentUserRate(name, Integer.parseInt(id));
-		System.out.println("oldrate: " +oldRate);
 		if(oldRate !=0 ){
 			newAverage = updateRate(1, rate-oldRate, id);
 			//System.out.println("Ho aggiornato la media");
@@ -87,8 +86,6 @@ public class SegnalationQuery {
 	//mode : 0  new vote
 	//mode : 1  update of old vote
 	public Double updateRate(int mode, double rate, String id){
-		System.out.println("mode" + mode);
-		System.out.println("rate" + rate);
 		return sR.updateRate(mode, rate, Integer.parseInt(id));
 	}
 

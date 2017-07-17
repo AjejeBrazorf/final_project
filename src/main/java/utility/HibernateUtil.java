@@ -17,7 +17,7 @@ import sun.security.x509.IPAddressName;
 public class HibernateUtil {
 	
 	private static final SessionFactory sessionFactory = buildSessionFactory();
-	private static final String ipAddress = "192.168.99.100";
+	private static final String ipAddress = "localhost";
 	
 	private static SessionFactory buildSessionFactory() {
 		try {

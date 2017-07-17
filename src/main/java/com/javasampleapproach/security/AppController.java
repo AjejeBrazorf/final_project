@@ -109,7 +109,7 @@ public class AppController {
 			
 			userService.insertNewUser(email, otp, nickname, password, false, "ROLE_USER");
 			//aq.insertCode(email, otp);
-			System.out.println("Url"+getURLBase(request));
+
 			sendEmail(email, getURLBase(request), otp);
 		} catch (Exception e) {
 			model.addAttribute("error", "Sorry, unable to send the email for confirmation, please try again. ");
@@ -117,7 +117,7 @@ public class AppController {
 			return "registration";
 		}
 
-		System.out.println("Error"+model.asMap().get("error"));
+		//System.out.println("Error"+model.asMap().get("error"));
 		//pgq.insertCredentials(email, password, false);
 		//pgq.insertUser(nickname, email);
 

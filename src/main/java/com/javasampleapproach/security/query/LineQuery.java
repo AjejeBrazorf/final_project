@@ -127,15 +127,12 @@ public class LineQuery {
 
 		List<String> stops = lR.getIntermediateStops(lineId, seqNumberFrom, seqNumberTo);
 		for(String s:stops){
-			System.out.println("Stop"+s);
 			Object[] row = lR.getBusStopById(s).get(0);
 			BusStop bs = new BusStop();
-			System.out.println(row[0]);
 			bs.setId((String)row[0]);
 			bs.setName((String)row[1]);
 			bs.setLat((double) row[2]);
 			bs.setLng((double) row[3]);
-			System.out.println(bs.getName());
 			list.add(bs);
 		}
 		return list;

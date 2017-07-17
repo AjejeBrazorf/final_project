@@ -20,7 +20,7 @@ public class UserController {
 
 	@RequestMapping(value = "/{id}/myInfo", method=RequestMethod.GET, produces="application/json")
 	public HttpEntity<User> getUser(@PathVariable String id) {
-		System.out.println(id);
+		//System.out.println(id);
 		User user = uq.getUserbyNickname(id);
 		return new ResponseEntity<User>(user, HttpStatus.OK);
 	}
