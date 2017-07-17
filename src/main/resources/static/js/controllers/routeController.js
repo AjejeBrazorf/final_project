@@ -373,7 +373,7 @@ app.controller('RouteCtrl', ['$scope', 'DataProvider','$routeParams','$timeout',
 				$scope.centerLocation={
 					lat: (minLat+maxLat)/2,
 					lng: (minLng+maxLng)/2,
-					zoom: 20
+					zoom: 15
 				};
 			}else{
 				$scope.centerLocation={

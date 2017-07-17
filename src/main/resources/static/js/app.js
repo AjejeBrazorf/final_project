@@ -40,12 +40,11 @@ app.controller('AuthCtrl', ['$scope', '$rootScope',
 		console.log(auth);
 		$rootScope.authenticated=auth;
 		console.log($rootScope.authenticated);
+		//setto immagine se autenticato
 		if(auth){
 			$rootScope.img.compressed.dataURL=$('#imgsrc').val();
 			$rootScope.nickname=$('#user').text();
 			console.log("username :" + $rootScope.nickname);
-		}else{
-			console.log("non setto imm");
 		}
 	}
 	
@@ -144,8 +143,6 @@ app.factory('DataProvider',
 			params: values
 		});
 		promise.then( function(item) {
-			console.log("aggiunto al server");
-			console.log(item.data);
 			return item.data;
 		} , 
 		function error() { }
@@ -174,10 +171,7 @@ app.factory('DataProvider',
 
 	
 	DataProvider.deleteSignal= function(item,id) {
-		console.log(item.action);
-		var values={ 'action': item.action}
-		console.log("l'id che invio è" );
-		console.log(id);
+		var values={ 'action': item.action};
 		var promise = $http({
 			url: "../segnalations/"+id,
 			method: "PUT",
@@ -250,6 +244,13 @@ app.factory('DataProvider',
 			if (status == 'OK') {
 				onSuccess(results);
 			} else {
+				
+				if(status=='ZERO_RESULTS'){
+					if(name.length>7)
+					name=name.substr(0,name.length - 7);
+					DataProvider.getPositionFromString(name, onSuccess, onError);
+				}
+				
 				onError(status);
 			}
 		});
@@ -258,7 +259,6 @@ app.factory('DataProvider',
 	DataProvider.findPath = function(lat1, lng1, lat2, lng2){
 		return readJson('/findPath?lat1='+lat1+'&lng1='+lng1+'&lat2='+lat2+'&lng2='+lng2)
 		.then( function (response){ 
-			console.log(response);
 			return response;
 		});
 

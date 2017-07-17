@@ -8,8 +8,8 @@
         </div>
 
 	         <form class="w3-container" ng-hide="showSpinner" style="margin-top: 10px;">
-				<input class="w3-input searchBox" type="text"  ng-model="searchText" placeholder="Search your line!" ng-hide="!lines.length">
-				<input class="w3-input searchBox" type="text"  ng-model="searchText" placeholder="Search your stop!" ng-hide="lines.length">
+				<input class="w3-input searchBox" type="text"  ng-model="searchText" placeholder="Search your line!" ng-hide="!lines.length || lines==undefined">
+				<input class="w3-input searchBox" type="text"  ng-model="searchText" placeholder="Search your stop!" ng-hide="lines.length || lines==undefined">
 			</form>
         <div class="row"  style="height: 55px;border-left: solid 15px white;" ng-hide="percorsi.length || showSpinner">
 			<div class="col-sm-2 col-md-2 col-xs-2" style=" height: 100%;border-right: solid 2px white;text-align: right;    height: 100%;border-right: solid 7px white;text-align: right;margin-left: -6px;">
