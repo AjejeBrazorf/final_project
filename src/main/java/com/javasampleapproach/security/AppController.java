@@ -82,6 +82,13 @@ public class AppController {
 			return "registration";
 		}
 		
+		//controllo che il nickname abbia almeno 1 carattere
+		if(nickname.length() <1){
+			model.addAttribute("error", "Sorry, insert a valid nickname");
+			model.addAttribute("field", "nickname");	
+			return "registration";
+		}
+
 		//controllo che la password abbia almeno 8 caratteri
 		if(password.length() <8){
 			model.addAttribute("error", "Sorry, the password must be at least 8 charachters");
@@ -109,7 +116,7 @@ public class AppController {
 			
 			userService.insertNewUser(email, otp, nickname, password, false, "ROLE_USER");
 			//aq.insertCode(email, otp);
-
+			System.out.println("Url"+getURLBase(request));
 			sendEmail(email, getURLBase(request), otp);
 		} catch (Exception e) {
 			model.addAttribute("error", "Sorry, unable to send the email for confirmation, please try again. ");
@@ -117,7 +124,6 @@ public class AppController {
 			return "registration";
 		}
 
-		//System.out.println("Error"+model.asMap().get("error"));
 		//pgq.insertCredentials(email, password, false);
 		//pgq.insertUser(nickname, email);
 
@@ -250,6 +256,8 @@ public class AppController {
 		}
 	
 		userService.updateUser(name.getName(), Gender.valueOf(gender), Integer.parseInt(eta) , Istruzione.valueOf(istruzione), Occupazione.valueOf(occupazione), Boolean.valueOf(hasCar), Integer.parseInt(annoImmatr), TipoCarburante.valueOf(carburante), Boolean.valueOf(useCarSharing), FornitoreCarSharing.valueOf(fcs), Boolean.valueOf(useBike), Boolean.valueOf(useBikeSharing), Boolean.valueOf(useMezzi), TipoViaggio.valueOf(tipoviaggio), photo);
+		model.addAttribute("image", userService.getImage(name.getName()));
+		model.addAttribute("nickname", userService.getUsernameByMail(name.getName()));
 		
 		return "index";
 		
@@ -259,9 +267,7 @@ public class AppController {
 	public String userpageController(Model model, Principal name){
 		//System.out.println(name.getName());
 
-		User user = userService.getUserbyUsername(name.getName());
-		
-		model.addAttribute("user",user);
+		model.addAttribute("user",userService.getUserbyUsername(name.getName()));
 		model.addAttribute("image",userService.getImage(name.getName()));
 		model.addAttribute("nickname", userService.getUsernameByMail(name.getName()));
 		return "userpage";

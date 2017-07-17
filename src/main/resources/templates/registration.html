@@ -29,18 +29,15 @@
 					<div>
 			            <h th:text="${error}"  style="text-align: center; color: #a94442;"></h>
 			        </div>
-			        <div th:if="${param.logout}">
-			            You have been logged out.
-			        </div>
                     <form  th:action="@{/addUser}"  method="post" style="background-color: #37373e" >
                         <div class="row">
                             <p class="col-sm-4 col-xs-2"></p>
                             <p class="col-sm-4 col-xs-8">
-                                <input  class="searchBox"  type="text" style="
+                                <input  class="searchBox"  type="email" style="
                                 width: 100%;
                                 max-width: inherit !important;
                                 text-align: center;"
-                                 placeholder="email" name="email" />
+                                 placeholder="email" name="email" required="required"/>
                             </p>
                             <p class="col-sm-4 col-xs-2">
                             </p>
@@ -52,7 +49,7 @@
                                 width: 100%;
                                 max-width: inherit !important;
                                 text-align: center;"
-                                placeholder="nickname" name="nickname" />
+                                placeholder="nickname" name="nickname"/>
                             </p>
                             <p class="col-sm-4 col-xs-2">
                             </p>
@@ -64,7 +61,7 @@
                                 width: 100%;
                                 max-width: inherit !important;
                                 text-align: center;"
-                                placeholder="password" name="password" />
+                                placeholder="password" name="password"/>
                             </p>
                             <p class="col-sm-4 col-xs-2">
                             </p>
