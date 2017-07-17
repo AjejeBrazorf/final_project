@@ -21,10 +21,9 @@ a:hover, a:focus {
 
 .formContainer{
 	text-align: center;
-    padding: 6%;
+    padding: 50px;
     background-color: black;
     text-align: center;
-    padding: 5%;
     background-color: black;
     padding-top: 20%;
 }

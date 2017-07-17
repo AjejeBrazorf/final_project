@@ -27,7 +27,7 @@
                     Registration
 					</h2>
 					<div>
-			            <h th:text="${error}"  style="text-align: center; color: #a94442;"></h>
+			            <h id="error" th:text="${error}"   style="text-align: center; color: white;"></h>	           
 			        </div>
 			        <div th:if="${param.logout}">
 			            You have been logged out.
@@ -40,7 +40,7 @@
                                 width: 100%;
                                 max-width: inherit !important;
                                 text-align: center;"
-                                 placeholder="email" name="email" />
+                                 placeholder="email" id="mail" name="email" />
                             </p>
                             <p class="col-sm-4 col-xs-2">
                             </p>
@@ -52,7 +52,7 @@
                                 width: 100%;
                                 max-width: inherit !important;
                                 text-align: center;"
-                                placeholder="nickname" name="nickname" />
+                                placeholder="nickname" id="username" name="nickname" />
                             </p>
                             <p class="col-sm-4 col-xs-2">
                             </p>
@@ -64,7 +64,7 @@
                                 width: 100%;
                                 max-width: inherit !important;
                                 text-align: center;"
-                                placeholder="password" name="password" />
+                                placeholder="password" id="password" name="password" />
                             </p>
                             <p class="col-sm-4 col-xs-2">
                             </p>
@@ -73,7 +73,7 @@
                         <div class="row">
                             <p class="col-sm-4 col-xs-2"></p>
                             <p class="col-sm-4 col-xs-8">
-                                <input type="submit" value="Create Account" style="
+                                <input type="submit" value="Create Account" id="submitForm" style="
                                 width: 90%;
                                 max-width: inherit !important;
                                 text-align: center;"  class="btn-success" />
@@ -93,5 +93,62 @@
 
      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    	 <script>
+	 
+	 document.getElementById("submitForm").addEventListener("click", function(event){
+		    var mail = document.getElementById("mail").value;
+		    var errorMessage="";
+		    if(mail.length==0){
+		    	errorMessage="Please insert an email";
+		    }else{
+		    	if(isValidEmailAddress(mail)==false){
+		    		errorMessage="Please insert a valide mail";
+		    	}else{
+		    		errorMessage = "";
+		    	}
+		    }
+		    document.getElementById("error").innerHTML=errorMessage; 
+		    if(errorMessage.length>0){ 
+		    	event.preventDefault(); 
+		    	return false;
+		    }
+
+		    var username = document.getElementById("username").value;
+		    var errorMessage="";
+		    if(username.length==0){
+		    	errorMessage="Please insert a nickname";
+		    }
+		    document.getElementById("error").innerHTML=errorMessage; 
+		    if(errorMessage.length>0){ 
+		    	event.preventDefault(); 
+		    	return false;
+		    }
+
+		    var password= document.getElementById("password").value;
+		    console.log(password.length);
+		    errorMessage="";
+		    console.log((!(password.length > 7)));
+		    if(password.length==0){
+		    	errorMessage="Please insert a password";
+		    }else if (!(password.length > 7)){
+		    	errorMessage="Please insert at least 8 characters in your password";
+		    }else{
+		    	errorMessage="";
+		    }
+		    document.getElementById("error").innerHTML=errorMessage;
+		    if(errorMessage.length>0){
+		    	event.preventDefault();
+		    	return false;
+		    }
+		    
+		});
+	 
+
+	 
+	 function isValidEmailAddress(emailAddress) {
+		    var pattern = new RegExp(/^(("[\w-+\s]+")|([\w-+]+(?:\.[\w-+]+)*)|("[\w-+\s]+")([\w-+]+(?:\.[\w-+]+)*))(@((?:[\w-+]+\.)*\w[\w-+]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][\d]\.|1[\d]{2}\.|[\d]{1,2}\.))((25[0-5]|2[0-4][\d]|1[\d]{2}|[\d]{1,2})\.){2}(25[0-5]|2[0-4][\d]|1[\d]{2}|[\d]{1,2})\]?$)/i);
+		    return pattern.test(emailAddress);
+		};
+	 </script>
     </body>
 </html>

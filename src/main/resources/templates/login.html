@@ -34,18 +34,22 @@
                      <h2 style="color:white; padding-bottom:30px">
                     Login
 					</h2>
-					<div th:if="${param.error}" style="color:white;">
+					<div id="errorUsername" th:if="${param.error}" style="color:white;">
 			            Invalid username and/or password.
 			        </div>
-			        <div th:if="${param.logout}" style="color:white;">
+			        <div id="errorPassword"  th:if="${param.logout}" style="color:white;">
 			            You have been logged out.
 			        </div>
-                    <form  th:action="@{/login}"  method="post" >
+					<div id="errorUsername" th:if="!${param.error}" style="color:white;">
+			        </div>
+			        <div id="errorPassword"  th:if="!${param.logout}" style="color:white;">
+			        </div>			        
+                    <form  th:action="@{/login}"  method="post"  >
                         <div class="row">
                             <p class="col-sm-4 col-xs-2"></p>
                             <p class="col-sm-4 col-xs-8">
-                                <input type="text" class="searchBox"
-                                 placeholder="username" name="username"  />
+                                <input type="text" id="username" class="searchBox"
+                                 placeholder="username" name="username" />
                             </p>
                             <p class="col-sm-4 col-xs-2">
                             </p>
@@ -54,7 +58,7 @@
                             <p class="col-sm-4 col-xs-2"></p>
                             <p class="col-sm-4 col-xs-8">
                                 <input type="password" class="searchBox"
-                                placeholder="password" name="password"  />
+                                placeholder="password" id="password" name="password"  />
                             </p>
                             <p class="col-sm-4 col-xs-2">
                             </p>
@@ -62,7 +66,7 @@
                         <div class="row">
                             <p class="col-sm-4 col-xs-2"></p>
                             <p class="col-sm-4 col-xs-8">
-                                <input type="submit" value="Sign In" style="width: 90%;" class="btn-success" />
+                                <input type="submit" value="Sign In" id="submitForm" style="width: 90%;" class="btn-success" />
                             </p>
                             <p class="col-sm-4 col-xs-2">
                             </p>
@@ -77,6 +81,52 @@
     
 	  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 	  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-	  
+	 <script>
+	 
+	 document.getElementById("submitForm").addEventListener("click", function(event){
+		    var username = document.getElementById("username").value;
+		    var errorMessage="";
+		    if(username.length==0){
+		    	errorMessage="Please insert an username";
+		    }else{
+		    	if(isValidEmailAddress(username)==false){
+		    		errorMessage="Please insert a valide mail";
+		    	}else{
+		    		errorMessage = "";
+		    	}
+		    }
+		    console.log(errorMessage);
+		    document.getElementById("errorUsername").innerHTML=errorMessage; 
+		    if(errorMessage.length>0){ 
+		    	event.preventDefault(); 
+		    	return false;
+		    }
+
+		    var password= document.getElementById("password").value;
+		    console.log(password.length);
+		    errorMessage="";
+		    console.log((!(password.length > 7)));
+		    if(password.length==0){
+		    	errorMessage="Please insert a password";
+		    }else if (!(password.length > 7)){
+		    	errorMessage="Please insert at least 8 characters in your password";
+		    }else{
+		    	errorMessage="";
+		    }
+		    document.getElementById("errorPassword").innerHTML=errorMessage;
+		    if(errorMessage.length>0){
+		    	event.preventDefault();
+		    	return false;
+		    }
+		    
+		});
+	 
+
+	 
+	 function isValidEmailAddress(emailAddress) {
+		    var pattern = new RegExp(/^(("[\w-+\s]+")|([\w-+]+(?:\.[\w-+]+)*)|("[\w-+\s]+")([\w-+]+(?:\.[\w-+]+)*))(@((?:[\w-+]+\.)*\w[\w-+]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][\d]\.|1[\d]{2}\.|[\d]{1,2}\.))((25[0-5]|2[0-4][\d]|1[\d]{2}|[\d]{1,2})\.){2}(25[0-5]|2[0-4][\d]|1[\d]{2}|[\d]{1,2})\]?$)/i);
+		    return pattern.test(emailAddress);
+		};
+	 </script>
   </body>
 </html>

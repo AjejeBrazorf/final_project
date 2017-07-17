@@ -186,7 +186,7 @@ function getImage(user){
 					  // do something with the text response 
 					console.log(text);
 					if(text==null || text.length==0){
-						text="http://placehold.it/50/55C1E7/fff&text="+user[0].toUpperCase();
+						text="http://placehold.it/50/55C1E7/fff&text="+user[0].toUpperCase()+user[1].toUpperCase();
 					}
 					usersWhichWrote[user]=text;
 					$("."+user+"-image").each(function(){
